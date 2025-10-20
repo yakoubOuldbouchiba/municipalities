@@ -1,0 +1,85 @@
+:root {
+  /* Algerian flag color palette */
+  --primary-green: #1b5e20; /* Deep green */
+  --primary-green-light: #2e7d32;
+  --primary-green-dark: #0d3b12;
+  --accent-red: #d32f2f; /* Optional for contrast */
+  --background-light: #f9f9f9;
+  --text-dark: #222;
+}
+
+/* PrimeReact overrides */
+.p-component,
+.p-inputtext,
+.p-button,
+.p-menubar,
+.p-carousel,
+.p-card {
+  font-family: 'Poppins', sans-serif;
+}
+
+/* General app background and text */
+body {
+  background-color: var(--background-light);
+  color: var(--text-dark);
+}
+
+/* Buttons */
+.p-button {
+  background-color: var(--primary-green);
+  border-color: var(--primary-green);
+}
+
+.p-button.p-button-text {
+  background-color: transparent;
+  border-color: transparent;
+  color: var(--primary-green);
+}
+
+.p-button:hover {
+  background-color: var(--primary-green-light);
+  border-color: var(--primary-green-light);
+}
+
+/* Menubar */
+.p-menubar {
+  background-color: var(--primary-green);
+  border: none;
+  border-radius: 0;
+  color: white;
+}
+
+.p-menubar .p-menuitem-link {
+  color: white;
+}
+
+.p-menubar .p-menuitem-link:hover {
+  background-color: var(--primary-green-light);
+}
+
+/* Carousel arrows */
+.p-carousel .p-carousel-prev,
+.p-carousel .p-carousel-next {
+  background-color: var(--primary-green);
+  border-radius: 50%;
+  border: none;
+  color: white;
+}
+
+.p-carousel .p-carousel-prev:hover,
+.p-carousel .p-carousel-next:hover {
+  background-color: var(--primary-green-light);
+}
+
+/* Dialog header */
+.p-dialog .p-dialog-header {
+  background-color: var(--primary-green);
+  color: white;
+}
+
+/* Cards */
+.p-card {
+  border: 1px solid #dcdcdc;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+

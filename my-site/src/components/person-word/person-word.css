@@ -1,0 +1,95 @@
+.person-word-card {
+  position: relative;
+  overflow: hidden;
+  border-left: 6px solid #0b6623;
+  background: linear-gradient(135deg, #f9fff9 0%, #e6f5ea 100%);
+  box-shadow: 0 4px 14px rgba(11, 102, 35, 0.15);
+  padding: 2rem;
+  border-radius: 1rem;
+}
+
+/* ✅ soft crescent watermark */
+.person-word-bg {
+  position: absolute;
+  right: -40px;
+  bottom: -30px;
+  width: 220px;
+  height: 220px;
+  background: radial-gradient(
+      circle at center,
+      rgba(255, 255, 255, 0) 60%,
+      rgba(11, 102, 35, 0.1) 61%,
+      rgba(11, 102, 35, 0.08) 100%
+    ),
+    radial-gradient(
+      circle at 40% 40%,
+      rgba(11, 102, 35, 0.15) 0%,
+      transparent 60%
+    );
+  border-radius: 50%;
+  transform: rotate(-20deg);
+  z-index: 0;
+}
+
+.person-word-title {
+  color: #0b6623;
+  font-weight: 700;
+  font-size: 1.8rem;
+  margin-bottom: 1rem;
+  text-align: left;
+  position: relative;
+  z-index: 2;
+}
+
+.person-word-content {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  flex-wrap: wrap;
+  position: relative;
+  z-index: 2;
+}
+
+.person-word-image {
+  border-radius: 50%;
+  border: 3px solid #0b6623;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.person-word-name {
+  color: #0b6623;
+  font-size: 1.3rem;
+  font-weight: 600;
+}
+
+.person-word-divider {
+  background: #0b6623 !important;
+  height: 2px !important;
+  margin: 0.5rem 0;
+}
+
+.person-word-message {
+  color: #2e4e2e;
+  font-size: 1.1rem;
+  line-height: 1.6;
+  text-align: justify;
+}
+
+/* ✅ responsive */
+@media (max-width: 768px) {
+  .person-word-content {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .person-word-title {
+    text-align: center;
+  }
+
+  .person-word-bg {
+    width: 160px;
+    height: 160px;
+    right: -20px;
+    bottom: -20px;
+  }
+}

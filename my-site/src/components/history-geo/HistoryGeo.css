@@ -1,0 +1,21 @@
+.history-geo-dialog {
+  width: 100vw !important;
+  height: 100vh !important;
+  max-width: none !important;
+  max-height: none !important;
+}
+
+.history-geo {
+  padding: 2rem;
+  font-size: 1.1rem;
+  line-height: 1.8;
+  color: #222;
+  overflow-y: auto;
+}
+
+@media (max-width: 768px) {
+  .history-geo {
+    padding: 1rem;
+    font-size: 1rem;
+  }
+}

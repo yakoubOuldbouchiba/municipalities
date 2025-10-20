@@ -1,0 +1,116 @@
+/* --- Base styles (mobile first) --- */
+.navbar-container {
+  display: flex;
+  flex-direction: column;
+  background-color: #ffffff;
+  border-bottom: 1px solid #ddd;
+  padding: 0.3rem 1rem;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.navbar-start {
+  display: flex;
+  width: 100%;
+  cursor: pointer;
+  justify-content: center; /* center for mobile */
+  gap: 0.5rem;
+  margin-bottom: 0.3rem;
+  flex-wrap: wrap;
+}
+
+.navbar-logo {
+  height: 40px;
+}
+
+.navbar-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  text-align: center;
+  align-self: center;
+  white-space: nowrap;
+}
+
+/* --- menu section --- */
+.navbar-menu {
+  border: none !important;
+  background: #fff !important;
+  padding: 0.5rem 0;
+  max-width: 100%;
+}
+
+
+/* === RTL Support === */
+body[dir='rtl'] .navbar-container {
+  direction: rtl;
+}
+
+body[dir='rtl'] .navbar-start {
+  flex-direction: row-reverse; /* logo on right, title on left */
+}
+
+body[dir='rtl'] .navbar-title {
+  text-align: center;
+}
+
+body[dir='rtl'] .navbar-logo {
+  margin-right: 2rem; /* replace margin-left from LTR */
+  margin-left: 0;
+}
+
+body[dir='rtl'] .navbar-menu .p-menubar-root-list {
+  flex-direction: row-reverse !important;
+}
+
+body[dir='rtl'] .p-menubar-root-list > .p-menuitem {
+  text-align: center; /* menu labels centered */
+}
+
+/* --- larger screens (tablet and desktop) --- */
+@media (min-width: 768px) {
+  .navbar-start {
+    justify-content: flex-start;
+    gap: 1rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .navbar-logo {
+    height: 100px;
+    margin-left: 2rem;
+  }
+
+  .navbar-title {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 1.4rem;
+  }
+
+  .navbar-menu {
+    padding: 0.5rem 1rem;
+  }
+
+  /* center menu items vertically for mobile */
+.navbar-menu .p-menubar-root-list {
+  display: flex !important;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.p-menubar-root-list > .p-menuitem {
+  width: 100%;
+  text-align: center;
+}
+
+  /* Spread menu items horizontally */
+  .navbar-menu .p-menubar-root-list {
+    flex-direction: row !important;
+    justify-content: space-between !important;
+  }
+
+  .p-menubar-root-list > .p-menuitem {
+    flex: 1;
+  }
+}

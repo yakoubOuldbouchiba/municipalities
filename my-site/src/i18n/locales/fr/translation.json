@@ -1,0 +1,136 @@
+{
+  "title": "Baladiya Zemmouri - Site Officiel",
+  "home": "Accueil",
+  "potentials": "Potentiels",
+  "mayor": "Maire",
+  "secretary_general": "Secrétaire Général",
+  "history": "Histoire",
+  "citizen_papers": "Documents Citoyens",
+  "contact": "Contact",
+  "copy_link": "Copier le lien",
+  "share_qr": "Code QR",
+  "facebook": "Facebook",
+  "whatsapp": "WhatsApp",
+  "share_via_qr": "Partager via QR Code",
+  "scan_code": "Scannez ce code pour ouvrir le document partagé.",
+  "latestAds": "Dernières annonces",
+  "share": "Partager",
+  "preview": "Aperçu",
+  "pdfDocument": "Document PDF",
+  "noImage": "Aucune image",
+  "footer": {
+    "cityTitle": "Zemmouri (Boumerdès)",
+    "quickLinks": "Liens rapides",
+    "importantNumbers": "Numéros importants",
+    "interior": "Ministère de l’Intérieur",
+    "defense": "Ministère de la Défense",
+    "police": "Police Algérienne",
+    "civilProtection": "Protection Civile",
+    "policeNumber": "Police",
+    "firefightersNumber": "Pompiers",
+    "hospitalNumber": "Hôpital",
+    "municipalityNumber": "Mairie",
+    "copyright": "© {{year}} Commune de Zemmouri. Tous droits réservés."
+  },
+  "news": {
+    "latest": "Dernières nouvelles",
+    "digitalServicesTitle": "La municipalité lance des services numériques",
+    "digitalServicesDesc": "Une nouvelle plateforme a été lancée pour que les citoyens gèrent leurs services en ligne.",
+    "infrastructureTitle": "Le maire discute d’un nouveau projet d’infrastructure",
+    "infrastructureDesc": "Une interview YouTube sur le développement routier dans la région de Zemmouri.",
+    "budgetTitle": "Rapport budgétaire annuel 2025",
+    "budgetDesc": "Le rapport financier complet de 2025 est disponible en format PDF."
+  },
+    "mayors": {
+    "historyTitle": "Historique des Maires",
+    "photo": "Photo",
+    "name": "Nom",
+    "period": "Période",
+    "achievements": "Réalisations"
+  },
+  "wordTitle": "Message du Maire",
+  "homePage": {
+    "welcome": "Bienvenue à Zemmouri",
+    "discover": "Découvrir plus",
+    "carousel": {
+      "caption1": "Les belles plages de Zemmouri",
+      "caption2": "Le cœur de Zemmouri",
+      "caption3": "Architecture et culture traditionnelles"
+    }
+  },
+  "mayorPage": {
+     "wordTitle": "Mot du Maire",
+    "historyTitle": "Historique des Maires de Zemmouri",
+    "current": {
+      "name": "M. Ahmed Benali",
+      "message": "En tant que Maire de Zemmouri, j’ai l’honneur de servir notre chère ville. Ensemble, nous construisons un avenir durable, vert et prospère pour tous les citoyens."
+    },
+    "history": {
+      "ali": "A modernisé le port de pêche et a encouragé l’éco-tourisme.",
+      "mourad": "A agrandi les parcs publics et lancé des programmes de gestion des déchets."
+    }
+  },
+  "papers": {
+    "title": "Documents et Démarches Citoyennes",
+    "viewDetails": "Voir les détails",
+    "identity": {
+      "title": "🪪 Pièces d’identité",
+      "description": "Conditions pour la carte nationale, le passeport et l’acte de naissance."
+    },
+    "driving": {
+      "title": "🚗 Permis de conduire et véhicules",
+      "description": "Procédures pour le permis, l’immatriculation et l’assurance auto."
+    },
+    "housing": {
+      "title": "🏠 Logement et Propriété",
+      "description": "Documents requis pour la propriété, la construction et la location."
+    },
+    "family": {
+      "title": "👪 Affaires familiales",
+      "description": "Documents relatifs au mariage, à la naissance et au livret de famille."
+    }
+  },
+  "potentialsPage": {
+    "title": "Les potentiels de Zemmouri",
+    "tourism": {
+      "title": "🏖 Potentiel touristique",
+      "description": "Zemmouri possède de magnifiques plages, des paysages verdoyants et un climat méditerranéen agréable. Son littoral attire les touristes pour la détente, la pêche et les festivals culturels chaque été."
+    },
+    "agriculture": {
+      "title": "🚜 Agriculture et pêche",
+      "description": "Grâce à des terres fertiles et à l’accès à la mer, l’agriculture et la pêche sont les piliers de l’économie de Zemmouri. L’huile d’olive, les agrumes et les fruits de mer en sont les principaux produits."
+    },
+    "urban": {
+      "title": "🏗 Développement urbain",
+      "description": "Des projets urbains en cours visent à moderniser les infrastructures, améliorer le logement et soutenir la construction durable, tout en préservant le charme traditionnel de Zemmouri."
+    },
+    "education": {
+      "title": "🎓 Éducation et jeunesse",
+      "description": "Zemmouri investit dans la jeunesse à travers des programmes éducatifs et de formation professionnelle, afin de donner aux jeunes les compétences nécessaires pour contribuer au développement local."
+    },
+    "environment": {
+      "title": "🌿 Environnement et durabilité",
+      "description": "Les autorités locales privilégient l’énergie propre, le recyclage et la préservation du littoral afin de maintenir Zemmouri verte et durable."
+    }
+  },
+  "sharePage": {
+    "defaultTitle": "Partager ce document",
+    "copyLink": "Copier le lien",
+    "qrCode": "Code QR",
+    "linkCopied": "Lien copié dans le presse-papiers !",
+    "qrHeader": "Partager via Code QR",
+    "scanText": "Scannez ce code pour ouvrir le document partagé."
+  },
+  "secretary_general_page": {
+    "word_title": "Mot du Secrétaire Général",
+    "history_title": "Historique des Secrétaires Généraux",
+    "current": {
+      "name": "Mme Fatima Cherif",
+      "message": "En tant que Secrétaire Générale de Zemmouri, mon engagement est la transparence, l’innovation et l’excellence du service dans tous les aspects du travail de notre municipalité."
+    },
+    "history": {
+      "karima": "A mis en place des systèmes de gestion électronique et amélioré la communication citoyenne.",
+      "samir": "A optimisé les processus administratifs et introduit des initiatives de gouvernance ouverte."
+    }
+  }
+}

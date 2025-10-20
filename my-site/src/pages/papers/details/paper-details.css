@@ -1,0 +1,24 @@
+.paper-details {
+  text-align: center;
+}
+
+.paper-list {
+  list-style: none;
+  padding: 0;
+  margin-bottom: 2rem;
+}
+
+.paper-list li {
+  background: #eafbea;
+  border-left: 5px solid #16a34a;
+  margin: 0.5rem 0;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+}
+
+.qr-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}

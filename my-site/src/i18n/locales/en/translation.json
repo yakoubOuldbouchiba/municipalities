@@ -1,0 +1,145 @@
+{
+  "title": "Baladiya Zemmouri - Official Website",
+  "home": "Home",
+  "potentials": "Potentials",
+  "mayor": "Mayor",
+  "secretary_general": "Secretary General",
+  "history": "History",
+  "citizen_papers": "Citizen Papers",
+  "contact": "Contact",
+  "copy_link": "Copy Link",
+  "share_qr": "QR Code",
+  "facebook": "Facebook",
+  "whatsapp": "WhatsApp",
+  "share_via_qr": "Share via QR Code",
+  "scan_code": "Scan this code to open the shared document.",
+  "latestAds": "Latest Advertisements",
+  "share": "Share",
+  "preview": "Preview",
+  "pdfDocument": "PDF Document",
+  "noImage": "No Image",
+   "footer": {
+    "cityTitle": "Zemmouri (Boumerdès)",
+    "quickLinks": "Quick Links",
+    "importantNumbers": "Important Numbers",
+    "interior": "Ministry of the Interior",
+    "defense": "Ministry of Defense",
+    "police": "Algerian Police",
+    "civilProtection": "Civil Protection",
+    "policeNumber": "Police",
+    "firefightersNumber": "Firefighters",
+    "hospitalNumber": "Hospital",
+    "municipalityNumber": "Municipality",
+    "copyright": "© {{year}} Zemmouri Municipality. All rights reserved."
+  },
+    "news": {
+    "latest": "Latest News",
+    "digitalServicesTitle": "Municipality launches digital services",
+    "digitalServicesDesc": "A new platform was launched for citizens to manage services online.",
+    "infrastructureTitle": "Mayor discusses new infrastructure project",
+    "infrastructureDesc": "A YouTube interview discussing road development in the Zemmouri area.",
+    "budgetTitle": "Annual budget report 2025",
+    "budgetDesc": "The full financial report for 2025 is available as a PDF."
+  },
+   "mayors": {
+    "historyTitle": "History of Mayors",
+    "photo": "Photo",
+    "name": "Name",
+    "period": "Period",
+    "achievements": "Achievements"
+  },
+  "wordTitle": "Word from the Mayor",
+  "homePage": {
+    "welcome": "Welcome to Zemmouri",
+    "discover": "Discover More",
+    "carousel": {
+      "caption1": "Beautiful beaches of Zemmouri",
+      "caption2": "The heart of Zemmouri",
+      "caption3": "Traditional architecture and culture"
+    }
+  },
+  "mayorPage": {
+    "wordTitle": "Word of the Mayor",
+    "historyTitle": "History of Zemmouri Mayors",
+    "current": {
+      "name": "Current Mayor",
+      "term": "Term: 2023 - Present",
+      "message": "As the mayor of Zemmouri, I am committed to enhancing the quality of life for all our citizens through sustainable development and community engagement."
+    },
+    "history": {
+      "mayor1": {
+        "name": "Mr. Ahmed Benali",
+        "period": "2023 - Present",
+        "achievements": "Implemented green initiatives and improved public services."
+      },
+      "mayor2": {
+        "name": "Mr. Mourad Bensalem",
+        "period": "2018 - 2023",
+        "achievements": "Upgraded local infrastructure and promoted tourism."       
+      }
+    }  
+  },
+  "papers": {
+    "title": "Citizen Papers & Procedures",
+    "viewDetails": "View Details",
+    "identity": {
+      "title": "🪪 Identity Documents",
+      "description": "Requirements for national ID card, passport, and birth certificate."
+    },
+    "driving": {
+      "title": "🚗 Driving & Vehicles",
+      "description": "Procedures for driver’s license, car registration, and insurance."
+    },
+    "housing": {
+      "title": "🏠 Housing & Property",
+      "description": "Documents needed for property ownership, construction, and rental."
+    },
+    "family": {
+      "title": "👪 Family Affairs",
+      "description": "Marriage, birth, and family record related documents."
+    }
+  },
+  "potentialsPage": {
+    "title": "Potentials of Zemmouri",
+    "tourism": {
+      "title": "🏖 Tourism Potential",
+      "description": "Zemmouri boasts stunning beaches, green landscapes, and a calm Mediterranean climate. Its coastline attracts tourists for relaxation, fishing, and cultural festivals every summer."
+    },
+    "agriculture": {
+      "title": "🚜 Agriculture & Fishing",
+      "description": "Thanks to fertile lands and access to the sea, agriculture and fishing are the pillars of Zemmouri’s economy. Olive oil, citrus fruits, and seafood are among the top products."
+    },
+    "urban": {
+      "title": "🏗 Urban Development",
+      "description": "Ongoing urban projects aim to modernize infrastructure, improve housing, and support sustainable construction, while preserving Zemmouri’s traditional charm."
+    },
+    "education": {
+      "title": "🎓 Education & Youth",
+      "description": "Zemmouri invests in youth through educational programs and vocational training, empowering the next generation with skills to contribute to local development."
+    },
+    "environment": {
+      "title": "🌿 Environment & Sustainability",
+      "description": "Local authorities prioritize clean energy, recycling, and coastal preservation to ensure that Zemmouri remains a green and sustainable town."
+    }
+  },
+  "sharePage": {
+    "defaultTitle": "Shared Document from Baladiya Zemmouri",
+    "linkCopied": "Link copied to clipboard!",
+    "qrHeader": "Share via QR Code",
+    "qrCode": "QR Code",
+    "copyLink": "Copy Link",
+    "scanText": "Scan this code to open the shared document."
+  },
+   "secretary_general_page": {
+    "word_title": "Word of the Secretary-General",
+    "history_title": "History of Secretary-Generals",
+    "current": {
+      "name": "Ms. Fatima Cherif",
+      "message": "As Secretary-General of Zemmouri, my commitment is to transparency, innovation, and service excellence in every aspect of our municipality’s work."
+    },
+    "history": {
+      "samir": "Digitized administrative processes and improved citizen access to services.",
+      "nadia": "Enhanced interdepartmental coordination and supported community engagement programs."
+    }
+  }
+}

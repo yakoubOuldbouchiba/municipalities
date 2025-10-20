@@ -1,0 +1,13 @@
+.news {
+  padding: 2rem 1rem;
+  background-color: #f8f9fa;
+}
+
+.news-title {
+  text-align: center;
+  font-size: 1.8rem;
+  margin-bottom: 1.5rem;
+  font-weight: 600;
+  color: #333;
+}
+

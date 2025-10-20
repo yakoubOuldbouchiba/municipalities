@@ -1,0 +1,59 @@
+.potentials-page {
+  padding: 2rem;
+  background-color: #f9f9f9;
+  min-height: 100vh;
+}
+
+.page-title {
+  text-align: center;
+  font-size: 2rem;
+  color: #0b6623; /* green like Algerian flag */
+  margin-bottom: 2rem;
+  font-weight: 700;
+}
+
+.sections-container {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.potential-section {
+  background: #fff;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease;
+}
+
+.potential-section:hover {
+  transform: translateY(-4px);
+}
+
+.section-title {
+  color: #0b6623;
+  font-size: 1.4rem;
+  margin-bottom: 0.5rem;
+}
+
+.section-desc {
+  color: #333;
+  line-height: 1.7;
+  font-size: 1.05rem;
+}
+
+@media (max-width: 768px) {
+  .page-title {
+    font-size: 1.5rem;
+  }
+
+  .section-title {
+    font-size: 1.2rem;
+  }
+
+  .section-desc {
+    font-size: 1rem;
+  }
+}

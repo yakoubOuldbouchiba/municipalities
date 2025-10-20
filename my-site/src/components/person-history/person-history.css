@@ -1,0 +1,29 @@
+.person-history-card {
+  border-top: 4px solid #0b6623;
+  background: #f9fff9;
+  box-shadow: 0 4px 10px rgba(11, 102, 35, 0.15);
+  padding: 2rem;
+  border-radius: 1rem;
+}
+
+.person-history-title {
+  color: #0b6623;
+  font-weight: 700;
+  font-size: 1.6rem;
+  margin-bottom: 1rem;
+}
+
+.person-history-image {
+  border-radius: 50%;
+  border: 2px solid #0b6623;
+}
+
+.person-history-table .p-datatable-thead > tr > th {
+  background-color: #e5f4e5;
+  color: #0b6623;
+  font-weight: 600;
+}
+
+.person-history-table .p-datatable-tbody > tr:nth-child(even) {
+  background-color: #f5fff5;
+}

@@ -1,0 +1,28 @@
+.mayor-page {
+  padding: 3rem 2rem;
+  background-color: #f7fff8; /* light greenish white for consistency */
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+}
+
+/* Section headings */
+.mayor-page h2 {
+  color: #0b6623;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+/* Add some breathing room around major sections */
+.mayor-section {
+  margin: 2rem 0;
+}
+
+/* Responsive tweaks */
+@media (max-width: 768px) {
+  .mayor-page {
+    padding: 2rem 1rem;
+    gap: 2rem;
+  }
+}

@@ -1,0 +1,22 @@
+.ads {
+  padding: 2rem 1rem;
+  background-color: #f8f9fa;
+}
+
+.ads-title {
+  text-align: center;
+  font-size: 1.8rem;
+  margin-bottom: 1.5rem;
+  font-weight: 600;
+  color: #333;
+}
+
+.ads-carousel .p-carousel-item {
+  display: flex;
+  justify-content: center;
+  margin: 0.2rem;
+}
+
+.p-carousel-content {
+  gap: 1rem;
+}
