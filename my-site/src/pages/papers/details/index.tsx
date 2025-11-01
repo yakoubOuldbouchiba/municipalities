@@ -1,58 +1,50 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { Card } from 'primereact/card'
-import './paper-details.css'
 import QRCode from 'react-qr-code'
+import axios from 'axios'
+import { useTranslation } from 'react-i18next'
+import './paper-details.css'
 
-const data = {
-    identity: {
-        title: 'Identity Documents',
-        items: [
-            'Birth certificate (original)',
-            '2 recent photos (passport size)',
-            'Proof of residence',
-            'Old ID card (if renewal)',
-        ],
-    },
-    driving: {
-        title: 'Driving & Vehicles',
-        items: [
-            'Medical certificate',
-            '2 recent photos',
-            'Copy of ID card',
-            'Proof of residence',
-            'Driving test registration form',
-        ],
-    },
+interface Paper {
+  slug: string
+  titles: { [key: string]: string }
+  descriptions: { [key: string]: string }
 }
 
 const PaperDetails: React.FC = () => {
-    const { id } = useParams<{ id: string }>()
-    const section = data[id as keyof typeof data]
+  const { id } = useParams<{ id: string }>()
+  const [paper, setPaper] = useState<Paper | null>(null)
+  const [loading, setLoading] = useState(true)
+  const { i18n } = useTranslation()
+  const currentLang = i18n.language
+  const currentUrl = window.location.href
 
-    if (!section) {
-        return <p className="text-center">Section not found.</p>
-    }
+  useEffect(() => {
+    axios
+      .get(`http://127.0.0.1:8000/api/papers/${id}`)
+      .then((res) => setPaper(res.data))
+      .catch(() => setPaper(null))
+      .finally(() => setLoading(false))
+  }, [id])
 
-    const currentUrl = window.location.href
+  if (loading) return <p>Loading...</p>
+  if (!paper) return <p className="text-center">Paper not found.</p>
 
+  const title = paper.titles[currentLang] || paper.titles['en']
+  const description = paper.descriptions[currentLang] || paper.descriptions['en']
 
-    return (
-        <div className="paper-details p-6">
-            <Card title={section.title} className="shadow-3">
-                <ul className="paper-list">
-                    {section.items.map((item, index) => (
-                        <li key={index}>📄 {item}</li>
-                    ))}
-                </ul>
-                <div className="qr-container">
-                    <p>Share this procedure:</p>
-                    <QRCode value={currentUrl} size={128} />
-                </div>
-            </Card>
-
+  return (
+    <div className="paper-details p-6">
+      <Card title={title} className="shadow-3">
+        <p>{description}</p>
+        <div className="qr-container">
+          <p>Share this procedure:</p>
+          <QRCode value={currentUrl} size={128} />
         </div>
-    )
+      </Card>
+    </div>
+  )
 }
 
 export default PaperDetails

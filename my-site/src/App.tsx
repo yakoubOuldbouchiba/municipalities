@@ -1,5 +1,5 @@
 // src/App.tsx
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Routes, Route } from 'react-router-dom';
 
 import Home from './pages/home/index.tsx';
@@ -17,15 +17,25 @@ import PapersPage from './pages/papers/index.tsx';
 import PaperDetails from './pages/papers/details/index.tsx';
 import SharePage from './pages/share/SharePage.tsx';
 import Navbar from './components/navbar/index.tsx';
+import axios from 'axios';
 
+interface Ad {
+  id: number
+  title: string
+  description?: string
+  link: string
+  file_type: 'image' | 'pdf'
+}
 
 const App: React.FC = () => {
-   const ads: { title: string; link: string; fileType?: "image" | "pdf" }[] = [
-  {  title: 'Municipality launches digital services', link: 'https://unej.dz/savedIMG//images/pages/l4qrj2s6SRRMULLS1RS.jpeg'  , fileType: 'image'},
-  {  title: 'New road renovation project approved', link: 'https://unej.dz/savedIMG//images/pages/l4qrj2s6SRRMULLS1RS.jpeg'  , fileType: 'image'},
-  {  title: 'Public meeting with the Mayor this Sunday', link: 'https://unej.dz/savedIMG//images/pages/l4qrj2s6SRRMULLS1RS.jpeg'  , fileType: 'image'}
-]
+   const [ads, setAds] = useState<Ad[]>([]);
 
+  useEffect(() => {
+    axios
+      .get('http://127.0.0.1:8000/api/ads')
+      .then((res) => setAds(res.data))
+      .catch((err) => console.error('Failed to fetch ads:', err));
+  }, []);
 
   return (
     <div>

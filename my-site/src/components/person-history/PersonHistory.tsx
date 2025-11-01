@@ -7,11 +7,12 @@ import { motion } from 'framer-motion'
 import { useTranslation } from 'react-i18next'
 import './person-history.css'
 
+// ✅ Allow optional period & achievements to prevent TS errors
 interface HistoryItem {
   name: string
   image: string
-  period: string
-  achievements: string
+  period?: string
+  achievements?: string
 }
 
 interface PersonHistoryProps {
@@ -33,6 +34,9 @@ const PersonHistory: React.FC<PersonHistoryProps> = ({ title, history }) => {
     />
   )
 
+  // ✅ Format missing values for cleaner display
+  const textTemplate = (text?: string) => text || '—'
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 40 }}
@@ -43,6 +47,7 @@ const PersonHistory: React.FC<PersonHistoryProps> = ({ title, history }) => {
         <h3 className="person-history-title">
           {title || t('mayors.historyTitle')}
         </h3>
+
         <DataTable
           value={history}
           stripedRows
@@ -53,13 +58,20 @@ const PersonHistory: React.FC<PersonHistoryProps> = ({ title, history }) => {
         >
           <Column header={t('mayors.photo')} body={imageTemplate}></Column>
           <Column field="name" header={t('mayors.name')}></Column>
-          <Column field="period" header={t('mayors.period')}></Column>
-          <Column field="achievements" header={t('mayors.achievements')}></Column>
+          <Column
+            field="period"
+            header={t('mayors.period')}
+            body={(rowData) => textTemplate(rowData.period)}
+          ></Column>
+          <Column
+            field="achievements"
+            header={t('mayors.achievements')}
+            body={(rowData) => textTemplate(rowData.achievements)}
+          ></Column>
         </DataTable>
       </Card>
     </motion.div>
   )
 }
-
 
 export default PersonHistory

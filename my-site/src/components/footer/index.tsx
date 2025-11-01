@@ -1,36 +1,60 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import './footer.css'
 import logo from '../../assets/logo.jpg'
 import { useTranslation } from 'react-i18next'
+import axios from 'axios'
+
+interface QuickLink {
+  id: number
+  label: string
+  url: string
+}
+
+interface ImportantNumber {
+  id: number
+  label: string
+  value: string
+}
 
 const Footer: React.FC = () => {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
+  const [quickLinks, setQuickLinks] = useState<QuickLink[]>([])
+  const [importantNumbers, setImportantNumbers] = useState<ImportantNumber[]>([])
+  const [loading, setLoading] = useState(true)
 
-  const quickLinks = [
-    {
-      label: t('footer.interior'),
-      url: 'https://www.interieur.gov.dz/index.php/fr/',
-    },
-    {
-      label: t('footer.defense'),
-      url: 'https://www.mdn.dz/site_principal/accueil_fr.php',
-    },
-    {
-      label: t('footer.police'),
-      url: 'https://www.algeriepolice.dz/',
-    },
-    {
-      label: t('footer.civilProtection'),
-      url: 'https://dgpc.dz/',
-    },
-  ]
+useEffect(() => {
+    const fetchFooterData = async () => {
+      setLoading(true); // reset loading each time language changes
+      try {
+        const [linksRes, numbersRes] = await Promise.all([
+          axios.get('http://localhost:8000/api/quick-links', {
+            params: { lang: i18n.language },
+          }),
+          axios.get('http://localhost:8000/api/important-numbers', {
+            params: { lang: i18n.language },
+          }),
+        ]);
 
-  const importantNumbers = [
-    { label: t('footer.policeNumber'), value: '1548' },
-    { label: t('footer.firefightersNumber'), value: '14' },
-    { label: t('footer.hospitalNumber'), value: '+213 24 79 00 00' },
-    { label: t('footer.municipalityNumber'), value: '+213 24 79 12 34' },
-  ]
+        setQuickLinks(linksRes.data);
+        setImportantNumbers(numbersRes.data);
+      } catch (error) {
+        console.error('❌ Error fetching footer data:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchFooterData();
+  }, [i18n.language]);
+
+
+  if (loading) {
+    return (
+      <footer className="footer">
+        <p>Loading footer...</p>
+      </footer>
+    )
+  }
 
   return (
     <footer className="footer">
@@ -56,8 +80,8 @@ const Footer: React.FC = () => {
         <div className="footer-col">
           <h4>{t('footer.quickLinks')}</h4>
           <ul>
-            {quickLinks.map((link, index) => (
-              <li key={index}>
+            {quickLinks.map((link) => (
+              <li key={link.id}>
                 <a href={link.url} target="_blank" rel="noopener noreferrer">
                   {link.label}
                 </a>
@@ -70,8 +94,8 @@ const Footer: React.FC = () => {
         <div className="footer-col">
           <h4>{t('footer.importantNumbers')}</h4>
           <ul>
-            {importantNumbers.map((item, index) => (
-              <li key={index}>
+            {importantNumbers.map((item) => (
+              <li key={item.id}>
                 {item.label}: {item.value}
               </li>
             ))}

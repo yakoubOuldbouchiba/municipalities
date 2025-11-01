@@ -1,48 +1,68 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import axios from 'axios'
 import { useTranslation } from 'react-i18next'
 import PersonWord from '../../components/person-word/PersonWord'
 import PersonHistory from '../../components/person-history/PersonHistory'
 import './mayor.css'
 
+interface Person {
+  id: number
+  name: string
+  image_url: string
+  message?: string
+  achievements?: string
+  period?: string
+  is_current: boolean
+}
+
 const Mayor: React.FC = () => {
   const { t, i18n } = useTranslation()
   const isRtl = i18n.language === 'ar'
 
-  const currentMayor = {
-    name: t('mayor.current.name'),
-    image: 'https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png',
-    message: t('mayorPage.current.message'),
-  }
+  const [currentMayor, setCurrentMayor] = useState<Person | null>(null)
+  const [mayorHistory, setMayorHistory] = useState<Person[]>([])
 
-  const mayorHistory = [
-    {
-      name: 'Ali Bouzid',
-      image: 'https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png',
-      period: '2010 - 2020',
-      achievements: t('mayorPage.history.ali'),
-    },
-    {
-      name: 'Mourad Djelloul',
-      image: 'https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png',
-      period: '2000 - 2010',
-      achievements: t('mayorPage.history.mourad'),
-    },
-  ]
+  useEffect(() => {
+    axios
+      .get(`http://localhost:8000/api/persons?type=mayor&lang=${i18n.language}`)
+      .then((res) => {
+        const persons: Person[] = res.data
+        const current = persons.find((p) => p.is_current)
+        const history = persons.filter((p) => !p.is_current)
+        setCurrentMayor(current || null)
+        setMayorHistory(history)
+      })
+      .catch((err) => {
+        console.error('Error loading mayor data:', err)
+      })
+  }, [i18n.language])
 
   return (
     <div className="mayor-page" dir={isRtl ? 'rtl' : 'ltr'}>
-      <div className="mayor-section">
-        <PersonWord
-          name={currentMayor.name}
-          image={currentMayor.image}
-          message={currentMayor.message}
-          title={t('mayorPage.wordTitle')}
-        />
-      </div>
+      {currentMayor && (
+        <div className="mayor-section">
+          <PersonWord
+            name={currentMayor.name}
+            image={currentMayor.image_url}
+            message={currentMayor.message || ''}
+            title={t('mayorPage.wordTitle')}
+          />
+        </div>
+      )}
 
-      <div className="mayor-section">
-        <PersonHistory title={t('mayorPage.historyTitle')} history={mayorHistory} />
-      </div>
+      {mayorHistory.length > 0 && (
+        <div className="mayor-section">
+          <PersonHistory
+            title={t('mayorPage.historyTitle')}
+            history={mayorHistory.map((m) => ({
+              name: m.name,
+              image: m.image_url,
+              period: m.period,
+              achievements: m.achievements,
+            }))}
+          />
+        </div>
+      )}
     </div>
   )
 }

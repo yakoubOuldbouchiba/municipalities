@@ -1,43 +1,43 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import axios from 'axios'
 import PersonWord from '../../components/person-word/PersonWord'
 import PersonHistory from '../../components/person-history/PersonHistory'
 
 const SecretaryGeneral: React.FC = () => {
-  const { t } = useTranslation()
+  const { i18n, t } = useTranslation()
+  const [current, setCurrent] = useState<any>(null)
+  const [history, setHistory] = useState<any[]>([])
 
-  const currentSecretary = {
-    name: t('secretary_general.current.name'),
-    image: 'https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png',
-    message: t('secretary_general_page.current.message'),
-  }
+  useEffect(() => {
+    axios
+      .get(`http://localhost:8000/api/persons?type=secretary_general&lang=${i18n.language}`)
+      .then(res => {
+        const data = res.data
+        setCurrent(data.find((p: any) => p.is_current))
+        setHistory(data.filter((p: any) => !p.is_current))
+      })
+      .catch(console.error)
+  }, [i18n.language])
 
-  const secretaryHistory = [
-    {
-      name: 'Samir Khellaf',
-      image: 'https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png',
-      period: '2015 - 2022',
-      achievements: t('secretary_general_page.history.samir'),
-    },
-    {
-      name: 'Nadia Mansour',
-      image: 'https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png',
-      period: '2008 - 2015',
-      achievements: t('secretary_general_page.history.nadia'),
-    },
-  ]
+  if (!current) return <p>{t('loading')}</p>
 
   return (
     <div className="p-6 space-y-6">
       <PersonWord
-        name={currentSecretary.name}
-        image={currentSecretary.image}
-        message={currentSecretary.message}
+        name={current.name}
+        image={current.image_url}
+        message={current.message}
         title={t('secretary_general_page.word_title')}
       />
       <PersonHistory
         title={t('secretary_general_page.history_title')}
-        history={secretaryHistory}
+        history={history.map(h => ({
+          name: h.name,
+          image: h.image_url,
+          period: h.period ?? '',
+          achievements: h.achievements,
+        }))}
       />
     </div>
   )

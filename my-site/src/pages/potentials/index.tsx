@@ -1,43 +1,25 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import './potentials.css'
 import { useTranslation } from 'react-i18next'
+import axios from 'axios'
 
 interface Section {
   id: number
+  slug: string
   title: string
   description: string
 }
 
 const Potentials: React.FC = () => {
-  const { t } = useTranslation()
+  const { i18n, t } = useTranslation()
+  const [sections, setSections] = useState<Section[]>([])
 
-  const sections: Section[] = [
-    {
-      id: 1,
-      title: t('potentialsPage.tourism.title'),
-      description: t('potentialsPage.tourism.description'),
-    },
-    {
-      id: 2,
-      title: t('potentialsPage.agriculture.title'),
-      description: t('potentialsPage.agriculture.description'),
-    },
-    {
-      id: 3,
-      title: t('potentialsPage.urban.title'),
-      description: t('potentialsPage.urban.description'),
-    },
-    {
-      id: 4,
-      title: t('potentialsPage.education.title'),
-      description: t('potentialsPage.education.description'),
-    },
-    {
-      id: 5,
-      title: t('potentialsPage.environment.title'),
-      description: t('potentialsPage.environment.description'),
-    },
-  ]
+  useEffect(() => {
+    axios
+      .get(`http://127.0.0.1:8000/api/potentials?lang=${i18n.language}`)
+      .then(res => setSections(res.data))
+      .catch(err => console.error('Error fetching potentials:', err))
+  }, [i18n.language])
 
   return (
     <div className="potentials-page">

@@ -1,33 +1,26 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Carousel } from 'primereact/carousel'
 import { Button } from 'primereact/button'
 import { motion } from 'framer-motion'
 import { useTranslation } from 'react-i18next'
 import HistoryGeo from '../../components/history-geo/HistoryGeo'
 import './Home.css'
+import axios from 'axios'
 
 const Home: React.FC = () => {
   const [visible, setVisible] = useState(false)
+  const [images, setImages] = useState<Array<{ url: string; caption: string }>>([])
   const { t, i18n } = useTranslation()
   const isRtl = i18n.language === 'ar'
 
-  const images = [
-    {
-      id: 1,
-      url: 'https://d3mc2wqt0g7xc3.cloudfront.net/media-test/point26588.jpg',
-      caption: t('homePage.carousel.caption1'),
-    },
-    {
-      id: 2,
-      url: 'https://statics.getnofilter.com/photos/small/bf42f00d-7d0b-42b7-86a8-53d98b3b4c6c.webp',
-      caption: t('homePage.carousel.caption2'),
-    },
-    {
-      id: 3,
-      url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/62/DZ_35_Zemmouri.svg/2560px-DZ_35_Zemmouri.svg.png',
-      caption: t('homePage.carousel.caption3'),
-    },
-  ]
+  useEffect(() => {
+  axios
+    .get(`http://localhost:8000/api/home-images?lang=${i18n.language}`)
+    .then((res) => setImages(res.data))
+    .catch((err) => console.error('Error fetching home images:', err))
+  }, [i18n.language])
+
+  
 
   const imageTemplate = (item: any) => (
     <div className="carousel-image-container">

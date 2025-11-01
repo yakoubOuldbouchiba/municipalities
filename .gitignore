@@ -1,0 +1,73 @@
+# =====================================
+# Laravel Backend
+# =====================================
+
+/vendor/
+/node_modules/
+public/storage
+storage/*.key
+.env
+.env.backup
+.env.local
+Homestead.yaml
+Homestead.json
+.idea
+.phpunit.result.cache
+.php_cs.cache
+/.vscode
+
+# Laravel logs & cache
+/storage/logs/*
+/storage/framework/cache/*
+/storage/framework/sessions/*
+/storage/framework/views/*
+
+# Laravel build artifacts
+/public/hot
+/public/mix-manifest.json
+/public/build
+
+# =====================================
+# React Frontend (Vite or CRA)
+# =====================================
+
+# Dependencies
+frontend/node_modules/
+frontend/.env
+frontend/.env.local
+frontend/.env.development.local
+frontend/.env.production.local
+frontend/.env.test.local
+
+# Build output
+frontend/dist/
+frontend/build/
+
+# Logs
+frontend/npm-debug.log*
+frontend/yarn-debug.log*
+frontend/yarn-error.log*
+frontend/pnpm-debug.log*
+
+# Editor directories and files
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# =====================================
+# Docker / Database Data
+# =====================================
+
+mysql_data/
+postgres_data/
+redis_data/
+docker-compose.override.yml
+
+# =====================================
+# System Files
+# =====================================
+
+.DS_Store
+Thumbs.db
