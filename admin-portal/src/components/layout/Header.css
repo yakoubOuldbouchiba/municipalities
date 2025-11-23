@@ -1,0 +1,69 @@
+.admin-header {
+  height: 60px;
+  background: #fff;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1.5rem;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.header-title {
+  font-size: 1.2rem;
+  font-weight: 500;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.header-user {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.user-name {
+  display: inline-block;
+  max-width: 160px; /* avoid overflowing */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding: 0.25rem 0.6rem;
+  border-radius: 999px; /* pill */
+  background: rgba(15, 23, 42, 0.04); /* subtle grey */
+  color: #0f172a;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.logout-button {
+  /* Make logout more prominent - rescue/red color */
+  color: #ffffff !important;
+  background-color: #dc2626 !important; /* red-600 */
+  border: 1px solid rgba(0,0,0,0.06) !important;
+  padding: 0.45rem 0.6rem !important;
+  border-radius: 6px !important;
+}
+
+.logout-button:hover {
+  background-color: #b91c1c !important; /* darker red on hover */
+}
+
+/* RTL adjustments */
+[dir="rtl"] .admin-header {
+  direction: rtl;
+}
+
+[dir="rtl"] .header-actions {
+  flex-direction: row-reverse;
+}
+
+[dir="rtl"] .header-user {
+  text-align: right;
+}

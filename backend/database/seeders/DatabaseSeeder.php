@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
         $this->call(AdSeeder::class);
         $this->call(PotentialSeeder::class);
         $this->call(ImportantNumberSeeder::class);
+        $this->call(UserSeeder::class);
         $this->call(QuickLinkSeeder::class);    
     }
 }

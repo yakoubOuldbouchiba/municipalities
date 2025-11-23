@@ -14,7 +14,14 @@ class QuickLinkController extends Controller
 
         // Fetch and map links with translated labels
         $quickLinks = QuickLink::all()->map(function ($link) use ($lang) {
-            $labels = json_decode($link->label, true);
+            // `label` may be stored as JSON string or already cast to array by the model.
+            if (is_string($link->label)) {
+                $labels = json_decode($link->label, true) ?? [];
+            } elseif (is_array($link->label)) {
+                $labels = $link->label;
+            } else {
+                $labels = [];
+            }
 
             return [
                 'id' => $link->id,

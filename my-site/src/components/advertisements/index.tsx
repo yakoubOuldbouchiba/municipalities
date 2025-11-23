@@ -6,7 +6,7 @@ import DocumentCard from '../document-card/DocumentCard'
 import './advertisements.css'
 
 interface AdsItem {
-  title: string
+  title: string | { [key: string]: string }
   link: string
   fileType?: 'image' | 'pdf'
 }
@@ -16,7 +16,8 @@ interface AdsProps {
 }
 
 const Advertisements: React.FC<AdsProps> = ({ ads }) => {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
+  const isRtl = i18n.language === 'ar'
 
   const responsiveOptions = [
     { breakpoint: '1199px', numVisible: 2, numScroll: 1 },
@@ -24,19 +25,32 @@ const Advertisements: React.FC<AdsProps> = ({ ads }) => {
     { breakpoint: '767px', numVisible: 1, numScroll: 1 }
   ]
 
-  const adsTemplate = (item: AdsItem) => (
-    <DocumentCard
-      title={item.title}
-      fileUrl={item.link}
-      type={item.fileType || 'image'}
-    />
-  )
+  const adsTemplate = (item: AdsItem) => {
+    // ✅ Handle multilingual title
+    let title = ''
+    if (typeof item.title === 'object' && item.title !== null) {
+      title = item.title[i18n.language] || item.title['en'] || ''
+    } else {
+      title = item.title
+    }
+
+    return (
+      <DocumentCard
+        title={title}
+        fileUrl={item.link}
+        type={item.fileType || 'image'}
+      />
+    )
+  }
 
   return (
-    <section className="ads-section">
+    <section className="ads" dir={isRtl ? 'rtl' : 'ltr'}>
       <div className="ads-header">
         <h2 className="ads-title">
-          <i className="pi pi-bullhorn" style={{ marginRight: '0.5rem' }}></i>
+          <i
+            className={`pi pi-bullhorn ${isRtl ? 'rtl-icon' : ''}`}
+            style={{ marginInlineEnd: '0.5rem' }}
+          ></i>
           {t('latestAds')}
         </h2>
         <div className="ads-line"></div>
@@ -52,6 +66,8 @@ const Advertisements: React.FC<AdsProps> = ({ ads }) => {
         itemTemplate={adsTemplate}
         showIndicators
         className="ads-carousel"
+        dir="ltr" // ✅ Keep PrimeReact carousel LTR
+        key={i18n.language + (isRtl ? '-rtl' : '-ltr')}
       />
     </section>
   )

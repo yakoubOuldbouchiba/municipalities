@@ -2,10 +2,9 @@ import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { Card } from 'primereact/card'
 import QRCode from 'react-qr-code'
-import axios from 'axios'
+import api from '../../../lib/api'
 import { useTranslation } from 'react-i18next'
 import './paper-details.css'
-
 interface Paper {
   slug: string
   titles: { [key: string]: string }
@@ -21,8 +20,8 @@ const PaperDetails: React.FC = () => {
   const currentUrl = window.location.href
 
   useEffect(() => {
-    axios
-      .get(`http://127.0.0.1:8000/api/papers/${id}`)
+    api
+      .get(`/papers/${id}`)
       .then((res) => setPaper(res.data))
       .catch(() => setPaper(null))
       .finally(() => setLoading(false))

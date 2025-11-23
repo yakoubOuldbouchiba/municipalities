@@ -18,6 +18,31 @@ class Event extends Model
     ];
 
     protected $casts = [
-        'description' => 'array', // store multilingual content as JSON
+        'status' => 'json',
+        'description' => 'json',
     ];
+
+    /**
+     * Get a localized status.
+     *
+     * @param string|null $lang
+     * @return string|null
+     */
+    public function getLocalizedStatus(?string $lang = null): ?string
+    {
+        $lang = $lang ?? app()->getLocale();
+        return $this->status[$lang] ?? $this->status['en'] ?? null;
+    }
+
+    /**
+     * Get a localized description.
+     *
+     * @param string|null $lang
+     * @return string|null
+     */
+    public function getLocalizedDescription(?string $lang = null): ?string
+    {
+        $lang = $lang ?? app()->getLocale();
+        return $this->description[$lang] ?? $this->description['en'] ?? null;
+    }
 }

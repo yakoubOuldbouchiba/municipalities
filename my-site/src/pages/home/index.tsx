@@ -5,7 +5,7 @@ import { motion } from 'framer-motion'
 import { useTranslation } from 'react-i18next'
 import HistoryGeo from '../../components/history-geo/HistoryGeo'
 import './Home.css'
-import axios from 'axios'
+import api from '../../lib/api'
 
 const Home: React.FC = () => {
   const [visible, setVisible] = useState(false)
@@ -14,10 +14,10 @@ const Home: React.FC = () => {
   const isRtl = i18n.language === 'ar'
 
   useEffect(() => {
-  axios
-    .get(`http://localhost:8000/api/home-images?lang=${i18n.language}`)
-    .then((res) => setImages(res.data))
-    .catch((err) => console.error('Error fetching home images:', err))
+    api
+      .get('/home-images', { params: { lang: i18n.language } })
+      .then((res) => setImages(res.data))
+      .catch((err) => console.error('Error fetching home images:', err))
   }, [i18n.language])
 
   

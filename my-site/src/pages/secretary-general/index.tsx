@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import axios from 'axios'
+import api from '../../lib/api'
 import PersonWord from '../../components/person-word/PersonWord'
 import PersonHistory from '../../components/person-history/PersonHistory'
 
@@ -10,8 +10,8 @@ const SecretaryGeneral: React.FC = () => {
   const [history, setHistory] = useState<any[]>([])
 
   useEffect(() => {
-    axios
-      .get(`http://localhost:8000/api/persons?type=secretary_general&lang=${i18n.language}`)
+    api
+      .get('/persons', { params: { type: 'secretary_general', lang: i18n.language } })
       .then(res => {
         const data = res.data
         setCurrent(data.find((p: any) => p.is_current))

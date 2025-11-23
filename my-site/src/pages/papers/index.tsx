@@ -3,7 +3,7 @@ import { Card } from 'primereact/card'
 import { Button } from 'primereact/button'
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import axios from 'axios'
+import api from '../../lib/api'
 import './papers-page.css'
 
 interface Paper {
@@ -20,8 +20,8 @@ const PapersPage: React.FC = () => {
   const [papers, setPapers] = useState<Paper[]>([])
 
   useEffect(() => {
-    axios
-      .get(`http://localhost:8000/api/papers?lang=${i18n.language}`)
+    api
+      .get('/papers', { params: { lang: i18n.language } })
       .then(res => setPapers(res.data))
       .catch(console.error)
   }, [i18n.language])

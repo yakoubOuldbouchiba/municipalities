@@ -71,3 +71,17 @@ export default defineConfig([
   },
 ])
 ```
+
+## Environment variables and API base
+
+This project reads the frontend API base from `VITE_API_BASE` (Vite env var). Create a `.env` in the `my-site/` folder for local development or set `VITE_API_BASE` in your CI/CD pipeline for production builds.
+
+Files added for guidance:
+
+- `.env.example` — example env values (already in the repo).
+- `.env.production` — a placeholder file you can customize for production (do not commit secrets).
+
+Recommended usage in CI (example): set `VITE_API_BASE` to your production API URL and run the normal `npm run build` step. The build will embed the value into the client bundle.
+
+Important: Variables prefixed with `VITE_` are embedded into the client at build time; avoid putting private credentials in them.
+

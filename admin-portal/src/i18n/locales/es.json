@@ -1,0 +1,147 @@
+{
+  "sidebar": {
+    "quickLinks": "Enlaces rápidos",
+    "importantNumbers": "Números importantes",
+    "potentials": "Potenciales"
+  },
+  "ads": {
+    "manage": "Administrar anuncios aquí"
+  },
+  "eventOptions": {
+    "icons": {
+      "flag": "Bandera",
+      "building": "Edificio",
+      "star": "Estrella",
+      "globe": "Globo",
+      "calendar": "Calendario",
+      "clock": "Reloj",
+      "users": "Usuarios",
+      "briefcase": "Maletín",
+      "home": "Inicio",
+      "heart": "Corazón",
+      "checkmark": "Marca",
+      "exclamation": "Exclamación"
+    },
+    "colors": {
+      "green": "Verde",
+      "blue": "Azul",
+      "red": "Rojo",
+      "purple": "Púrpura",
+      "orange": "Naranja",
+      "pink": "Rosa",
+      "yellow": "Amarillo",
+      "cyan": "Cian",
+      "gray": "Gris",
+      "teal": "Azul Verdoso"
+    }
+  },
+  "importantNumbers": {
+    "title": "Números importantes",
+    "addLangPlaceholder": "Seleccionar idioma",
+    "fields": {
+      "value": "Valor"
+    },
+    "placeholders": {
+      "value": "Ej: +34 91 123 45 67"
+    },
+    "actions": {
+      "add": "Agregar",
+      "update": "Actualizar",
+      "clear": "Borrar"
+    },
+    "confirmDelete": "¿Eliminar este número?",
+    "confirmHeader": "Por favor confirma",
+    "table": {
+      "title": "Título",
+      "value": "Valor",
+      "actions": "Acciones"
+    },
+    "empty": "Aún no hay números importantes"
+  },
+  "events": {
+    "title": "Eventos",
+    "addLangPlaceholder": "Seleccionar idioma",
+    "fields": {
+      "status": "Estado",
+      "date": "Fecha",
+      "icon": "Icono",
+      "color": "Color",
+      "description_en": "Descripción (Inglés)",
+      "description_ar": "Descripción (Árabe)",
+      "description_fr": "Descripción (Francés)",
+      "description_de": "Descripción (Alemán)",
+      "description_es": "Descripción (Español)"
+    },
+    "placeholders": {
+      "status": "ej: Foundation",
+      "date": "ej: 18th Century",
+      "icon": "Seleccionar icono",
+      "color": "Seleccionar color",
+      "description_en": "Descripción (Inglés)",
+      "description_ar": "Descripción (Árabe)",
+      "description_fr": "Descripción (Francés)",
+      "description_de": "Descripción (Alemán)",
+      "description_es": "Descripción (Español)"
+    },
+    "actions": {
+      "add": "Agregar",
+      "update": "Actualizar",
+      "clear": "Borrar"
+    },
+    "confirmDelete": "¿Eliminar este evento?",
+    "confirmHeader": "Por favor confirma",
+    "table": {
+      "status": "Estado",
+      "date": "Fecha",
+      "description": "Descripción",
+      "icon": "Icono",
+      "color": "Color",
+      "actions": "Acciones"
+    },
+    "empty": "Aún no hay eventos"
+  },
+  "potentials": {
+    "title": "Potenciales",
+    "addLangPlaceholder": "Seleccionar idioma",
+    "fields": {
+      "slug": "Slug",
+      "title_en": "Título (Inglés)",
+      "title_ar": "Título (Árabe)",
+      "title_fr": "Título (Francés)",
+      "title_de": "Título (Alemán)",
+      "title_es": "Título (Español)",
+      "description_en": "Descripción (Inglés)",
+      "description_ar": "Descripción (Árabe)",
+      "description_fr": "Descripción (Francés)",
+      "description_de": "Descripción (Alemán)",
+      "description_es": "Descripción (Español)"
+    },
+    "placeholders": {
+      "slug": "ej: tourism",
+      "title_en": "Título (Inglés)",
+      "title_ar": "Título (Árabe)",
+      "title_fr": "Título (Francés)",
+      "title_de": "Título (Alemán)",
+      "title_es": "Título (Español)",
+      "description_en": "Descripción (Inglés)",
+      "description_ar": "Descripción (Árabe)",
+      "description_fr": "Descripción (Francés)",
+      "description_de": "Descripción (Alemán)",
+      "description_es": "Descripción (Español)"
+    },
+    "actions": {
+      "add": "Agregar",
+      "update": "Actualizar",
+      "clear": "Borrar"
+    },
+    "confirmDelete": "¿Eliminar este potencial?",
+    "confirmHeader": "Por favor confirma",
+    "table": {
+      "slug": "Slug",
+      "title": "Título",
+      "description": "Descripción",
+      "actions": "Acciones"
+    },
+    "empty": "Aún no hay potenciales"
+  }
+}

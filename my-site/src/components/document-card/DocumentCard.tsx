@@ -12,7 +12,7 @@ interface DocumentCardProps {
   type?: 'image' | 'pdf'
 }
 
-const DocumentCard: React.FC<DocumentCardProps> = ({ id, title, fileUrl, type }) => {
+const DocumentCard: React.FC<DocumentCardProps> = ({ title, fileUrl, type }) => {
   const [visible, setVisible] = useState(false)
   const navigate = useNavigate()
   const { t } = useTranslation()

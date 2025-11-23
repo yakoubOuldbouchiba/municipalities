@@ -17,6 +17,8 @@ class PotentialSeeder extends Seeder
                     'en' => 'The region offers beautiful natural landscapes and historical sites that attract visitors year-round.',
                     'ar' => 'تتميز المنطقة بمناظر طبيعية خلابة ومواقع تاريخية تجذب الزوار طوال العام.'
                 ]),
+                'created_at' => now(),
+                'updated_at' => now(),
             ],
             [
                 'slug' => 'agriculture',
@@ -25,6 +27,8 @@ class PotentialSeeder extends Seeder
                     'en' => 'Rich agricultural lands support the growth of olives, citrus fruits, and vegetables.',
                     'ar' => 'الأراضي الزراعية الخصبة تدعم زراعة الزيتون والحمضيات والخضروات.'
                 ]),
+                'created_at' => now(),
+                'updated_at' => now(),
             ],
             [
                 'slug' => 'urban',
@@ -33,6 +37,8 @@ class PotentialSeeder extends Seeder
                     'en' => 'Urban projects aim to modernize infrastructure and improve public facilities.',
                     'ar' => 'تسعى المشاريع الحضرية إلى تحديث البنية التحتية وتحسين المرافق العامة.'
                 ]),
+                'created_at' => now(),
+                'updated_at' => now(),
             ],
             [
                 'slug' => 'education',
@@ -41,6 +47,8 @@ class PotentialSeeder extends Seeder
                     'en' => 'The municipality provides quality education with multiple schools and training centers.',
                     'ar' => 'توفر البلدية تعليماً جيداً من خلال المدارس ومراكز التدريب المتنوعة.'
                 ]),
+                'created_at' => now(),
+                'updated_at' => now(),
             ],
             [
                 'slug' => 'environment',
@@ -49,6 +57,8 @@ class PotentialSeeder extends Seeder
                     'en' => 'Efforts are ongoing to preserve green spaces and promote environmental awareness.',
                     'ar' => 'تبذل جهود مستمرة للحفاظ على المساحات الخضراء ونشر الوعي البيئي.'
                 ]),
+                'created_at' => now(),
+                'updated_at' => now(),
             ],
         ]);
     }

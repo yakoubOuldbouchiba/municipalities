@@ -1,14 +1,15 @@
 <?php
 
 use App\Http\Controllers\AdController;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PaperController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\HomeImageController;
 use App\Http\Controllers\ImportantNumberController;
+use App\Http\Controllers\PasswordResetController;
 use App\Http\Controllers\PersonController;
 use App\Http\Controllers\PotentialController;
 use App\Http\Controllers\QuickLinkController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -22,18 +23,67 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
-
-Route::apiResource('events', EventController::class);
-Route::apiResource('persons', PersonController::class);
-Route::apiResource('ads', AdController::class);
-Route::apiResource('quick-links', QuickLinkController::class);
-Route::apiResource('important-numbers', ImportantNumberController::class);
 Route::get('/home-images', [HomeImageController::class, 'index']);
 Route::get('/papers', [PaperController::class, 'index']);
 Route::get('/papers/{slug}', [PaperController::class, 'show']);
 Route::get('/potentials', [PotentialController::class, 'index']);
+Route::get('/potentials/{potential}', [PotentialController::class, 'show']);
+Route::get('/events', [EventController::class, 'index']);
+Route::get('/events/{event}', [EventController::class, 'show']);
+Route::get('/persons', [PersonController::class, 'index']);
+Route::get('/persons/{person}', [PersonController::class, 'show']);
+
+// Example: make read endpoints public, protect modifications
+Route::get('/ads', [AdController::class, 'index']);
+Route::get('/ads/{ad}', [AdController::class, 'show']);
+
+// other public resource reads...
+Route::get('/quick-links', [QuickLinkController::class, 'index']);
+// Return a single quick link (raw model with full label object) for editing in admin UI
+Route::get('/quick-links/{id}', [QuickLinkController::class, 'show']);
+Route::get('/important-numbers', [ImportantNumberController::class, 'index']);
+Route::get('/important-numbers/{id}', [ImportantNumberController::class, 'show']);
+
+// Auth endpoints
+Route::post('/register', [AuthController::class, 'register']);
+Route::post('/login', [AuthController::class, 'login']);
+Route::middleware('auth:sanctum')->post('/logout', [AuthController::class, 'logout']);
+
+Route::post('/forgot-password', [PasswordResetController::class, 'sendResetLink']);
+Route::post('/reset-password', [PasswordResetController::class, 'resetPassword']);
+
+// Protected CRUD (create/update/delete) - require token
+Route::middleware('auth:sanctum')->group(function () {
+    // Ads CRUD
+    Route::post('/ads', [AdController::class, 'store']);
+    Route::put('/ads/{ad}', [AdController::class, 'update']);
+    Route::delete('/ads/{ad}', [AdController::class, 'destroy']);
+
+    // Quick links
+    Route::post('/quick-links', [QuickLinkController::class, 'store']);
+    Route::put('/quick-links/{id}', [QuickLinkController::class, 'update']);
+    Route::delete('/quick-links/{id}', [QuickLinkController::class, 'destroy']);
+
+    // Important numbers
+    Route::post('/important-numbers', [ImportantNumberController::class, 'store']);
+    Route::put('/important-numbers/{id}', [ImportantNumberController::class, 'update']);
+    Route::delete('/important-numbers/{id}', [ImportantNumberController::class, 'destroy']);
+
+    // Potentials CRUD
+    Route::post('/potentials', [PotentialController::class, 'store']);
+    Route::put('/potentials/{potential}', [PotentialController::class, 'update']);
+    Route::delete('/potentials/{potential}', [PotentialController::class, 'destroy']);
+
+   // Events 
+    Route::post('/events', [EventController::class, 'store']);
+    Route::put('/events/{event}', [EventController::class, 'update']);
+    Route::delete('/events/{event}', [EventController::class, 'destroy']);
+
+    // Personsx
+    Route::post('/persons', [PersonController::class, 'store']);
+    Route::put('/persons/{person}', [PersonController::class, 'update']);
+    Route::delete('/persons/{person}', [PersonController::class, 'destroy']);
+
+});
 
 

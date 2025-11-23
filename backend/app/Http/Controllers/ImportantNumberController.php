@@ -13,7 +13,14 @@ class ImportantNumberController extends Controller
         $lang = $request->get('lang', 'en');
 
         $importantNumbers = ImportantNumber::all()->map(function ($num) use ($lang) {
-            $labels = json_decode($num->label, true);
+            // label may be stored as JSON string (from DB seeder) or already cast to array by Eloquent
+            if (is_string($num->label)) {
+                $labels = json_decode($num->label, true) ?? [];
+            } elseif (is_array($num->label)) {
+                $labels = $num->label;
+            } else {
+                $labels = [];
+            }
 
             return [
                 'id' => $num->id,

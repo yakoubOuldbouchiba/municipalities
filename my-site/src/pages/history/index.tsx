@@ -4,6 +4,8 @@ import { Card } from 'primereact/card'
 import { useTranslation } from 'react-i18next'
 import { ProgressSpinner } from 'primereact/progressspinner'
 
+const API_BASE = import.meta.env.VITE_API_BASE ?? 'http://127.0.0.1:8000/api'
+
 interface EventItem {
   id: number
   status: string
@@ -23,7 +25,7 @@ const History: React.FC = () => {
       try {
         setLoading(true)
         const response = await fetch(
-          `http://127.0.0.1:8000/api/events?lang=${i18n.language}`
+          `${API_BASE}/events?lang=${i18n.language}`
         )
         const data = await response.json()
         setEvents(data)

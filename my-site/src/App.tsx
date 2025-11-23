@@ -17,7 +17,7 @@ import PapersPage from './pages/papers/index.tsx';
 import PaperDetails from './pages/papers/details/index.tsx';
 import SharePage from './pages/share/SharePage.tsx';
 import Navbar from './components/navbar/index.tsx';
-import axios from 'axios';
+import api from './lib/api'
 
 interface Ad {
   id: number
@@ -31,8 +31,8 @@ const App: React.FC = () => {
    const [ads, setAds] = useState<Ad[]>([]);
 
   useEffect(() => {
-    axios
-      .get('http://127.0.0.1:8000/api/ads')
+    api
+      .get('/ads')
       .then((res) => setAds(res.data))
       .catch((err) => console.error('Failed to fetch ads:', err));
   }, []);

@@ -1,0 +1,204 @@
+{
+  "loginPage": {
+    "title": "Connexion Admin",
+    "email": "Email",
+    "password": "Mot de passe",
+    "placeholderEmail": "Entrez votre email",
+    "placeholderPassword": "Entrez votre mot de passe",
+    "login": "Se connecter",
+    "loggingIn": "Connexion...",
+    "forgotPassword": "Mot de passe oublié ?",
+    "register": "S'inscrire",
+    "invalidCredentials": "Email ou mot de passe invalide"
+  },  
+  "forgotPassword": {
+      "title": "Mot de passe oublié",
+      "email": "Email",
+      "placeholderEmail": "Entrez votre email",
+      "sendLink": "Envoyer le lien de réinitialisation",
+      "sending": "Envoi...",
+      "resetLinkSent": "Lien de réinitialisation envoyé à votre email.",
+      "failedToSend": "Échec de l'envoi du lien de réinitialisation.",
+      "backToLogin": "Retour à la connexion"
+  },
+  "register": {
+      "title": "S'inscrire",
+      "placeholderName": "Entrez votre nom",
+      "placeholderEmail": "Entrez votre email",
+      "placeholderPassword": "Entrez votre mot de passe",
+      "placeholderPasswordConfirmation": "Confirmez votre mot de passe",
+      "register": "S'inscrire",
+      "registering": "Inscription...",
+      "alreadyHaveAccount": "Vous avez déjà un compte ? Connexion"
+  }
+
+  ,
+  "header": {
+    "title": "Tableau de bord",
+    "logout": "Déconnexion"
+  },
+  "sidebar": {
+    "title": "Panneau Admin",
+    "dashboard": "Tableau de bord",
+    "ads": "Publicités",
+    "events": "Événements",
+    "quickLinks": "Liens rapides",
+    "importantNumbers": "Numéros importants",
+    "potentials": "Potentiels"
+  },
+  "dashboard": {
+    "welcome": "Bienvenue sur le tableau de bord"
+  },
+  "ads": {
+    "manage": "Gérer les publicités ici"
+  },
+  "importantNumbers": {
+    "title": "Numéros importants",
+    "addLangPlaceholder": "Sélectionner la langue",
+    "fields": {
+      "value": "Valeur"
+    },
+    "placeholders": {
+      "value": "Ex: +33 1 23 45 67 89"
+    },
+    "actions": {
+      "add": "Ajouter",
+      "update": "Mettre à jour",
+      "clear": "Effacer"
+    },
+    "confirmDelete": "Supprimer ce numéro ?",
+    "confirmHeader": "Veuillez confirmer",
+    "table": {
+      "title": "Titre",
+      "value": "Valeur",
+      "actions": "Actions"
+    },
+    "empty": "Aucun numéro important pour le moment"
+  },
+  "events": {
+    "title": "Événements",
+    "addLangPlaceholder": "Sélectionner la langue",
+    "fields": {
+      "status": "Statut",
+      "date": "Date",
+      "icon": "Icône",
+      "color": "Couleur",
+      "description_en": "Description (Anglais)",
+      "description_ar": "Description (Arabe)",
+      "description_fr": "Description (Français)",
+      "description_de": "Description (Allemand)",
+      "description_es": "Description (Espagnol)"
+    },
+    "placeholders": {
+      "status": "ex: Foundation",
+      "date": "ex: 18th Century",
+      "icon": "Sélectionner l'icône",
+      "color": "Sélectionner la couleur",
+      "description_en": "Description (Anglais)",
+      "description_ar": "Description (Arabe)",
+      "description_fr": "Description (Français)",
+      "description_de": "Description (Allemand)",
+      "description_es": "Description (Espagnol)"
+    },
+    "actions": {
+      "add": "Ajouter",
+      "update": "Mettre à jour",
+      "clear": "Effacer"
+    },
+    "confirmDelete": "Supprimer cet événement ?",
+    "confirmHeader": "Veuillez confirmer",
+    "table": {
+      "status": "Statut",
+      "date": "Date",
+      "description": "Description",
+      "icon": "Icône",
+      "color": "Couleur",
+      "actions": "Actions"
+    },
+    "empty": "Aucun événement pour le moment"
+  },
+  "resetPassword": {
+    "title": "Réinitialiser le mot de passe",
+    "newPassword": "Nouveau mot de passe",
+    "confirmPassword": "Confirmer le mot de passe",
+    "success": "Mot de passe réinitialisé avec succès ! Vous pouvez maintenant vous connecter.",
+    "failed": "Échec de la réinitialisation du mot de passe.",
+    "submit": "Réinitialiser le mot de passe"
+  },
+  "registerMessages": {
+    "success": "Compte créé avec succès ! Vous pouvez maintenant vous connecter.",
+    "failed": "Échec de l'inscription. Vérifiez vos informations."
+  },
+  "eventOptions": {
+    "icons": {
+      "flag": "Drapeau",
+      "building": "Bâtiment",
+      "star": "Étoile",
+      "globe": "Globe",
+      "calendar": "Calendrier",
+      "clock": "Horloge",
+      "users": "Utilisateurs",
+      "briefcase": "Serviette",
+      "home": "Accueil",
+      "heart": "Cœur",
+      "checkmark": "Coche",
+      "exclamation": "Exclamation"
+    },
+    "colors": {
+      "green": "Vert",
+      "blue": "Bleu",
+      "red": "Rouge",
+      "purple": "Violet",
+      "orange": "Orange",
+      "pink": "Rose",
+      "yellow": "Jaune",
+      "cyan": "Cyan",
+      "gray": "Gris",
+      "teal": "Sarcelle"
+    }
+  },
+  "potentials": {
+    "title": "Potentiels",
+    "addLangPlaceholder": "Sélectionner la langue",
+    "fields": {
+      "slug": "Slug",
+      "title_en": "Titre (Anglais)",
+      "title_ar": "Titre (Arabe)",
+      "title_fr": "Titre (Français)",
+      "title_de": "Titre (Allemand)",
+      "title_es": "Titre (Espagnol)",
+      "description_en": "Description (Anglais)",
+      "description_ar": "Description (Arabe)",
+      "description_fr": "Description (Français)",
+      "description_de": "Description (Allemand)",
+      "description_es": "Description (Espagnol)"
+    },
+    "placeholders": {
+      "slug": "ex: tourism",
+      "title_en": "Titre (Anglais)",
+      "title_ar": "Titre (Arabe)",
+      "title_fr": "Titre (Français)",
+      "title_de": "Titre (Allemand)",
+      "title_es": "Titre (Espagnol)",
+      "description_en": "Description (Anglais)",
+      "description_ar": "Description (Arabe)",
+      "description_fr": "Description (Français)",
+      "description_de": "Description (Allemand)",
+      "description_es": "Description (Espagnol)"
+    },
+    "actions": {
+      "add": "Ajouter",
+      "update": "Mettre à jour",
+      "clear": "Effacer"
+    },
+    "confirmDelete": "Supprimer ce potentiel ?",
+    "confirmHeader": "Veuillez confirmer",
+    "table": {
+      "slug": "Slug",
+      "title": "Titre",
+      "description": "Description",
+      "actions": "Actions"
+    },
+    "empty": "Aucun potentiel pour le moment"
+  }
+}

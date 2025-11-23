@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import './potentials.css'
 import { useTranslation } from 'react-i18next'
-import axios from 'axios'
+import api from '../../lib/api'
 
 interface Section {
   id: number
@@ -15,8 +15,8 @@ const Potentials: React.FC = () => {
   const [sections, setSections] = useState<Section[]>([])
 
   useEffect(() => {
-    axios
-      .get(`http://127.0.0.1:8000/api/potentials?lang=${i18n.language}`)
+    api
+      .get('/potentials', { params: { lang: i18n.language } })
       .then(res => setSections(res.data))
       .catch(err => console.error('Error fetching potentials:', err))
   }, [i18n.language])

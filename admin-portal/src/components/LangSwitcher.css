@@ -1,0 +1,30 @@
+.lang-switcher-container {
+  display: inline-block;
+  position: relative;
+}
+
+.lang-select {
+  appearance: none;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 0.95rem;
+  cursor: pointer;
+  background-color: #fff;
+  transition: all 0.2s ease-in-out;
+  min-width: 140px;
+}
+
+.lang-select:hover {
+  border-color: #888;
+}
+
+.lang-select:focus {
+  outline: none;
+  border-color: #4e54c8;
+  box-shadow: 0 0 0 2px rgba(78, 84, 200, 0.2);
+}
+
+.lang-select option {
+  padding: 0.5rem;
+}

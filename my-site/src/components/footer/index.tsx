@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import './footer.css'
 import logo from '../../assets/logo.jpg'
 import { useTranslation } from 'react-i18next'
-import axios from 'axios'
+import api from '../../lib/api'
 
 interface QuickLink {
   id: number
@@ -27,12 +27,8 @@ useEffect(() => {
       setLoading(true); // reset loading each time language changes
       try {
         const [linksRes, numbersRes] = await Promise.all([
-          axios.get('http://localhost:8000/api/quick-links', {
-            params: { lang: i18n.language },
-          }),
-          axios.get('http://localhost:8000/api/important-numbers', {
-            params: { lang: i18n.language },
-          }),
+          api.get('/quick-links', { params: { lang: i18n.language } }),
+          api.get('/important-numbers', { params: { lang: i18n.language } }),
         ]);
 
         setQuickLinks(linksRes.data);

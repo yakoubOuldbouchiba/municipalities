@@ -1,0 +1,203 @@
+{
+  "loginPage": {
+    "title": "Admin Login",
+    "email": "Email",
+    "password": "Password",
+    "placeholderEmail": "Enter your email",
+    "placeholderPassword": "Enter your password",
+    "login": "Login",
+    "loggingIn": "Logging in...",
+    "forgotPassword": "Forgot Password?",
+    "register": "Register",
+    "invalidCredentials": "Invalid email or password"
+  },
+   "forgotPassword": {
+    "title": "Forgot Password",
+    "email": "Email",
+    "placeholderEmail": "Enter your email",
+    "sendLink": "Send Reset Link",
+    "sending": "Sending...",
+    "resetLinkSent": "Reset link sent to your email.",
+    "failedToSend": "Failed to send reset link.",
+    "backToLogin": "Back to Login"
+  },
+  "register": {
+    "title": "Register",
+    "placeholderName": "Enter your name",
+    "placeholderEmail": "Enter your email",
+    "placeholderPassword": "Enter your password",
+    "placeholderPasswordConfirmation": "Confirm your password",
+    "register": "Register",
+    "registering": "Registering...",
+    "alreadyHaveAccount": "Already have an account? Login"
+  }
+  ,
+  "header": {
+    "title": "Dashboard",
+    "logout": "Déconnexion"
+  },
+  "sidebar": {
+    "title": "Admin Panel",
+    "dashboard": "Dashboard",
+    "ads": "Advertisements",
+    "events": "Events",
+    "quickLinks": "Quick Links",
+    "importantNumbers": "Important Numbers",
+    "potentials": "Potentials"
+  },
+  "dashboard": {
+    "welcome": "Welcome to the Admin Dashboard 🚀"
+  },
+  "ads": {
+    "manage": "Manage Advertisements here"
+  },
+  "importantNumbers": {
+    "title": "Important Numbers",
+    "addLangPlaceholder": "Select language",
+    "fields": {
+      "value": "Value"
+    },
+    "placeholders": {
+      "value": "E.g. +213 21 00 00"
+    },
+    "actions": {
+      "add": "Add",
+      "update": "Update",
+      "clear": "Clear"
+    },
+    "confirmDelete": "Delete this number?",
+    "confirmHeader": "Please Confirm",
+    "table": {
+      "title": "Title",
+      "value": "Value",
+      "actions": "Actions"
+    },
+    "empty": "No important numbers yet"
+  },
+  "events": {
+    "title": "Events",
+    "addLangPlaceholder": "Select language",
+    "fields": {
+      "status": "Status",
+      "date": "Date",
+      "icon": "Icon",
+      "color": "Color",
+      "description_en": "Description (English)",
+      "description_ar": "Description (Arabic)",
+      "description_fr": "Description (French)",
+      "description_de": "Description (German)",
+      "description_es": "Description (Spanish)"
+    },
+    "placeholders": {
+      "status": "e.g., Foundation",
+      "date": "e.g., 18th Century",
+      "icon": "Select icon",
+      "color": "Select color",
+      "description_en": "Description (English)",
+      "description_ar": "Description (Arabic)",
+      "description_fr": "Description (French)",
+      "description_de": "Description (German)",
+      "description_es": "Description (Spanish)"
+    },
+    "actions": {
+      "add": "Add",
+      "update": "Update",
+      "clear": "Clear"
+    },
+    "confirmDelete": "Delete this event?",
+    "confirmHeader": "Please Confirm",
+    "table": {
+      "status": "Status",
+      "date": "Date",
+      "description": "Description",
+      "icon": "Icon",
+      "color": "Color",
+      "actions": "Actions"
+    },
+    "empty": "No events yet"
+  },
+  "resetPassword": {
+    "title": "Reset Password",
+    "newPassword": "New Password",
+    "confirmPassword": "Confirm Password",
+    "success": "Password reset successfully! You can now log in.",
+    "failed": "Failed to reset password.",
+    "submit": "Reset Password"
+  },
+  "registerMessages": {
+    "success": "Account created successfully! You can now log in.",
+    "failed": "Registration failed. Check your input."
+  },
+  "eventOptions": {
+    "icons": {
+      "flag": "Flag",
+      "building": "Building",
+      "star": "Star",
+      "globe": "Globe",
+      "calendar": "Calendar",
+      "clock": "Clock",
+      "users": "Users",
+      "briefcase": "Briefcase",
+      "home": "Home",
+      "heart": "Heart",
+      "checkmark": "Checkmark",
+      "exclamation": "Exclamation"
+    },
+    "colors": {
+      "green": "Green",
+      "blue": "Blue",
+      "red": "Red",
+      "purple": "Purple",
+      "orange": "Orange",
+      "pink": "Pink",
+      "yellow": "Yellow",
+      "cyan": "Cyan",
+      "gray": "Gray",
+      "teal": "Teal"
+    }
+  },
+  "potentials": {
+    "title": "Potentials",
+    "addLangPlaceholder": "Select language",
+    "fields": {
+      "slug": "Slug",
+      "title_en": "Title (English)",
+      "title_ar": "Title (Arabic)",
+      "title_fr": "Title (French)",
+      "title_de": "Title (German)",
+      "title_es": "Title (Spanish)",
+      "description_en": "Description (English)",
+      "description_ar": "Description (Arabic)",
+      "description_fr": "Description (French)",
+      "description_de": "Description (German)",
+      "description_es": "Description (Spanish)"
+    },
+    "placeholders": {
+      "slug": "e.g., tourism",
+      "title_en": "Title (English)",
+      "title_ar": "Title (Arabic)",
+      "title_fr": "Title (French)",
+      "title_de": "Title (German)",
+      "title_es": "Title (Spanish)",
+      "description_en": "Description (English)",
+      "description_ar": "Description (Arabic)",
+      "description_fr": "Description (French)",
+      "description_de": "Description (German)",
+      "description_es": "Description (Spanish)"
+    },
+    "actions": {
+      "add": "Add",
+      "update": "Update",
+      "clear": "Clear"
+    },
+    "confirmDelete": "Delete this potential?",
+    "confirmHeader": "Please Confirm",
+    "table": {
+      "slug": "Slug",
+      "title": "Title",
+      "description": "Description",
+      "actions": "Actions"
+    },
+    "empty": "No potentials yet"
+  }
+}
