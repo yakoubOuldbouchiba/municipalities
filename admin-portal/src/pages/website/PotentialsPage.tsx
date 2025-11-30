@@ -7,7 +7,8 @@ import { Dropdown } from 'primereact/dropdown';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { ConfirmDialog, confirmDialog } from 'primereact/confirmdialog';
-import axiosClient from '../api/axiosClient';
+import axiosClient from '../../api/axiosClient';
+import ArabicKeyboard from '../../components/ArabicKeyboard';
 
 type Potential = {
   id: string;
@@ -24,6 +25,7 @@ const PotentialsPage: React.FC = () => {
   const [slug, setSlug] = useState('');
   const [selectedLang, setSelectedLang] = useState<string | null>(null);
   const [editingId, setEditingId] = useState<string | null>(null);
+  const [activeKeyboardField, setActiveKeyboardField] = useState<string | null>(null);
 
   // Fetch list from backend (localized)
   const fetchList = async () => {
@@ -160,6 +162,7 @@ const PotentialsPage: React.FC = () => {
             onChange={(e) => setSlug((e.target as HTMLInputElement).value)} 
             className="w-full p-inputtext-sm" 
             placeholder={t('potentials.placeholders.slug', 'e.g., tourism')} 
+            dir={i18n.language === 'ar' ? 'rtl' : 'ltr'}
           />
         </div>
 
@@ -200,9 +203,17 @@ const PotentialsPage: React.FC = () => {
                 <InputText
                   value={titles[lng] || ''}
                   onChange={(e) => setTitles((prev) => ({ ...prev, [lng]: (e.target as HTMLInputElement).value }))}
+                  onFocus={() => lng === 'ar' && setActiveKeyboardField(`title-${lng}`)}
                   className="w-full p-inputtext-sm"
                   placeholder={t(`potentials.placeholders.title_${lng}`, `Title (${lng})`)}
+                  dir={i18n.language === 'ar' ? 'rtl' : 'ltr'}
                 />
+                {lng === 'ar' && activeKeyboardField === `title-${lng}` && (
+                  <ArabicKeyboard
+                    onInput={(char: string) => setTitles((prev) => ({ ...prev, [lng]: (prev[lng] || '') + char }))}
+                    onBackspace={() => setTitles((prev) => ({ ...prev, [lng]: (prev[lng] || '').slice(0, -1) }))}
+                  />
+                )}
               </div>
 
               <div>
@@ -210,10 +221,18 @@ const PotentialsPage: React.FC = () => {
                 <InputTextarea
                   value={descriptions[lng] || ''}
                   onChange={(e) => setDescriptions((prev) => ({ ...prev, [lng]: (e.target as HTMLTextAreaElement).value }))}
+                  onFocus={() => lng === 'ar' && setActiveKeyboardField(`description-${lng}`)}
                   className="w-full p-inputtextarea-sm"
                   placeholder={t(`potentials.placeholders.description_${lng}`, `Description (${lng})`)}
                   rows={3}
+                  dir={i18n.language === 'ar' ? 'rtl' : 'ltr'}
                 />
+                {lng === 'ar' && activeKeyboardField === `description-${lng}` && (
+                  <ArabicKeyboard
+                    onInput={(char: string) => setDescriptions((prev) => ({ ...prev, [lng]: (prev[lng] || '') + char }))}
+                    onBackspace={() => setDescriptions((prev) => ({ ...prev, [lng]: (prev[lng] || '').slice(0, -1) }))}
+                  />
+                )}
               </div>
             </div>
           ));

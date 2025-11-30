@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\AdController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ModuleController;
+use App\Http\Controllers\NavItemController;
 use App\Http\Controllers\PaperController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\HomeImageController;
@@ -10,6 +12,7 @@ use App\Http\Controllers\PasswordResetController;
 use App\Http\Controllers\PersonController;
 use App\Http\Controllers\PotentialController;
 use App\Http\Controllers\QuickLinkController;
+use App\Http\Controllers\NewsController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -37,12 +40,19 @@ Route::get('/persons/{person}', [PersonController::class, 'show']);
 Route::get('/ads', [AdController::class, 'index']);
 Route::get('/ads/{ad}', [AdController::class, 'show']);
 
+// News read endpoints
+Route::get('/news', [NewsController::class, 'index']);
+Route::get('/news/{news}', [NewsController::class, 'show']);
+
 // other public resource reads...
 Route::get('/quick-links', [QuickLinkController::class, 'index']);
 // Return a single quick link (raw model with full label object) for editing in admin UI
 Route::get('/quick-links/{id}', [QuickLinkController::class, 'show']);
 Route::get('/important-numbers', [ImportantNumberController::class, 'index']);
 Route::get('/important-numbers/{id}', [ImportantNumberController::class, 'show']);
+
+
+
 
 // Auth endpoints
 Route::post('/register', [AuthController::class, 'register']);
@@ -56,8 +66,16 @@ Route::post('/reset-password', [PasswordResetController::class, 'resetPassword']
 Route::middleware('auth:sanctum')->group(function () {
     // Ads CRUD
     Route::post('/ads', [AdController::class, 'store']);
+    Route::post('/ads/upload', [AdController::class, 'upload']);
     Route::put('/ads/{ad}', [AdController::class, 'update']);
     Route::delete('/ads/{ad}', [AdController::class, 'destroy']);
+
+    // News CRUD
+    Route::post('/news', [NewsController::class, 'store']);
+    Route::post('/news/upload', [NewsController::class, 'upload']);
+    Route::put('/news/{news}', [NewsController::class, 'update']);
+    Route::delete('/news/{news}', [NewsController::class, 'destroy']);
+    
 
     // Quick links
     Route::post('/quick-links', [QuickLinkController::class, 'store']);
@@ -81,9 +99,28 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // Personsx
     Route::post('/persons', [PersonController::class, 'store']);
+    Route::post('/persons/upload', [PersonController::class, 'upload']);
     Route::put('/persons/{person}', [PersonController::class, 'update']);
     Route::delete('/persons/{person}', [PersonController::class, 'destroy']);
 
+    // Papers CRUD
+    Route::post('/papers', [PaperController::class, 'store']);
+    Route::put('/papers/{paper}', [PaperController::class, 'update']);
+    Route::delete('/papers/{paper}', [PaperController::class, 'destroy']);
+
+    // Modules CRUD - Write operations only
+    // Modules - Read endpoints (public)
+    Route::get('/modules', [ModuleController::class, 'index']);
+    Route::get('/modules/{module}', [ModuleController::class, 'show']);
+    Route::get('/modules/{moduleId}/nav-items', [NavItemController::class, 'index']);
+    Route::post('/modules', [ModuleController::class, 'store']);
+    Route::put('/modules/{module}', [ModuleController::class, 'update']);
+    Route::delete('/modules/{module}', [ModuleController::class, 'destroy']);
+    
+    // Nav items CRUD
+    Route::post('/nav-items', [NavItemController::class, 'store']);
+    Route::put('/nav-items/{navItem}', [NavItemController::class, 'update']);
+    Route::delete('/nav-items/{navItem}', [NavItemController::class, 'destroy']);
 });
 
 

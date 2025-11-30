@@ -79,8 +79,7 @@ body[dir='rtl'] .p-menubar-root-list > .p-menuitem {
     height: 100px;
     margin-left: 2rem;
   }
-
-  .navbar-title {
+  .navbar-titles {
     position: absolute;
     left: 50%;
     transform: translateX(-50%);

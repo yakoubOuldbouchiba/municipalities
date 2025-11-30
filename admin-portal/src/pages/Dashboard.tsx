@@ -1,9 +1,8 @@
 import React from 'react';
-import { useTranslation } from 'react-i18next';
+import ModuleDisplay from '../components/ModuleDisplay';
 
 const Dashboard: React.FC = () => {
-  const { t } = useTranslation();
-  return <div>{t('dashboard.welcome', 'Welcome to the Admin Dashboard 🚀')}</div>;
+  return <ModuleDisplay />;
 };
 
 export default Dashboard;

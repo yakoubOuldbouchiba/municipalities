@@ -16,6 +16,8 @@
 .person-history-image {
   border-radius: 50%;
   border: 2px solid #0b6623;
+  object-fit: cover;
+  overflow: hidden;
 }
 
 .person-history-table .p-datatable-thead > tr > th {

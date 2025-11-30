@@ -13,7 +13,8 @@ class ImportantNumberSeeder extends Seeder
                 'label' => json_encode([
                     'en' => 'Police',
                     'fr' => 'Police',
-                    'ar' => 'الشرطة'
+                    'ar' => 'الشرطة',
+                    'es' => 'Policía'
                 ]),
                 'value' => '1548'
             ],
@@ -21,7 +22,8 @@ class ImportantNumberSeeder extends Seeder
                 'label' => json_encode([
                     'en' => 'Firefighters',
                     'fr' => 'Pompiers',
-                    'ar' => 'الحماية المدنية'
+                    'ar' => 'الحماية المدنية',
+                    'es' => 'Bomberos'
                 ]),
                 'value' => '14'
             ],
@@ -29,7 +31,8 @@ class ImportantNumberSeeder extends Seeder
                 'label' => json_encode([
                     'en' => 'Hospital',
                     'fr' => 'Hôpital',
-                    'ar' => 'المستشفى'
+                    'ar' => 'المستشفى',
+                    'es' => 'Hospital'
                 ]),
                 'value' => '+213 24 79 00 00'
             ],
@@ -37,7 +40,8 @@ class ImportantNumberSeeder extends Seeder
                 'label' => json_encode([
                     'en' => 'Municipality',
                     'fr' => 'Mairie',
-                    'ar' => 'البلدية'
+                    'ar' => 'البلدية',
+                    'es' => 'Municipio'
                 ]),
                 'value' => '+213 24 79 12 34'
             ],

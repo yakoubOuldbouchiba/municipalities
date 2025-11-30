@@ -1,0 +1,67 @@
+.arabic-keyboard {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 0.75rem;
+  background: #f5f5f5;
+  border: 1px solid #e0e0e0;
+  border-radius: 0.375rem;
+  margin-top: 0.5rem;
+}
+
+.keyboard-row {
+  display: flex;
+  gap: 0.25rem;
+  flex-wrap: wrap;
+}
+
+.keyboard-key {
+  flex: 1;
+  min-width: 2rem;
+  padding: 0.5rem 0.25rem;
+  background: white;
+  border: 1px solid #d0d0d0;
+  border-radius: 0.25rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.keyboard-key:hover {
+  background: #e3f2fd;
+  border-color: #90caf9;
+}
+
+.keyboard-key:active {
+  background: #bbdefb;
+  transform: scale(0.98);
+}
+
+.space-key {
+  flex: 3;
+}
+
+.backspace-key {
+  flex: 1.5;
+  background: #ffebee;
+  border-color: #ef5350;
+  color: #c62828;
+}
+
+.backspace-key:hover {
+  background: #ffcdd2;
+}
+
+.backspace-key:active {
+  background: #ef9a9a;
+}
+
+/* RTL adjustments */
+[dir="rtl"] .keyboard-row {
+  flex-direction: row-reverse;
+}
+
+[dir="rtl"] .keyboard-key {
+  direction: rtl;
+}

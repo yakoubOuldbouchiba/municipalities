@@ -40,16 +40,154 @@
     "title": "Admin Panel",
     "dashboard": "Dashboard",
     "ads": "Advertisements",
+    "news": "News",
     "events": "Events",
+    "papers": "Papers",
     "quickLinks": "Quick Links",
     "importantNumbers": "Important Numbers",
-    "potentials": "Potentials"
+    "potentials": "Potentials",
+    "persons": "Persons"
   },
   "dashboard": {
     "welcome": "Welcome to the Admin Dashboard 🚀"
   },
+  "modules": {
+    "admin": {
+      "name": "Admin",
+      "description": "Manage system administrators, groups, roles, and applications",
+      "label": "Admin"
+    },
+    "website": {
+      "name": "Website",
+      "description": "Manage website content including ads, news, events, and more",
+      "label": "Website"
+    },
+    "claims": {
+      "name": "Claims",
+      "description": "Manage citizen, company, and organization claims",
+      "label": "Claims"
+    },
+    "selectModule": "Select a Module",
+    "currentModule": "Current Module",
+    "switchModule": "Switch Module",
+    "title": "Modules",
+    "manage": "Manage system modules here",
+    "addLangPlaceholder": "Select language",
+    "fields": {
+      "code": "Code",
+      "label": "Label",
+      "color": "Color",
+      "icon": "Icon"
+    },
+    "placeholders": {
+      "code": "e.g., admin",
+      "label": "Enter module label",
+      "color": "Select color",
+      "icon": "Select icon"
+    },
+    "actions": {
+      "add": "Add",
+      "update": "Update",
+      "clear": "Clear"
+    },
+    "confirmDelete": "Delete this module?",
+    "confirmHeader": "Please Confirm",
+    "table": {
+      "code": "Code",
+      "label": "Label",
+      "color": "Color",
+      "icon": "Icon",
+      "actions": "Actions"
+    },
+    "empty": "No modules yet"
+  },
+  "nav": {
+    "users": "Users",
+    "groups": "Groups",
+    "roles": "Roles",
+    "applications": "Applications",
+    "citizenClaim": "Citizen Claim",
+    "companyClaim": "Company Claim",
+    "organizationClaim": "Organization Claim"
+  },
   "ads": {
-    "manage": "Manage Advertisements here"
+    "title": "Advertisements",
+    "manage": "Manage Advertisements here",
+    "addLangPlaceholder": "Select language",
+    "fields": {
+      "title": "Title",
+      "description": "Description",
+      "link": "Link",
+      "file_type": "File Type"
+    },
+    "placeholders": {
+      "title": "Enter advertisement title",
+      "description": "Enter advertisement description",
+      "link": "Enter link URL",
+      "file_type": "Select file type"
+    },
+    "fileTypes": {
+      "image": "Image",
+      "pdf": "PDF"
+    },
+    "actions": {
+      "add": "Add",
+      "update": "Update",
+      "clear": "Clear"
+    },
+    "confirmDelete": "Delete this advertisement?",
+    "confirmHeader": "Please Confirm",
+    "table": {
+      "title": "Title",
+      "description": "Description",
+      "link": "Link",
+      "file_type": "File Type",
+      "actions": "Actions"
+    },
+    "hints": {
+      "linkOrUpload": "Enter a URL or upload a file"
+    },
+    "empty": "No advertisements yet"
+  },
+  "news": {
+    "title": "News",
+    "addLangPlaceholder": "Select language",
+    "fields": {
+      "title": "Title",
+      "description": "Description",
+      "fileUrl": "Image URL"
+    },
+    "placeholders": {
+      "title": "Enter news title",
+      "description": "Enter news description",
+      "fileUrl": "https://example.com/image.jpg",
+      "title_en": "Title (English)",
+      "title_ar": "Title (Arabic)",
+      "title_fr": "Title (French)",
+      "title_es": "Title (Spanish)",
+      "description_en": "Description (English)",
+      "description_ar": "Description (Arabic)",
+      "description_fr": "Description (French)",
+      "description_es": "Description (Spanish)"
+    },
+    "actions": {
+      "add": "Add",
+      "update": "Update",
+      "clear": "Clear",
+      "upload": "Upload"
+    },
+    "confirmDelete": "Delete this news item?",
+    "confirmHeader": "Please Confirm",
+    "hints": {
+      "fileUrlOrUpload": "Enter a URL or upload an image"
+    },
+    "table": {
+      "title": "Title",
+      "description": "Description",
+      "fileUrl": "Image",
+      "actions": "Actions"
+    },
+    "empty": "No news yet"
   },
   "importantNumbers": {
     "title": "Important Numbers",
@@ -155,6 +293,116 @@
       "gray": "Gray",
       "teal": "Teal"
     }
+  },
+  "papers": {
+    "title": "Papers",
+    "addLangPlaceholder": "Select language",
+    "fields": {
+      "slug": "Slug",
+      "title": "Title",
+      "description": "Description"
+    },
+    "placeholders": {
+      "slug": "e.g., paper-title",
+      "title": "Enter paper title",
+      "description": "Enter paper description"
+    },
+    "actions": {
+      "add": "Add",
+      "update": "Update",
+      "clear": "Clear"
+    },
+    "confirmDelete": "Delete this paper?",
+    "confirmHeader": "Please Confirm",
+    "table": {
+      "slug": "Slug",
+      "title": "Title",
+      "description": "Description",
+      "actions": "Actions"
+    },
+    "empty": "No papers yet"
+  },
+  "persons": {
+    "title": "Persons",
+    "addLangPlaceholder": "Select language",
+    "fields": {
+      "name": "Name",
+      "message": "Message",
+      "achievements": "Achievements",
+      "type": "Type",
+      "imageUrl": "Image",
+      "period": "Period",
+      "is_current": "Currently in position"
+    },
+    "placeholders": {
+      "name": "Enter person name",
+      "message": "Enter message",
+      "achievements": "Enter achievements",
+      "type": "Select type",
+      "imageUrl": "https://example.com/image.jpg",
+      "period": "E.g., 2020-2024",
+      "name_en": "Name (English)",
+      "name_ar": "Name (Arabic)",
+      "name_fr": "Name (French)",
+      "name_es": "Name (Spanish)",
+      "message_en": "Message (English)",
+      "message_ar": "Message (Arabic)",
+      "message_fr": "Message (French)",
+      "message_es": "Message (Spanish)",
+      "achievements_en": "Achievements (English)",
+      "achievements_ar": "Achievements (Arabic)",
+      "achievements_fr": "Achievements (French)",
+      "achievements_es": "Achievements (Spanish)"
+    },
+    "types": {
+      "mayor": "Mayor",
+      "secretary_general": "Secretary General"
+    },
+    "actions": {
+      "add": "Add",
+      "update": "Update",
+      "clear": "Clear",
+      "upload": "Upload"
+    },
+    "confirmDelete": "Delete this person?",
+    "confirmHeader": "Please Confirm",
+    "hints": {
+      "linkOrUpload": "Enter a URL or upload an image"
+    },
+    "table": {
+      "name": "Name",
+      "type": "Type",
+      "period": "Period",
+      "image": "Image",
+      "is_current": "Current",
+      "actions": "Actions"
+    },
+    "empty": "No persons yet"
+  },
+  "quickLinks": {
+    "title": "Quick Links",
+    "addLangPlaceholder": "Select language",
+    "fields": {
+      "label": "Label",
+      "value": "Value"
+    },
+    "placeholders": {
+      "label": "Enter link label",
+      "value": "Enter link URL"
+    },
+    "actions": {
+      "add": "Add",
+      "update": "Update",
+      "clear": "Clear"
+    },
+    "confirmDelete": "Delete this quick link?",
+    "confirmHeader": "Please Confirm",
+    "table": {
+      "label": "Label",
+      "value": "Value",
+      "actions": "Actions"
+    },
+    "empty": "No quick links yet"
   },
   "potentials": {
     "title": "Potentials",

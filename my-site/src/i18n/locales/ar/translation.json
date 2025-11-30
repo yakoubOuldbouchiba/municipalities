@@ -1,5 +1,8 @@
 {
   "title": "بلدية زموري - الموقع الرسمي",
+  "country_full_name": "الجمهورية الجزائرية الديمقراطية الشعبية",
+  "department": "بومرداس",
+  "municipality": "زموري",
   "home": "الرئيسية",
   "potentials": "الإمكانات",
   "mayor": "رئيس البلدية",
@@ -18,6 +21,9 @@
   "preview": "معاينة",
   "pdfDocument": "ملف PDF",
   "noImage": "لا توجد صورة",
+  "common": {
+    "loading": "جاري التحميل..."
+  },
   "footer": {
     "cityTitle": "زموري (بومرداس)",
     "quickLinks": "روابط سريعة",

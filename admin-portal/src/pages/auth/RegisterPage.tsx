@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import axiosClient from '../api/axiosClient';
+import axiosClient from '../../api/axiosClient';
 import { InputText } from 'primereact/inputtext';
 import { Password } from 'primereact/password';
 import { Button } from 'primereact/button';
 import { Card } from 'primereact/card';
 import  './LoginPage.css';
-import LangSwitcher from '../components/LangSwitcher';
+import LangSwitcher from '../../components/LangSwitcher';
 import { useTranslation } from 'react-i18next';
 
 const RegisterPage = () => {

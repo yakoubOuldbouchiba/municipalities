@@ -10,4 +10,9 @@ class Ad extends Model
     use HasFactory;
 
     protected $fillable = ['title', 'description', 'link', 'file_type'];
+
+    protected $casts = [
+        'title' => 'array',
+        'description' => 'array',
+    ];
 }

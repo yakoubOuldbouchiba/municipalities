@@ -1,0 +1,298 @@
+import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { InputText } from 'primereact/inputtext';
+import { InputTextarea } from 'primereact/inputtextarea';
+import { Button } from 'primereact/button';
+import { Dropdown } from 'primereact/dropdown';
+import { DataTable } from 'primereact/datatable';
+import { Column } from 'primereact/column';
+import { ConfirmDialog, confirmDialog } from 'primereact/confirmdialog';
+import axiosClient from '../../api/axiosClient';
+import ArabicKeyboard from '../../components/ArabicKeyboard';
+
+type NewsItem = {
+  id: string;
+  title: string; // localized title when listing
+  description: string; // localized description
+  fileUrl: string;
+};
+
+const NewsPage: React.FC = () => {
+  const { t, i18n } = useTranslation();
+  const [news, setNews] = useState<NewsItem[]>([]);
+  const [titles, setTitles] = useState<Record<string, string>>({});
+  const [descriptions, setDescriptions] = useState<Record<string, string>>({});
+  const [fileUrl, setFileUrl] = useState('');
+  const [selectedLang, setSelectedLang] = useState<string | null>(null);
+  const [editingId, setEditingId] = useState<string | null>(null);
+  const [activeKeyboardField, setActiveKeyboardField] = useState<string | null>(null);
+
+  // Fetch list from backend (localized)
+  const fetchList = async () => {
+    try {
+      const res = await axiosClient.get('/news', { params: { lang: i18n.language || 'en' } });
+      setNews(res.data || []);
+    } catch (err) {
+      console.error('Error fetching news:', err);
+    }
+  };
+
+  useEffect(() => {
+    fetchList();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [i18n.language]);
+
+  const resetForm = () => {
+    setTitles({});
+    setDescriptions({});
+    setFileUrl('');
+    setEditingId(null);
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const configuredLangs = Object.keys((i18n as any).options.resources || { en: {} });
+    const primary = configuredLangs[0] || 'en';
+
+    if (
+      !((titles[primary] || '').trim()) ||
+      !((descriptions[primary] || '').trim()) ||
+      !fileUrl.trim()
+    ) {
+      return;
+    }
+
+    const payload = {
+      title: Object.fromEntries(Object.entries(titles).map(([k, v]) => [k, v.trim()])),
+      description: Object.fromEntries(Object.entries(descriptions).map(([k, v]) => [k, v.trim()])),
+      fileUrl: fileUrl.trim(),
+    };
+
+    try {
+      if (editingId) {
+        await axiosClient.put(`/news/${editingId}`, payload);
+      } else {
+        await axiosClient.post('/news', payload);
+      }
+      await fetchList();
+      resetForm();
+    } catch (err) {
+      console.error('Error saving news:', err);
+    }
+  };
+
+  const handleEdit = async (id: string) => {
+    try {
+      const res = await axiosClient.get(`/news/${id}`);
+      const data = res.data;
+      setTitles(data.title || {});
+      setDescriptions(data.description || {});
+      setFileUrl(data.fileUrl || '');
+      setEditingId(id);
+    } catch (err) {
+      console.error('Error loading news:', err);
+    }
+  };
+
+  const confirmDelete = (id: string) => {
+    confirmDialog({
+      message: t('news.confirmDelete', 'Delete this news item?'),
+      header: t('news.confirmHeader', 'Please Confirm'),
+      icon: 'pi pi-exclamation-triangle',
+      accept: async () => {
+        try {
+          await axiosClient.delete(`/news/${id}`);
+          await fetchList();
+          if (editingId === id) resetForm();
+        } catch (err) {
+          console.error('Error deleting news:', err);
+        }
+      }
+    });
+  };
+
+  const actionBodyTemplate = (rowData: NewsItem) => (
+    <div className="flex gap-2">
+      <Button icon="pi pi-pencil" className="p-button-sm" onClick={() => handleEdit(rowData.id)} aria-label="Edit" />
+      <Button icon="pi pi-trash" className="p-button-sm p-button-danger" onClick={() => confirmDelete(rowData.id)} aria-label="Delete" />
+    </div>
+  );
+
+  const fileUrlBodyTemplate = (rowData: NewsItem) => (
+    <a href={rowData.fileUrl} target="_blank" rel="noreferrer" className="text-blue-600 underline truncate">
+      {rowData.fileUrl}
+    </a>
+  );
+
+  return (
+    <div className="p-4">
+      <ConfirmDialog />
+      <h1 className="text-2xl font-semibold mb-4">{t('news.title', 'News')}</h1>
+
+      <form onSubmit={handleSubmit} className="mb-6 space-y-2 max-w-2xl">
+        {/* Language add controls */}
+        <div className="flex gap-2 items-center">
+          {(() => {
+            const configuredLangs = Object.keys((i18n as any).options.resources || { en: {} });
+            const existing = Array.from(new Set([...(configuredLangs || []), ...Object.keys(titles), ...Object.keys(descriptions)]));
+            const langNames: Record<string, string> = { en: 'English', fr: 'Français', ar: 'العربية', de: 'Deutsch', es: 'Español' };
+            const allCandidates = Object.entries(langNames).map(([code, name]) => ({ code, name }));
+            const options = allCandidates.filter((o) => !existing.includes(o.code));
+            return (
+              <>
+                <Dropdown value={selectedLang} options={options} onChange={(e) => setSelectedLang(e.value)} optionLabel="name" optionValue="code" placeholder={t('news.addLangPlaceholder', 'Select language')} />
+                <Button icon="pi pi-plus" className="p-button-sm" onClick={() => {
+                  const code = (selectedLang || '').trim().toLowerCase();
+                  if (!code) return;
+                  const rendered = Array.from(new Set([...(configuredLangs || []), ...Object.keys(titles), ...Object.keys(descriptions)]));
+                  if (rendered.includes(code)) {
+                    setSelectedLang(null);
+                    return;
+                  }
+                  setTitles((prev) => ({ ...prev, [code]: '' }));
+                  setDescriptions((prev) => ({ ...prev, [code]: '' }));
+                  setSelectedLang(null);
+                }} aria-label="Add language" />
+              </>
+            );
+          })()}
+        </div>
+
+        {/* File URL field */}
+        <div>
+          <label className="block text-sm font-medium text-gray-700">{t('news.fields.fileUrl', 'Image URL')}</label>
+          <div className="flex gap-2">
+            <InputText
+              value={fileUrl}
+              onChange={(e) => setFileUrl((e.target as HTMLInputElement).value)}
+              className="flex-1 p-inputtext-sm"
+              placeholder={t('news.placeholders.fileUrl', 'https://example.com/image.jpg')}
+            />
+            <label className="p-button p-button-outlined p-button-sm flex items-center gap-2 cursor-pointer">
+              <i className="pi pi-upload"></i>
+              {t('news.actions.upload', 'Upload')}
+              <input
+                type="file"
+                accept="image/*"
+                onChange={async (e) => {
+                  const file = e.currentTarget.files?.[0];
+                  if (file) {
+                    const formData = new FormData();
+                    formData.append('file', file);
+                    try {
+                      const res = await axiosClient.post('/news/upload', formData, {
+                        headers: { 'Content-Type': 'multipart/form-data' },
+                      });
+                      setFileUrl(res.data.fileUrl);
+                    } catch (err) {
+                      console.error('Error uploading file:', err);
+                    }
+                  }
+                }}
+                className="hidden"
+              />
+            </label>
+          </div>
+          <p className="text-xs text-gray-500 mt-1">{t('news.hints.fileUrlOrUpload', 'Enter a URL or upload an image')}</p>
+        </div>
+
+        {/* Title field - multilingual */}
+        {(() => {
+          const configuredLangs = Object.keys((i18n as any).options.resources || { en: {} });
+          const renderedLangs = Array.from(new Set([...(configuredLangs || []), ...Object.keys(titles)]));
+          const langNames: Record<string, string> = { en: 'English', fr: 'Français', ar: 'العربية', de: 'Deutsch', es: 'Español' };
+          return renderedLangs.length > 0 ? (
+            <div className="p-3 border border-gray-200 rounded">
+              <h3 className="text-sm font-semibold mb-3">{t('news.fields.title', 'Title')}</h3>
+              {renderedLangs.map((lng) => (
+                <div key={lng} className="mb-2">
+                  <label className="block text-xs font-medium text-gray-600 mb-1">{langNames[lng] ?? lng.toUpperCase()}</label>
+                  <InputText
+                    value={titles[lng] || ''}
+                    onChange={(e) => setTitles((prev) => ({ ...prev, [lng]: (e.target as HTMLInputElement).value }))}
+                    onFocus={() => lng === 'ar' && setActiveKeyboardField(`title-${lng}`)}
+                    className="w-full p-inputtext-sm"
+                    placeholder={t(`news.placeholders.title_${lng}`, `Title (${lng})`)}
+                    dir={i18n.language === 'ar' ? 'rtl' : 'ltr'}
+                  />
+                  {lng === 'ar' && activeKeyboardField === `title-${lng}` && (
+                    <ArabicKeyboard
+                      onInput={(char: string) => setTitles((prev) => ({ ...prev, [lng]: (prev[lng] || '') + char }))}
+                      onBackspace={() => setTitles((prev) => ({ ...prev, [lng]: (prev[lng] || '').slice(0, -1) }))}
+                    />
+                  )}
+                </div>
+              ))}
+            </div>
+          ) : null;
+        })()}
+
+        {/* Description field - multilingual */}
+        {(() => {
+          const configuredLangs = Object.keys((i18n as any).options.resources || { en: {} });
+          const renderedLangs = Array.from(new Set([...(configuredLangs || []), ...Object.keys(descriptions)]));
+          const langNames: Record<string, string> = { en: 'English', fr: 'Français', ar: 'العربية', de: 'Deutsch', es: 'Español' };
+          return renderedLangs.map((lng) => (
+            <div key={lng} className="p-3 border border-gray-200 rounded">
+              <div className="flex items-center justify-between mb-2">
+                <h3 className="text-sm font-semibold">{t('news.fields.description', 'Description')} - {langNames[lng] ?? lng.toUpperCase()}</h3>
+                {!configuredLangs.includes(lng) && (
+                  <Button
+                    type="button"
+                    icon="pi pi-times"
+                    className="p-button-text p-button-danger p-button-sm"
+                    onClick={() => {
+                      setDescriptions((prev) => {
+                        const next = { ...prev };
+                        delete next[lng];
+                        return next;
+                      });
+                    }}
+                    aria-label={`Remove ${lng}`}
+                  />
+                )}
+              </div>
+
+              <label className="block text-xs font-medium text-gray-600 mb-1">{t(`news.fields.description_${lng}`, `Description (${lng})`)}</label>
+              <InputTextarea
+                value={descriptions[lng] || ''}
+                onChange={(e) => setDescriptions((prev) => ({ ...prev, [lng]: (e.target as HTMLTextAreaElement).value }))}
+                onFocus={() => lng === 'ar' && setActiveKeyboardField(`description-${lng}`)}
+                className="w-full p-inputtextarea-sm"
+                placeholder={t(`news.placeholders.description_${lng}`, `Description (${lng})`)}
+                rows={3}
+                dir={i18n.language === 'ar' ? 'rtl' : 'ltr'}
+              />
+              {lng === 'ar' && activeKeyboardField === `description-${lng}` && (
+                <ArabicKeyboard
+                  onInput={(char: string) => setDescriptions((prev) => ({ ...prev, [lng]: (prev[lng] || '') + char }))}
+                  onBackspace={() => setDescriptions((prev) => ({ ...prev, [lng]: (prev[lng] || '').slice(0, -1) }))}
+                />
+              )}
+            </div>
+          ));
+        })()}
+
+        <div className="flex items-center gap-2">
+          <Button type="submit" label={editingId ? t('news.actions.update', 'Update') : t('news.actions.add', 'Add')} icon="pi pi-check" />
+          <Button type="button" label={t('news.actions.clear', 'Clear')} className="p-button-outlined" onClick={resetForm} />
+        </div>
+      </form>
+
+      <div>
+        {news.length === 0 ? (
+          <div className="text-sm text-gray-500">{t('news.empty', 'No news yet')}</div>
+        ) : (
+          <DataTable value={news} responsiveLayout="scroll">
+            <Column field="title" header={t('news.table.title', 'Title')} />
+            <Column field="description" header={t('news.table.description', 'Description')} />
+            <Column header={t('news.table.fileUrl', 'Image')} body={fileUrlBodyTemplate} style={{ width: '200px' }} />
+            <Column header={t('news.table.actions', 'Actions')} body={actionBodyTemplate} style={{ width: '150px' }} />
+          </DataTable>
+        )}
+      </div>
+    </div>
+  );
+};
+
+export default NewsPage;

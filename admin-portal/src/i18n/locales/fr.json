@@ -41,16 +41,155 @@
     "title": "Panneau Admin",
     "dashboard": "Tableau de bord",
     "ads": "Publicités",
+    "news": "Actualités",
     "events": "Événements",
+    "papers": "Articles",
     "quickLinks": "Liens rapides",
     "importantNumbers": "Numéros importants",
-    "potentials": "Potentiels"
+    "potentials": "Potentiels",
+    "persons": "Personnes"
   },
   "dashboard": {
     "welcome": "Bienvenue sur le tableau de bord"
   },
+  "modules": {
+    "admin": {
+      "name": "Admin",
+      "description": "Gérez les administrateurs système, les groupes, les rôles et les applications",
+      "label": "Admin"
+    },
+    "website": {
+      "name": "Site Web",
+      "description": "Gérez le contenu du site Web, y compris les publicités, les actualités, les événements, etc.",
+      "label": "Site Web"
+    },
+    "claims": {
+      "name": "Réclamations",
+      "description": "Gérez les réclamations des citoyens, des entreprises et des organisations",
+      "label": "Réclamations"
+    },
+    "selectModule": "Sélectionner un Module",
+    "currentModule": "Module Actuel",
+    "switchModule": "Changer de Module",
+    "title": "Modules",
+    "manage": "Gérez les modules système ici",
+    "addLangPlaceholder": "Sélectionner une langue",
+    "fields": {
+      "code": "Code",
+      "label": "Étiquette",
+      "color": "Couleur",
+      "icon": "Icône"
+    },
+    "placeholders": {
+      "code": "ex. admin",
+      "label": "Entrez l'étiquette du module",
+      "color": "Sélectionner une couleur",
+      "icon": "Sélectionner une icône"
+    },
+    "actions": {
+      "add": "Ajouter",
+      "update": "Mettre à jour",
+      "clear": "Effacer"
+    },
+    "confirmDelete": "Supprimer ce module ?",
+    "confirmHeader": "Veuillez confirmer",
+    "table": {
+      "code": "Code",
+      "label": "Étiquette",
+      "color": "Couleur",
+      "icon": "Icône",
+      "actions": "Actions"
+    },
+    "empty": "Aucun module pour l'instant"
+  },
+  "nav": {
+    "users": "Utilisateurs",
+    "groups": "Groupes",
+    "roles": "Rôles",
+    "applications": "Applications",
+    "citizenClaim": "Réclamation Citoyen",
+    "companyClaim": "Réclamation Entreprise",
+    "organizationClaim": "Réclamation Organisation"
+  },
   "ads": {
-    "manage": "Gérer les publicités ici"
+    "title": "Publicités",
+    "manage": "Gérer les publicités ici",
+    "addLangPlaceholder": "Sélectionner la langue",
+    "fields": {
+      "title": "Titre",
+      "description": "Description",
+      "link": "Lien",
+      "file_type": "Type de fichier"
+    },
+    "placeholders": {
+      "title": "Entrez le titre de la publicité",
+      "description": "Entrez la description de la publicité",
+      "link": "Entrez l'URL du lien",
+      "file_type": "Sélectionner le type de fichier"
+    },
+    "fileTypes": {
+      "image": "Image",
+      "pdf": "PDF"
+    },
+    "actions": {
+      "add": "Ajouter",
+      "update": "Mettre à jour",
+      "clear": "Effacer",
+      "upload": "Télécharger"
+    },
+    "hints": {
+      "linkOrUpload": "Entrez une URL ou téléchargez un fichier"
+    },
+    "confirmDelete": "Supprimer cette publicité ?",
+    "confirmHeader": "Veuillez confirmer",
+    "table": {
+      "title": "Titre",
+      "description": "Description",
+      "link": "Lien",
+      "file_type": "Type de fichier",
+      "actions": "Actions"
+    },
+    "empty": "Aucune publicité pour le moment"
+  },
+  "news": {
+    "title": "Actualités",
+    "addLangPlaceholder": "Sélectionner la langue",
+    "fields": {
+      "title": "Titre",
+      "description": "Description",
+      "fileUrl": "URL de l'image"
+    },
+    "placeholders": {
+      "title": "Entrez le titre de l'actualité",
+      "description": "Entrez la description de l'actualité",
+      "fileUrl": "https://example.com/image.jpg",
+      "title_en": "Titre (Anglais)",
+      "title_ar": "Titre (Arabe)",
+      "title_fr": "Titre (Français)",
+      "title_es": "Titre (Espagnol)",
+      "description_en": "Description (Anglais)",
+      "description_ar": "Description (Arabe)",
+      "description_fr": "Description (Français)",
+      "description_es": "Description (Espagnol)"
+    },
+    "actions": {
+      "add": "Ajouter",
+      "update": "Mettre à jour",
+      "clear": "Effacer",
+      "upload": "Télécharger"
+    },
+    "confirmDelete": "Supprimer cette actualité ?",
+    "confirmHeader": "Veuillez confirmer",
+    "hints": {
+      "fileUrlOrUpload": "Entrez une URL ou téléchargez une image"
+    },
+    "table": {
+      "title": "Titre",
+      "description": "Description",
+      "fileUrl": "Image",
+      "actions": "Actions"
+    },
+    "empty": "Aucune actualité pour le moment"
   },
   "importantNumbers": {
     "title": "Numéros importants",
@@ -157,6 +296,116 @@
       "teal": "Sarcelle"
     }
   },
+  "papers": {
+    "title": "Articles",
+    "addLangPlaceholder": "Sélectionner la langue",
+    "fields": {
+      "slug": "Slug",
+      "title": "Titre",
+      "description": "Description"
+    },
+    "placeholders": {
+      "slug": "ex: article-titre",
+      "title": "Entrez le titre de l'article",
+      "description": "Entrez la description de l'article"
+    },
+    "actions": {
+      "add": "Ajouter",
+      "update": "Mettre à jour",
+      "clear": "Effacer"
+    },
+    "confirmDelete": "Supprimer cet article ?",
+    "confirmHeader": "Veuillez confirmer",
+    "table": {
+      "slug": "Slug",
+      "title": "Titre",
+      "description": "Description",
+      "actions": "Actions"
+    },
+    "empty": "Aucun article pour le moment"
+  },
+  "persons": {
+    "title": "Personnes",
+    "addLangPlaceholder": "Sélectionner la langue",
+    "fields": {
+      "name": "Nom",
+      "message": "Message",
+      "achievements": "Réalisations",
+      "type": "Type",
+      "imageUrl": "Image",
+      "period": "Période",
+      "is_current": "Actuellement en poste"
+    },
+    "placeholders": {
+      "name": "Entrez le nom de la personne",
+      "message": "Entrez le message",
+      "achievements": "Entrez les réalisations",
+      "type": "Sélectionner le type",
+      "imageUrl": "https://example.com/image.jpg",
+      "period": "Ex: 2020-2024",
+      "name_en": "Nom (Anglais)",
+      "name_ar": "Nom (Arabe)",
+      "name_fr": "Nom (Français)",
+      "name_es": "Nom (Espagnol)",
+      "message_en": "Message (Anglais)",
+      "message_ar": "Message (Arabe)",
+      "message_fr": "Message (Français)",
+      "message_es": "Message (Espagnol)",
+      "achievements_en": "Réalisations (Anglais)",
+      "achievements_ar": "Réalisations (Arabe)",
+      "achievements_fr": "Réalisations (Français)",
+      "achievements_es": "Réalisations (Espagnol)"
+    },
+    "types": {
+      "mayor": "Maire",
+      "secretary_general": "Secrétaire Général"
+    },
+    "actions": {
+      "add": "Ajouter",
+      "update": "Mettre à jour",
+      "clear": "Effacer",
+      "upload": "Télécharger"
+    },
+    "confirmDelete": "Supprimer cette personne ?",
+    "confirmHeader": "Veuillez confirmer",
+    "hints": {
+      "linkOrUpload": "Entrez une URL ou téléchargez une image"
+    },
+    "table": {
+      "name": "Nom",
+      "type": "Type",
+      "period": "Période",
+      "image": "Image",
+      "is_current": "Actuel",
+      "actions": "Actions"
+    },
+    "empty": "Aucune personne pour le moment"
+  },
+  "quickLinks": {
+    "title": "Liens rapides",
+    "addLangPlaceholder": "Sélectionner la langue",
+    "fields": {
+      "label": "Étiquette",
+      "value": "Valeur"
+    },
+    "placeholders": {
+      "label": "Entrez l'étiquette du lien",
+      "value": "Entrez l'URL du lien"
+    },
+    "actions": {
+      "add": "Ajouter",
+      "update": "Mettre à jour",
+      "clear": "Effacer"
+    },
+    "confirmDelete": "Supprimer ce lien rapide ?",
+    "confirmHeader": "Veuillez confirmer",
+    "table": {
+      "label": "Étiquette",
+      "value": "Valeur",
+      "actions": "Actions"
+    },
+    "empty": "Aucun lien rapide pour le moment"
+  },
   "potentials": {
     "title": "Potentiels",
     "addLangPlaceholder": "Sélectionner la langue",
@@ -185,19 +434,6 @@
       "description_fr": "Description (Français)",
       "description_de": "Description (Allemand)",
       "description_es": "Description (Espagnol)"
-    },
-    "actions": {
-      "add": "Ajouter",
-      "update": "Mettre à jour",
-      "clear": "Effacer"
-    },
-    "confirmDelete": "Supprimer ce potentiel ?",
-    "confirmHeader": "Veuillez confirmer",
-    "table": {
-      "slug": "Slug",
-      "title": "Titre",
-      "description": "Description",
-      "actions": "Actions"
     },
     "empty": "Aucun potentiel pour le moment"
   }

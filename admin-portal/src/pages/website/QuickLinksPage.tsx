@@ -6,15 +6,14 @@ import { Dropdown } from 'primereact/dropdown';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { ConfirmDialog, confirmDialog } from 'primereact/confirmdialog';
-import axiosClient from '../api/axiosClient';
+import axiosClient from '../../api/axiosClient';
+import ArabicKeyboard from '../../components/ArabicKeyboard';
 
 type QuickLink = {
   id: string;
   label: string; // localized label when listing (index returns a string for requested lang)
   url: string;
 };
-
-const STORAGE_KEY = 'quick_links';
 
 const QuickLinksPage: React.FC = () => {
   const { t, i18n } = useTranslation();
@@ -23,6 +22,7 @@ const QuickLinksPage: React.FC = () => {
   const [url, setUrl] = useState('');
   const [selectedLang, setSelectedLang] = useState<string | null>(null);
   const [editingId, setEditingId] = useState<string | null>(null);
+  const [activeKeyboardField, setActiveKeyboardField] = useState<string | null>(null);
 
   // Fetch list from backend (localized)
   const fetchList = async () => {
@@ -158,9 +158,16 @@ const QuickLinksPage: React.FC = () => {
                 <InputText
                   value={labels[lng] || ''}
                   onChange={(e) => setLabels((prev) => ({ ...prev, [lng]: (e.target as HTMLInputElement).value }))}
+                  onFocus={() => lng === 'ar' && setActiveKeyboardField(`label-${lng}`)}
                   className="w-full p-inputtext-sm"
                   placeholder={t(`quickLinks.placeholders.title_${lng}`, `Title (${lng})`)}
                 />
+                {lng === 'ar' && activeKeyboardField === `label-${lng}` && (
+                  <ArabicKeyboard
+                    onInput={(char: string) => setLabels((prev) => ({ ...prev, [lng]: (prev[lng] || '') + char }))}
+                    onBackspace={() => setLabels((prev) => ({ ...prev, [lng]: (prev[lng] || '').slice(0, -1) }))}
+                  />
+                )}
               </div>
               {/* allow removing only languages that are not part of configured i18n resources */}
               <div>

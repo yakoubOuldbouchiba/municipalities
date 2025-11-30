@@ -67,6 +67,7 @@
 
 .ads-carousel .p-carousel-items-content {
   min-height: 250px;
+  min-width: 600px;
 }
 
 /* === Responsive tweaks === */

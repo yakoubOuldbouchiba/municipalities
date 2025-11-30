@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import axiosClient from '../api/axiosClient';
+import axiosClient from '../../api/axiosClient';
 import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
 import { Card } from 'primereact/card';
-import LangSwitcher from '../components/LangSwitcher';
+import LangSwitcher from '../../components/LangSwitcher';
 import './LoginPage.css'; // Reuse LoginPage styling for consistency
 
 const ForgotPasswordPage: React.FC = () => {

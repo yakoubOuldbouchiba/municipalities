@@ -20,4 +20,16 @@ i18n
     interpolation: { escapeValue: false }
   })
 
+// Handle RTL direction for Arabic
+i18n.on('languageChanged', (lng) => {
+  const htmlElement = document.documentElement;
+  if (lng === 'ar') {
+    htmlElement.dir = 'rtl';
+    htmlElement.lang = 'ar';
+  } else {
+    htmlElement.dir = 'ltr';
+    htmlElement.lang = lng;
+  }
+});
+
 export default i18n

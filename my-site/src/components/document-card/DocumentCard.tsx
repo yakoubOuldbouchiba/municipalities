@@ -56,13 +56,17 @@ const DocumentCard: React.FC<DocumentCardProps> = ({ title, fileUrl, type }) => 
     <>
       <Card
         title={header}
-        className="shadow-md hover:shadow-lg transition-all w-48 cursor-pointer"
+        className="shadow-md hover:shadow-lg transition-all w-full cursor-pointer"
         onClick={() => setVisible(true)}
       >
         {isPDF ? (
           <div className="flex flex-col items-center justify-center h-40 bg-gray-100 text-gray-600">
-            <i className="pi pi-file-pdf text-5xl mb-2" />
-            <span>{t('pdfDocument')}</span>
+             <iframe
+            src={fileUrl}
+            title={title}
+            className="w-full"
+            style={{ height: '80vh', border: 'none' }}
+          />
           </div>
         ) : (
           <img

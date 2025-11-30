@@ -1,0 +1,44 @@
+.module-manager {
+  background: #f5f5f5;
+}
+
+.module-manager .mb-4 {
+  margin-bottom: 2rem;
+}
+
+.module-manager .mt-2 {
+  margin-top: 0.5rem;
+}
+
+.module-manager .text-xl {
+  font-size: 1.25rem;
+}
+
+.module-manager .text-2xl {
+  font-size: 1.5rem;
+}
+
+.module-manager .w-full {
+  width: 100%;
+}
+
+.module-manager .p-datatable-striped .p-datatable-tbody > tr:nth-child(odd) {
+  background-color: #fafafa;
+}
+
+.module-manager .p-datatable .p-datatable-thead > tr > th {
+  background-color: #f3f4f6;
+  font-weight: 600;
+  border-bottom: 2px solid #e5e7eb;
+}
+
+.module-manager .p-dialog .p-dialog-header {
+  background: #f9fafb;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.module-manager .p-colorpicker-preview {
+  width: 100%;
+  height: 60px;
+  margin-bottom: 0.5rem;
+}

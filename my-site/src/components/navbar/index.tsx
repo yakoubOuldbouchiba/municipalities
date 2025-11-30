@@ -18,6 +18,11 @@ const Navbar: React.FC = () => {
     { label: '🇩🇿 العربية', value: 'ar' }
   ]
 
+  const handleNavigation = (path: string) => {
+    window.scrollTo(0, 0)
+    navigate(path)
+  }
+
   const changeLanguage = (lng: string) => {
     i18n.changeLanguage(lng)
     setLang(lng)
@@ -30,13 +35,14 @@ const Navbar: React.FC = () => {
   }, [lang])
 
   const items = [
-    { label: t('home'), icon: 'pi pi-home', command: () => navigate('/') },
-    { label: t('potentials'), icon: 'pi pi-chart-line', command: () => navigate('/potentials') },
-    { label: t('mayor'), icon: 'pi pi-user', command: () => navigate('/mayor') },
-    { label: t('secretaryGeneral'), icon: 'pi pi-users', command: () => navigate('/secretary-general') },
-    { label: t('history'), icon: 'pi pi-book', command: () => navigate('/history') },
-    { label: t('citizen_papers'), icon: 'pi pi-file', command: () => navigate('/papers') },
-    { label: t('contact'), icon: 'pi pi-envelope', command: () => navigate('/contact') }
+    { label: t('home'), icon: 'pi pi-home', command: () => handleNavigation('/') },
+    { label: t('potentials'), icon: 'pi pi-chart-line', command: () => handleNavigation('/potentials') },
+    { label: t('mayor'), icon: 'pi pi-user', command: () => handleNavigation('/mayor') },
+    { label: t('secretaryGeneral'), icon: 'pi pi-users', command: () => handleNavigation('/secretary-general') },
+    { label: t('history'), icon: 'pi pi-book', command: () => handleNavigation('/history') },
+    { label: t('citizen_papers'), icon: 'pi pi-file', command: () => handleNavigation('/papers') },
+    { label: t('state'), icon: 'pi pi-map', command: () => handleNavigation('/state') },
+    { label: t('contact'), icon: 'pi pi-envelope', command: () => handleNavigation('/contact') }
   ]
 
   const langSwitcher = (
@@ -59,10 +65,14 @@ const Navbar: React.FC = () => {
     >
       <div
         className={`navbar-start ${isRtl ? 'navbar-start-rtl' : ''}`}
-        onClick={() => navigate('/')}
+        onClick={() => handleNavigation('/')}
       >
         <img src={logo} alt="logo" className="navbar-logo" />
-        <h1 className="navbar-title">{t('title')}</h1>
+        <div className="navbar-titles">
+          <h1 className="navbar-title">{t('country_full_name')}</h1>
+          <h1 className="navbar-title">{t('department')}</h1>
+          <h1 className="navbar-title">{t('municipality')}</h1>
+        </div>
       </div>
       <Menubar model={items} className={`navbar-menu ${isRtl ? 'rtl-menu' : ''}`} end={langSwitcher} />
     </header>

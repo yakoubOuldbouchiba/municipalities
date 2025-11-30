@@ -1,0 +1,129 @@
+.persons-page {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.page-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 2rem;
+  text-align: center;
+  color: #1f2937;
+}
+
+.persons-sections {
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+}
+
+.persons-section {
+  margin-bottom: 2rem;
+}
+
+.section-title {
+  font-size: 1.875rem;
+  font-weight: 700;
+  color: #374151;
+  margin-bottom: 1.5rem;
+  border-bottom: 3px solid #3b82f6;
+  padding-bottom: 0.5rem;
+  display: inline-block;
+}
+
+.persons-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 2rem;
+}
+
+.person-card {
+  text-align: center;
+  transition: transform 0.3s, box-shadow 0.3s;
+  position: relative;
+  overflow: hidden;
+}
+
+.person-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15) !important;
+}
+
+.person-image-wrapper {
+  width: 100%;
+  height: 250px;
+  overflow: hidden;
+  border-radius: 8px 8px 0 0;
+  margin: -1rem -1rem 1rem -1rem;
+}
+
+.person-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.person-name {
+  font-size: 1.375rem;
+  font-weight: 700;
+  color: #1f2937;
+  margin: 1rem 0 0.5rem 0;
+}
+
+.person-period {
+  color: #6b7280;
+  font-size: 0.875rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.current-badge {
+  display: inline-block;
+  background: linear-gradient(135deg, #10b981, #059669);
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  margin: 0.5rem 0;
+}
+
+.person-message {
+  color: #4b5563;
+  line-height: 1.6;
+  margin: 1rem 0 0.5rem 0;
+  font-size: 0.95rem;
+}
+
+.person-achievements {
+  color: #6b7280;
+  line-height: 1.5;
+  font-size: 0.875rem;
+  font-style: italic;
+  margin-top: 0.5rem;
+}
+
+@media (max-width: 768px) {
+  .persons-page {
+    padding: 1rem;
+  }
+
+  .page-title {
+    font-size: 1.875rem;
+  }
+
+  .section-title {
+    font-size: 1.375rem;
+  }
+
+  .persons-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .person-image-wrapper {
+    height: 200px;
+  }
+}

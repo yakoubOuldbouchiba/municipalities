@@ -1,39 +1,193 @@
 {
+  "loginPage": {
+    "title": "Inicio de sesión del administrador",
+    "email": "Correo electrónico",
+    "password": "Contraseña",
+    "placeholderEmail": "Ingrese su correo electrónico",
+    "placeholderPassword": "Ingrese su contraseña",
+    "login": "Iniciar sesión",
+    "loggingIn": "Iniciando sesión...",
+    "forgotPassword": "¿Olvidó su contraseña?",
+    "register": "Registrarse",
+    "invalidCredentials": "Correo electrónico o contraseña inválidos"
+  },
+  "forgotPassword": {
+    "title": "Olvidé mi contraseña",
+    "email": "Correo electrónico",
+    "placeholderEmail": "Ingrese su correo electrónico",
+    "sendLink": "Enviar enlace de restablecimiento",
+    "sending": "Enviando...",
+    "resetLinkSent": "Enlace de restablecimiento enviado a su correo electrónico.",
+    "failedToSend": "Error al enviar el enlace de restablecimiento.",
+    "backToLogin": "Volver al inicio de sesión"
+  },
+  "register": {
+    "title": "Registrarse",
+    "placeholderName": "Ingrese su nombre",
+    "placeholderEmail": "Ingrese su correo electrónico",
+    "placeholderPassword": "Ingrese su contraseña",
+    "placeholderPasswordConfirmation": "Confirme su contraseña",
+    "register": "Registrarse",
+    "registering": "Registrándose...",
+    "alreadyHaveAccount": "¿Ya tiene una cuenta? Inicie sesión"
+  },
+  "header": {
+    "title": "Panel de control",
+    "logout": "Cerrar sesión"
+  },
   "sidebar": {
+    "title": "Panel de administración",
+    "dashboard": "Panel de control",
+    "ads": "Anuncios",
+    "news": "Noticias",
+    "events": "Eventos",
+    "papers": "Artículos",
     "quickLinks": "Enlaces rápidos",
     "importantNumbers": "Números importantes",
-    "potentials": "Potenciales"
+    "potentials": "Potenciales",
+    "persons": "Personas"
+  },
+  "dashboard": {
+    "welcome": "Bienvenido al Panel de Control 🚀"
+  },
+  "modules": {
+    "admin": {
+      "name": "Admin",
+      "description": "Gestione administradores del sistema, grupos, roles y aplicaciones",
+      "label": "Admin"
+    },
+    "website": {
+      "name": "Sitio Web",
+      "description": "Gestione el contenido del sitio web incluyendo anuncios, noticias, eventos y más",
+      "label": "Sitio Web"
+    },
+    "claims": {
+      "name": "Reclamaciones",
+      "description": "Gestione reclamaciones de ciudadanos, empresas y organizaciones",
+      "label": "Reclamaciones"
+    },
+    "selectModule": "Seleccionar un Módulo",
+    "currentModule": "Módulo Actual",
+    "switchModule": "Cambiar Módulo",
+    "title": "Módulos",
+    "manage": "Gestione los módulos del sistema aquí",
+    "addLangPlaceholder": "Seleccionar un idioma",
+    "fields": {
+      "code": "Código",
+      "label": "Etiqueta",
+      "color": "Color",
+      "icon": "Icono"
+    },
+    "placeholders": {
+      "code": "ej. admin",
+      "label": "Ingrese la etiqueta del módulo",
+      "color": "Seleccionar un color",
+      "icon": "Seleccionar un icono"
+    },
+    "actions": {
+      "add": "Agregar",
+      "update": "Actualizar",
+      "clear": "Limpiar"
+    },
+    "confirmDelete": "¿Eliminar este módulo?",
+    "confirmHeader": "Por favor confirme",
+    "table": {
+      "code": "Código",
+      "label": "Etiqueta",
+      "color": "Color",
+      "icon": "Icono",
+      "actions": "Acciones"
+    },
+    "empty": "Sin módulos por ahora"
+  },
+  "nav": {
+    "users": "Usuarios",
+    "groups": "Grupos",
+    "roles": "Roles",
+    "applications": "Aplicaciones",
+    "citizenClaim": "Reclamación Ciudadano",
+    "companyClaim": "Reclamación Empresa",
+    "organizationClaim": "Reclamación Organización"
   },
   "ads": {
-    "manage": "Administrar anuncios aquí"
-  },
-  "eventOptions": {
-    "icons": {
-      "flag": "Bandera",
-      "building": "Edificio",
-      "star": "Estrella",
-      "globe": "Globo",
-      "calendar": "Calendario",
-      "clock": "Reloj",
-      "users": "Usuarios",
-      "briefcase": "Maletín",
-      "home": "Inicio",
-      "heart": "Corazón",
-      "checkmark": "Marca",
-      "exclamation": "Exclamación"
+    "title": "Anuncios",
+    "manage": "Administrar anuncios aquí",
+    "addLangPlaceholder": "Seleccionar idioma",
+    "fields": {
+      "title": "Título",
+      "description": "Descripción",
+      "link": "Enlace",
+      "file_type": "Tipo de archivo"
     },
-    "colors": {
-      "green": "Verde",
-      "blue": "Azul",
-      "red": "Rojo",
-      "purple": "Púrpura",
-      "orange": "Naranja",
-      "pink": "Rosa",
-      "yellow": "Amarillo",
-      "cyan": "Cian",
-      "gray": "Gris",
-      "teal": "Azul Verdoso"
-    }
+    "placeholders": {
+      "title": "Ingrese el título del anuncio",
+      "description": "Ingrese la descripción del anuncio",
+      "link": "Ingrese la URL del enlace",
+      "file_type": "Seleccionar tipo de archivo"
+    },
+    "fileTypes": {
+      "image": "Imagen",
+      "pdf": "PDF"
+    },
+    "actions": {
+      "add": "Agregar",
+      "update": "Actualizar",
+      "clear": "Limpiar",
+      "upload": "Subir"
+    },
+    "hints": {
+      "linkOrUpload": "Ingrese una URL o cargue un archivo"
+    },
+    "confirmDelete": "¿Eliminar este anuncio?",
+    "confirmHeader": "Por favor confirma",
+    "table": {
+      "title": "Título",
+      "description": "Descripción",
+      "link": "Enlace",
+      "file_type": "Tipo de archivo",
+      "actions": "Acciones"
+    },
+    "empty": "Aún no hay anuncios"
+  },
+  "news": {
+    "title": "Noticias",
+    "addLangPlaceholder": "Seleccionar idioma",
+    "fields": {
+      "title": "Título",
+      "description": "Descripción",
+      "fileUrl": "URL de la imagen"
+    },
+    "placeholders": {
+      "title": "Ingrese el título de la noticia",
+      "description": "Ingrese la descripción de la noticia",
+      "fileUrl": "https://example.com/image.jpg",
+      "title_en": "Título (Inglés)",
+      "title_ar": "Título (Árabe)",
+      "title_fr": "Título (Francés)",
+      "title_es": "Título (Español)",
+      "description_en": "Descripción (Inglés)",
+      "description_ar": "Descripción (Árabe)",
+      "description_fr": "Descripción (Francés)",
+      "description_es": "Descripción (Español)"
+    },
+    "actions": {
+      "add": "Agregar",
+      "update": "Actualizar",
+      "clear": "Borrar",
+      "upload": "Cargar"
+    },
+    "confirmDelete": "¿Eliminar esta noticia?",
+    "confirmHeader": "Por favor confirma",
+    "hints": {
+      "fileUrlOrUpload": "Ingrese una URL o cargue una imagen"
+    },
+    "table": {
+      "title": "Título",
+      "description": "Descripción",
+      "fileUrl": "Imagen",
+      "actions": "Acciones"
+    },
+    "empty": "Aún no hay noticias"
   },
   "importantNumbers": {
     "title": "Números importantes",
@@ -100,6 +254,99 @@
     },
     "empty": "Aún no hay eventos"
   },
+  "papers": {
+    "title": "Artículos",
+    "addLangPlaceholder": "Seleccionar idioma",
+    "fields": {
+      "slug": "Slug",
+      "title": "Título",
+      "description": "Descripción"
+    },
+    "placeholders": {
+      "slug": "ej: articulo-titulo",
+      "title": "Ingrese el título del artículo",
+      "description": "Ingrese la descripción del artículo"
+    },
+    "actions": {
+      "add": "Agregar",
+      "update": "Actualizar",
+      "clear": "Borrar"
+    },
+    "confirmDelete": "¿Eliminar este artículo?",
+    "confirmHeader": "Por favor confirma",
+    "table": {
+      "slug": "Slug",
+      "title": "Título",
+      "description": "Descripción",
+      "actions": "Acciones"
+    },
+    "empty": "Aún no hay artículos"
+  },
+  "quickLinks": {
+    "title": "Enlaces rápidos",
+    "addLangPlaceholder": "Seleccionar idioma",
+    "fields": {
+      "label": "Etiqueta",
+      "value": "Valor"
+    },
+    "placeholders": {
+      "label": "Ingrese la etiqueta del enlace",
+      "value": "Ingrese la URL del enlace"
+    },
+    "actions": {
+      "add": "Agregar",
+      "update": "Actualizar",
+      "clear": "Borrar"
+    },
+    "confirmDelete": "¿Eliminar este enlace rápido?",
+    "confirmHeader": "Por favor confirma",
+    "table": {
+      "label": "Etiqueta",
+      "value": "Valor",
+      "actions": "Acciones"
+    },
+    "empty": "Aún no hay enlaces rápidos"
+  },
+  "resetPassword": {
+    "title": "Restablecer contraseña",
+    "newPassword": "Nueva contraseña",
+    "confirmPassword": "Confirmar contraseña",
+    "success": "¡Contraseña restablecida con éxito! Ahora puedes iniciar sesión.",
+    "failed": "Error al restablecer la contraseña.",
+    "submit": "Restablecer contraseña"
+  },
+  "registerMessages": {
+    "success": "¡Cuenta creada con éxito! Ahora puede iniciar sesión.",
+    "failed": "Error en el registro. Verifique su entrada."
+  },
+  "eventOptions": {
+    "icons": {
+      "flag": "Bandera",
+      "building": "Edificio",
+      "star": "Estrella",
+      "globe": "Globo",
+      "calendar": "Calendario",
+      "clock": "Reloj",
+      "users": "Usuarios",
+      "briefcase": "Maletín",
+      "home": "Inicio",
+      "heart": "Corazón",
+      "checkmark": "Marca",
+      "exclamation": "Exclamación"
+    },
+    "colors": {
+      "green": "Verde",
+      "blue": "Azul",
+      "red": "Rojo",
+      "purple": "Púrpura",
+      "orange": "Naranja",
+      "pink": "Rosa",
+      "yellow": "Amarillo",
+      "cyan": "Cian",
+      "gray": "Gris",
+      "teal": "Azul Verdoso"
+    }
+  },
   "potentials": {
     "title": "Potenciales",
     "addLangPlaceholder": "Seleccionar idioma",
@@ -143,5 +390,62 @@
       "actions": "Acciones"
     },
     "empty": "Aún no hay potenciales"
+  },
+  "persons": {
+    "title": "Personas",
+    "addLangPlaceholder": "Seleccionar idioma",
+    "fields": {
+      "name": "Nombre",
+      "message": "Mensaje",
+      "achievements": "Logros",
+      "type": "Tipo",
+      "imageUrl": "Imagen",
+      "period": "Período",
+      "is_current": "Actualmente en el cargo"
+    },
+    "placeholders": {
+      "name": "Ingrese el nombre de la persona",
+      "message": "Ingrese el mensaje",
+      "achievements": "Ingrese los logros",
+      "type": "Seleccionar tipo",
+      "imageUrl": "https://example.com/image.jpg",
+      "period": "Ej: 2020-2024",
+      "name_en": "Nombre (Inglés)",
+      "name_ar": "Nombre (Árabe)",
+      "name_fr": "Nombre (Francés)",
+      "name_es": "Nombre (Español)",
+      "message_en": "Mensaje (Inglés)",
+      "message_ar": "Mensaje (Árabe)",
+      "message_fr": "Mensaje (Francés)",
+      "message_es": "Mensaje (Español)",
+      "achievements_en": "Logros (Inglés)",
+      "achievements_ar": "Logros (Árabe)",
+      "achievements_fr": "Logros (Francés)",
+      "achievements_es": "Logros (Español)"
+    },
+    "types": {
+      "mayor": "Alcalde",
+      "secretary_general": "Secretario General"
+    },
+    "actions": {
+      "add": "Agregar",
+      "update": "Actualizar",
+      "clear": "Borrar",
+      "upload": "Cargar"
+    },
+    "confirmDelete": "¿Eliminar esta persona?",
+    "confirmHeader": "Por favor confirma",
+    "hints": {
+      "linkOrUpload": "Ingrese una URL o cargue una imagen"
+    },
+    "table": {
+      "name": "Nombre",
+      "type": "Tipo",
+      "period": "Período",
+      "image": "Imagen",
+      "is_current": "Actual",
+      "actions": "Acciones"
+    },
+    "empty": "Aún no hay personas"
   }
 }

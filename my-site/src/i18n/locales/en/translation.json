@@ -1,5 +1,8 @@
 {
   "title": "Baladiya Zemmouri - Official Website",
+  "country_full_name": "Democratic People's Republic of Algeria",
+  "department": "Boumerdès",
+  "municipality": "Zemmouri",
   "home": "Home",
   "potentials": "Potentials",
   "mayor": "Mayor",
@@ -18,6 +21,9 @@
   "preview": "Preview",
   "pdfDocument": "PDF Document",
   "noImage": "No Image",
+  "common": {
+    "loading": "Loading..."
+  },
    "footer": {
     "cityTitle": "Zemmouri (Boumerdès)",
     "quickLinks": "Quick Links",

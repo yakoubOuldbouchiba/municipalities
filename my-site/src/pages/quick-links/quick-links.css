@@ -1,0 +1,58 @@
+.quick-links-page {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.page-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 2rem;
+  text-align: center;
+  color: #1f2937;
+}
+
+.quick-links-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 2rem;
+}
+
+.quick-link-card {
+  transition: transform 0.2s, box-shadow 0.2s;
+  cursor: pointer;
+}
+
+.quick-link-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1) !important;
+}
+
+.link-label {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #1f2937;
+  margin: 0 0 0.5rem 0;
+}
+
+.link-url {
+  color: #6b7280;
+  font-size: 0.875rem;
+  margin: 0.5rem 0 1rem 0;
+  word-break: break-all;
+}
+
+@media (max-width: 768px) {
+  .quick-links-page {
+    padding: 1rem;
+  }
+
+  .page-title {
+    font-size: 1.875rem;
+  }
+
+  .quick-links-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+}

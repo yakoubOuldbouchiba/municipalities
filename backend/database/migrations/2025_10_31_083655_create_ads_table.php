@@ -9,8 +9,8 @@ return new class extends Migration {
     {
         Schema::create('ads', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
-            $table->text('description')->nullable();
+            $table->json('title');
+            $table->json('description')->nullable();
             $table->string('link');
             $table->enum('file_type', ['image', 'pdf'])->default('image');
             $table->timestamps();
@@ -22,4 +22,3 @@ return new class extends Migration {
         Schema::dropIfExists('ads');
     }
 };
-

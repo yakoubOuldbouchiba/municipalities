@@ -7,8 +7,9 @@ import { Dropdown } from 'primereact/dropdown';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { ConfirmDialog, confirmDialog } from 'primereact/confirmdialog';
-import axiosClient from '../api/axiosClient';
-import { getIconOptions, getColorOptions } from '../lib/eventOptions';
+import axiosClient from '../../api/axiosClient';
+import { getIconOptions, getColorOptions } from '../../lib/eventOptions';
+import ArabicKeyboard from '../../components/ArabicKeyboard';
 
 type Event = {
   id: string;
@@ -29,6 +30,7 @@ const EventsPage: React.FC = () => {
   const [color, setColor] = useState<string | null>(null);
   const [selectedLang, setSelectedLang] = useState<string | null>(null);
   const [editingId, setEditingId] = useState<string | null>(null);
+  const [activeKeyboardField, setActiveKeyboardField] = useState<string | null>(null);
 
   // Fetch list from backend (localized)
   const fetchList = async () => {
@@ -213,9 +215,17 @@ const EventsPage: React.FC = () => {
                   <InputText
                     value={statuses[lng] || ''}
                     onChange={(e) => setStatuses((prev) => ({ ...prev, [lng]: (e.target as HTMLInputElement).value }))}
+                    onFocus={() => lng === 'ar' && setActiveKeyboardField(`status-${lng}`)}
                     className="w-full p-inputtext-sm"
                     placeholder={t(`events.placeholders.status_${lng}`, `Status (${lng})`)}
+                    dir={i18n.language === 'ar' ? 'rtl' : 'ltr'}
                   />
+                  {lng === 'ar' && activeKeyboardField === `status-${lng}` && (
+                    <ArabicKeyboard
+                      onInput={(char: string) => setStatuses((prev) => ({ ...prev, [lng]: (prev[lng] || '') + char }))}
+                      onBackspace={() => setStatuses((prev) => ({ ...prev, [lng]: (prev[lng] || '').slice(0, -1) }))}
+                    />
+                  )}
                 </div>
               ))}
             </div>
@@ -230,6 +240,7 @@ const EventsPage: React.FC = () => {
             onChange={(e) => setDate((e.target as HTMLInputElement).value)}
             className="w-full p-inputtext-sm"
             placeholder={t('events.placeholders.date', 'e.g., 18th Century')}
+            dir={i18n.language === 'ar' ? 'rtl' : 'ltr'}
           />
         </div>
 
@@ -300,10 +311,18 @@ const EventsPage: React.FC = () => {
               <InputTextarea
                 value={descriptions[lng] || ''}
                 onChange={(e) => setDescriptions((prev) => ({ ...prev, [lng]: (e.target as HTMLTextAreaElement).value }))}
+                onFocus={() => lng === 'ar' && setActiveKeyboardField(`description-${lng}`)}
                 className="w-full p-inputtextarea-sm"
                 placeholder={t(`events.placeholders.description_${lng}`, `Description (${lng})`)}
                 rows={3}
+                dir={i18n.language === 'ar' ? 'rtl' : 'ltr'}
               />
+              {lng === 'ar' && activeKeyboardField === `description-${lng}` && (
+                <ArabicKeyboard
+                  onInput={(char: string) => setDescriptions((prev) => ({ ...prev, [lng]: (prev[lng] || '') + char }))}
+                  onBackspace={() => setDescriptions((prev) => ({ ...prev, [lng]: (prev[lng] || '').slice(0, -1) }))}
+                />
+              )}
             </div>
           ));
         })()}

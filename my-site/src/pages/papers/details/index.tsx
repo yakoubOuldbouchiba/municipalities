@@ -5,10 +5,11 @@ import QRCode from 'react-qr-code'
 import api from '../../../lib/api'
 import { useTranslation } from 'react-i18next'
 import './paper-details.css'
+
 interface Paper {
   slug: string
-  titles: { [key: string]: string }
-  descriptions: { [key: string]: string }
+  title: { [key: string]: string }
+  description: { [key: string]: string }
 }
 
 const PaperDetails: React.FC = () => {
@@ -20,6 +21,7 @@ const PaperDetails: React.FC = () => {
   const currentUrl = window.location.href
 
   useEffect(() => {
+    if (!id) return
     api
       .get(`/papers/${id}`)
       .then((res) => setPaper(res.data))
@@ -30,8 +32,8 @@ const PaperDetails: React.FC = () => {
   if (loading) return <p>Loading...</p>
   if (!paper) return <p className="text-center">Paper not found.</p>
 
-  const title = paper.titles[currentLang] || paper.titles['en']
-  const description = paper.descriptions[currentLang] || paper.descriptions['en']
+  const title = paper.title[currentLang] || paper.title['en']
+  const description = paper.description[currentLang] || paper.description['en']
 
   return (
     <div className="paper-details p-6">

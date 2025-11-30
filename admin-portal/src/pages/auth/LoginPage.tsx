@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import axiosClient, { fetchCsrf } from '../api/axiosClient';
+import axiosClient, { fetchCsrf } from '../../api/axiosClient';
 import { InputText } from 'primereact/inputtext';
 import { Password } from 'primereact/password';
 import { Button } from 'primereact/button';
@@ -8,7 +8,7 @@ import { Card } from 'primereact/card';
 import { Divider } from 'primereact/divider';
 import './LoginPage.css';
 import { useTranslation } from 'react-i18next';
-import LangSwitcher from '../components/LangSwitcher';
+import LangSwitcher from '../../components/LangSwitcher';
 
 const LoginPage = () => {
   const { t } = useTranslation();

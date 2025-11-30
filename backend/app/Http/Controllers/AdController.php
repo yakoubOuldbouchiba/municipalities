@@ -4,25 +4,52 @@ namespace App\Http\Controllers;
 
 use App\Models\Ad;
 use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
 
 class AdController extends Controller
 {
-    public function index()
+    /**
+     * Get all ads with localization support.
+     */
+    public function index(Request $request): JsonResponse
     {
-        return response()->json(Ad::all());
+        $lang = $request->query('lang', 'en');
+
+        $ads = Ad::all()->map(function ($ad) use ($lang) {
+            return [
+                'id' => $ad->id,
+                'title' => $ad->title[$lang] ?? $ad->title['en'] ?? '',
+                'description' => $ad->description[$lang] ?? $ad->description['en'] ?? '',
+                'link' => $ad->link,
+                'file_type' => $ad->file_type,
+            ];
+        });
+
+        return response()->json($ads);
     }
 
-    public function show($id)
+    /**
+     * Get a single ad (returns full localized object for editing).
+     */
+    public function show(Ad $ad): JsonResponse
     {
-        $ad = Ad::findOrFail($id);
-        return response()->json($ad);
+        return response()->json([
+            'id' => $ad->id,
+            'title' => $ad->title ?? [],
+            'description' => $ad->description ?? [],
+            'link' => $ad->link,
+            'file_type' => $ad->file_type,
+        ]);
     }
 
-    public function store(Request $request)
+    /**
+     * Create a new ad.
+     */
+    public function store(Request $request): JsonResponse
     {
         $validated = $request->validate([
-            'title' => 'required|string|max:255',
-            'description' => 'nullable|string',
+            'title' => 'required|array|min:1',
+            'description' => 'nullable|array',
             'link' => 'required|string',
             'file_type' => 'required|in:image,pdf',
         ]);
@@ -31,23 +58,46 @@ class AdController extends Controller
         return response()->json($ad, 201);
     }
 
-    public function update(Request $request, $id)
+    /**
+     * Update an existing ad.
+     */
+    public function update(Request $request, Ad $ad): JsonResponse
     {
-        $ad = Ad::findOrFail($id);
         $validated = $request->validate([
-            'title' => 'sometimes|string|max:255',
-            'description' => 'nullable|string',
+            'title' => 'sometimes|array|min:1',
+            'description' => 'nullable|array',
             'link' => 'sometimes|string',
             'file_type' => 'sometimes|in:image,pdf',
         ]);
+
         $ad->update($validated);
         return response()->json($ad);
     }
 
-    public function destroy($id)
+    /**
+     * Delete an ad.
+     */
+    public function destroy(Ad $ad): JsonResponse
     {
-        $ad = Ad::findOrFail($id);
         $ad->delete();
-        return response()->json(['message' => 'Ad deleted successfully']);
+        return response()->json(['message' => 'Ad deleted successfully'], 200);
+    }
+
+    /**
+     * Upload a file (image or PDF) and return the link.
+     */
+    public function upload(Request $request): JsonResponse
+    {
+        $validated = $request->validate([
+            'file' => 'required|file|mimes:jpeg,png,gif,pdf|max:10240', // 10MB max
+        ]);
+
+        $file = $validated['file'];
+        $fileName = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
+        $path = $file->storeAs('ads', $fileName, 'public');
+
+        return response()->json([
+            'link' => asset('storage/' . $path),
+        ], 201);
     }
 }
