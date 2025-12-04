@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use App\Models\Module;
+use App\Models\Role;
 use App\Models\NavItem;
 
 class ModuleSeeder extends Seeder
@@ -71,6 +72,11 @@ class ModuleSeeder extends Seeder
 
         // Website nav items
         $websiteNavItems = [
+            [
+                'label' => json_encode(['en' => 'Sliders', 'ar' => 'الشرائح', 'fr' => 'Curseurs', 'es' => 'Deslizadores']),
+                'icon' => 'pi pi-images',
+                'path' => '/sliders',
+            ],
             [
                 'label' => json_encode(['en' => 'Advertisements', 'ar' => 'إعلانات', 'fr' => 'Annonces', 'es' => 'Anuncios']),
                 'icon' => 'pi pi-bullhorn',
@@ -192,6 +198,82 @@ class ModuleSeeder extends Seeder
 
         foreach ($documentsNavItems as $item) {
             $documentsModule->navItems()->create($item);
+        }
+
+        // Attach corresponding roles to each module
+        $this->attachRolesToModules([
+            'admin' => ['MODULE:admin'],
+            'website' => ['MODULE:website'],
+            'claims' => ['MODULE:claims'],
+            'documents' => ['MODULE:documents'],
+        ]);
+
+        // Attach roles to nav items
+        $this->attachRolesToNavItems([
+            'Users' => ['NAV:UserManagement'],
+            'Groups' => ['NAV:GroupManagement'],
+            'Roles' => ['NAV:RoleManagement'],
+            'Applications' => ['NAV:ApplicationManagement'],
+            'Structures' => ['NAV:StructureManagement'],
+            'Sliders' => ['NAV:Sliders'],
+            'Advertisements' => ['NAV:Advertisements'],
+            'News' => ['NAV:News'],
+            'Events' => ['NAV:Events'],
+            'Papers' => ['NAV:Papers'],
+            'Quick Links' => ['NAV:Quick Links'],
+            'Important Numbers' => ['NAV:Important Numbers'],
+            'Potentials' => ['NAV:Potentials'],
+            'Persons' => ['NAV:Presons'],
+            'Official Documents' => ['NAV:OfficialDocumentManagement'],
+            'Forms' => ['NAV:FormsManagement'],
+            'Reports' => ['NAV:ReportsManagement'],
+            'Archives' => ['NAV:ArchivesManagement'],
+            'Citizen Claim' => ['NAV:CitizenClaimManagement'],
+            'Company Claim' => ['NAV:CompanyClaimManagement'],
+            'Organization Claim' => ['NAV:OrganizationClaimManagement'],
+        ]);
+    }
+
+    /**
+     * Attach roles to modules based on role codes.
+     */
+    private function attachRolesToModules(array $moduleRoleMappings): void
+    {
+        foreach ($moduleRoleMappings as $moduleCode => $roleCodes) {
+            $module = Module::where('code', $moduleCode)->first();
+            
+            if (!$module) {
+                continue;
+            }
+
+            // Find roles by their codes
+            $roles = Role::whereIn('code', $roleCodes)->get();
+            
+            if ($roles->isNotEmpty()) {
+                // Sync roles to the module (replaces existing)
+                $module->roles()->sync($roles->pluck('id')->toArray());
+            }
+        }
+    }
+
+    /**
+     * Attach roles to nav items based on nav item labels.
+     */
+    private function attachRolesToNavItems(array $navItemRoleMappings): void
+    {
+        foreach ($navItemRoleMappings as $navItemLabel => $roleCodes) {
+            // Find nav items by their decoded label
+            $navItems = NavItem::whereRaw("JSON_UNQUOTE(JSON_EXTRACT(label, '$.en')) = ?", [$navItemLabel])->get();
+            
+            foreach ($navItems as $navItem) {
+                // Find roles by their codes
+                $roles = Role::whereIn('code', $roleCodes)->get();
+                
+                if ($roles->isNotEmpty()) {
+                    // Sync roles to the nav item (replaces existing)
+                    $navItem->roles()->sync($roles->pluck('id')->toArray());
+                }
+            }
         }
     }
 }

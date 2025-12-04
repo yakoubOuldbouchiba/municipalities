@@ -19,8 +19,8 @@ class DatabaseSeeder extends Seeder
         $this->call(AdSeeder::class);
         $this->call(PotentialSeeder::class);
         $this->call(ImportantNumberSeeder::class);
-        $this->call(ModuleSeeder::class);
-        $this->call(RoleSeeder::class);
+        $this->call(RoleSeeder::class);          // Run RoleSeeder FIRST
+        $this->call(ModuleSeeder::class);        // Then ModuleSeeder (attaches roles)
         $this->call(GroupSeeder::class);
         $this->call(StructureSeeder::class);
         $this->call(QuickLinkSeeder::class);
