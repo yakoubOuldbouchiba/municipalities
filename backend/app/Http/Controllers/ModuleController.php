@@ -22,16 +22,16 @@ class ModuleController extends Controller
             return [
                 'id' => $module->id,
                 'code' => $module->code,
-                'label' => $label[$lang] ?? $label['en'] ?? '',
+                'label' => $label,
                 'color' => $module->color,
                 'icon' => $module->icon,
                 'navItems' => $module->navItems->map(function ($item) use ($lang) {
-                    // Ensure nav item label is decoded as well
+                    // Decode the item label
                     $itemLabel = is_array($item->label) ? $item->label : (is_string($item->label) ? json_decode($item->label, true) : []);
                     
                     return [
                         'id' => $item->id,
-                        'label' => $itemLabel[$lang] ?? $itemLabel['en'] ?? '',
+                        'label' => $itemLabel,
                         'icon' => $item->icon,
                         'path' => $item->path,
                     ];

@@ -16,7 +16,32 @@ const SharePage: React.FC = () => {
   const type = params.get('type') || 'image'
 
   const [qrVisible, setQrVisible] = useState(false)
+  const [isOnline, setIsOnline] = useState(navigator.onLine)
+  const [iframeError, setIframeError] = useState(false)
   const shareUrl = window.location.href
+
+  // Monitor online/offline status
+  React.useEffect(() => {
+    const handleOnline = () => setIsOnline(true)
+    const handleOffline = () => setIsOnline(false)
+
+    window.addEventListener('online', handleOnline)
+    window.addEventListener('offline', handleOffline)
+
+    return () => {
+      window.removeEventListener('online', handleOnline)
+      window.removeEventListener('offline', handleOffline)
+    }
+  }, [])
+
+  // Handle iframe load timeout
+  const handleIframeTimeout = () => {
+    const timeout = setTimeout(() => {
+      console.warn('Share PDF iframe failed to load within timeout')
+      setIframeError(true)
+    }, 8000) // 8 second timeout
+    return () => clearTimeout(timeout)
+  }
 
   const handleCopy = async () => {
     await navigator.clipboard.writeText(shareUrl)
@@ -30,12 +55,22 @@ const SharePage: React.FC = () => {
     >
       <Card title={title} className="w-full md:w-2/3 shadow-lg">
         {type === 'pdf' ? (
-          <iframe
-            src={fileUrl}
-            title={title}
-            className="w-full"
-            style={{ height: '70vh', border: 'none' }}
-          />
+          !isOnline || iframeError ? (
+            <div className="flex flex-col items-center justify-center h-96 bg-gradient-to-br from-gray-100 to-gray-200 text-gray-600 gap-3 rounded-lg">
+              <div className="text-5xl">📄</div>
+              <p className="font-medium">{!isOnline ? t('common.offline', 'You are offline') : t('common.loadError', 'Failed to load PDF')}</p>
+            </div>
+          ) : (
+            <iframe
+              src={fileUrl}
+              title={title}
+              className="w-full"
+              style={{ height: '70vh', border: 'none' }}
+              onError={() => setIframeError(true)}
+              onLoad={handleIframeTimeout() as any}
+              sandbox="allow-same-origin"
+            />
+          )
         ) : (
           <img src={fileUrl} alt={title} className="w-full object-contain rounded-lg" />
         )}

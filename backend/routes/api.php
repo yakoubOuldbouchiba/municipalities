@@ -13,6 +13,10 @@ use App\Http\Controllers\PersonController;
 use App\Http\Controllers\PotentialController;
 use App\Http\Controllers\QuickLinkController;
 use App\Http\Controllers\NewsController;
+use App\Http\Controllers\RoleController;
+use App\Http\Controllers\GroupController;
+use App\Http\Controllers\StructureController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -51,8 +55,27 @@ Route::get('/quick-links/{id}', [QuickLinkController::class, 'show']);
 Route::get('/important-numbers', [ImportantNumberController::class, 'index']);
 Route::get('/important-numbers/{id}', [ImportantNumberController::class, 'show']);
 
+// Roles - Read endpoint (public)
+Route::get('/roles', [RoleController::class, 'index']);
+Route::get('/roles/{role}', [RoleController::class, 'show']);
 
+// Groups - Read endpoints (public)
+Route::get('/groups', [GroupController::class, 'index']);
+Route::get('/groups/{group}', [GroupController::class, 'show']);
 
+// Structures - Read endpoints (public)
+Route::get('/structures', [StructureController::class, 'index']);
+Route::get('/structures/tree', [StructureController::class, 'tree']);
+Route::get('/structures/{structure}', [StructureController::class, 'show']);
+
+// Modules - Read endpoints (public)
+Route::get('/modules', [ModuleController::class, 'index']);
+Route::get('/modules/{module}', [ModuleController::class, 'show']);
+Route::get('/modules/{moduleId}/nav-items', [NavItemController::class, 'index']);
+
+// Users - Read endpoints (public)
+Route::get('/users', [UserController::class, 'index']);
+Route::get('/users/{user}', [UserController::class, 'show']);
 
 // Auth endpoints
 Route::post('/register', [AuthController::class, 'register']);
@@ -109,10 +132,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('/papers/{paper}', [PaperController::class, 'destroy']);
 
     // Modules CRUD - Write operations only
-    // Modules - Read endpoints (public)
-    Route::get('/modules', [ModuleController::class, 'index']);
-    Route::get('/modules/{module}', [ModuleController::class, 'show']);
-    Route::get('/modules/{moduleId}/nav-items', [NavItemController::class, 'index']);
     Route::post('/modules', [ModuleController::class, 'store']);
     Route::put('/modules/{module}', [ModuleController::class, 'update']);
     Route::delete('/modules/{module}', [ModuleController::class, 'destroy']);
@@ -121,6 +140,25 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/nav-items', [NavItemController::class, 'store']);
     Route::put('/nav-items/{navItem}', [NavItemController::class, 'update']);
     Route::delete('/nav-items/{navItem}', [NavItemController::class, 'destroy']);
+
+    // Roles CRUD
+    Route::post('/roles', [RoleController::class, 'store']);
+    Route::put('/roles/{role}', [RoleController::class, 'update']);
+    Route::delete('/roles/{role}', [RoleController::class, 'destroy']);
+
+    // Groups CRUD
+    Route::post('/groups', [GroupController::class, 'store']);
+    Route::put('/groups/{group}', [GroupController::class, 'update']);
+    Route::delete('/groups/{group}', [GroupController::class, 'destroy']);
+
+    // Structures CRUD
+    Route::post('/structures', [StructureController::class, 'store']);
+    Route::put('/structures/{structure}', [StructureController::class, 'update']);
+    Route::delete('/structures/{structure}', [StructureController::class, 'destroy']);
+
+    // Users CRUD
+    Route::post('/users', [UserController::class, 'store']);
+    Route::put('/users/{user}', [UserController::class, 'update']);
+    Route::delete('/users/{user}', [UserController::class, 'destroy']); 
+    
 });
-
-

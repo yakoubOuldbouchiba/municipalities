@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useModules } from '../hooks/useModules';
 
 export type ModuleType = 'admin' | 'website' | 'claims' | 'documents';
@@ -102,7 +103,17 @@ export const MODULE_CONFIGS: Record<ModuleType, ModuleConfig> = {
   },
 };
 
+// Helper function to extract string label from object or string
+const extractLabel = (label: any, lang: string = 'en'): string => {
+  if (typeof label === 'string') return label;
+  if (typeof label === 'object' && label !== null) {
+    return label[lang] || label['en'] || Object.values(label as Record<string, string>)[0] || '';
+  }
+  return '';
+};
+
 export const ModuleProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+  const { i18n } = useTranslation();
   const [currentModule, setCurrentModule] = useState<ModuleType>('website');
   const { modules, loading } = useModules();
   const [allModules, setAllModules] = useState<ModuleConfig[]>([]);
@@ -113,13 +124,13 @@ export const ModuleProvider: React.FC<{ children: ReactNode }> = ({ children }) 
       const transformedModules = modules.map((dbModule: any) => ({
         id: dbModule.id,
         code: dbModule.code,
-        label: dbModule.label,
+        label: extractLabel(dbModule.label, i18n.language),
         nameKey: dbModule.code ? `modules.${dbModule.code}.name` : undefined,
         icon: dbModule.icon,
         color: dbModule.color,
         navItems: (dbModule.navItems || []).map((item: any) => ({
           id: item.id,
-          label: item.label, // Direct label from database
+          label: extractLabel(item.label, i18n.language), // Extract string from object
           icon: item.icon,
           path: item.path,
         })),
@@ -129,7 +140,7 @@ export const ModuleProvider: React.FC<{ children: ReactNode }> = ({ children }) 
       // Fallback to static configs if no modules from DB
       setAllModules(Object.values(MODULE_CONFIGS));
     }
-  }, [modules]);
+  }, [modules, i18n.language]);
 
   const moduleConfig = allModules.find((m) => m.code === currentModule) || MODULE_CONFIGS[currentModule];
 

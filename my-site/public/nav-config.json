@@ -1,0 +1,100 @@
+{
+  "items": [
+    {
+      "id": 1,
+      "label": {
+        "en": "Home",
+        "ar": "الرئيسية",
+        "fr": "Accueil",
+        "es": "Inicio"
+      },
+      "icon": "pi pi-home",
+      "path": "/",
+      "enabled": true
+    },
+    {
+      "id": 2,
+      "label": {
+        "en": "Potentials",
+        "ar": "الإمكانيات",
+        "fr": "Potentiels",
+        "es": "Potenciales"
+      },
+      "icon": "pi pi-chart-line",
+      "path": "/potentials",
+      "enabled": true
+    },
+    {
+      "id": 3,
+      "label": {
+        "en": "Mayor",
+        "ar": "رئيس البلدية",
+        "fr": "Maire",
+        "es": "Alcalde"
+      },
+      "icon": "pi pi-user",
+      "path": "/mayor",
+      "enabled": true
+    },
+    {
+      "id": 4,
+      "label": {
+        "en": "Secretary General",
+        "ar": "الأمين العام",
+        "fr": "Secrétaire Général",
+        "es": "Secretario General"
+      },
+      "icon": "pi pi-users",
+      "path": "/secretary-general",
+      "enabled": true
+    },
+    {
+      "id": 5,
+      "label": {
+        "en": "History",
+        "ar": "التاريخ",
+        "fr": "Historique",
+        "es": "Historia"
+      },
+      "icon": "pi pi-book",
+      "path": "/history",
+      "enabled": true
+    },
+    {
+      "id": 6,
+      "label": {
+        "en": "Citizen Papers",
+        "ar": "وثائق المواطن",
+        "fr": "Documents Citoyens",
+        "es": "Documentos del Ciudadano"
+      },
+      "icon": "pi pi-file",
+      "path": "/papers",
+      "enabled": true
+    },
+    {
+      "id": 7,
+      "label": {
+        "en": "State",
+        "ar": "الولاية",
+        "fr": "État",
+        "es": "Estado"
+      },
+      "icon": "pi pi-map",
+      "path": "/state",
+      "enabled": false
+    },
+    {
+      "id": 8,
+      "label": {
+        "en": "Contact",
+        "ar": "التواصل",
+        "fr": "Contact",
+        "es": "Contacto"
+      },
+      "icon": "pi pi-envelope",
+      "path": "/contact",
+      "enabled": false
+    }
+  ]
+}

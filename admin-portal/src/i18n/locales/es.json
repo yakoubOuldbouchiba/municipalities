@@ -66,6 +66,15 @@
       "description": "Gestione reclamaciones de ciudadanos, empresas y organizaciones",
       "label": "Reclamaciones"
     },
+    "documents": {
+      "name": "Documentos",
+      "description": "Gestione documentos oficiales, formularios, informes y archivos",
+      "label": "Documentos",
+      "official": "Documentos Oficiales",
+      "forms": "Formularios",
+      "reports": "Informes",
+      "archives": "Archivos"
+    },
     "selectModule": "Seleccionar un Módulo",
     "currentModule": "Módulo Actual",
     "switchModule": "Cambiar Módulo",
@@ -109,6 +118,7 @@
     "companyClaim": "Reclamación Empresa",
     "organizationClaim": "Reclamación Organización"
   },
+  "applicationName": "Aplicaciones",
   "ads": {
     "title": "Anuncios",
     "manage": "Administrar anuncios aquí",
@@ -447,5 +457,208 @@
       "actions": "Acciones"
     },
     "empty": "Aún no hay personas"
+  },
+  "common": {
+    "add": "Agregar",
+    "edit": "Editar",
+    "delete": "Eliminar",
+    "save": "Guardar",
+    "cancel": "Cancelar",
+    "confirm": "Confirmar",
+    "close": "Cerrar",
+    "noData": "No hay datos disponibles",
+    "loading": "Cargando...",
+    "error": "Error",
+    "success": "Éxito",
+    "warning": "Advertencia",
+    "info": "Información",
+    "language": "Idioma",
+    "lastUpdated": "Última actualización",
+    "actions": "Acciones",
+    "validation": "Validación"
+  },
+  "groups": {
+    "title": "Grupos",
+    "description": "Gestionar grupos de usuarios y sus asignaciones de funciones",
+    "createTitle": "Crear grupo",
+    "editTitle": "Editar grupo",
+    "fields": {
+      "code": "Código",
+      "label": "Etiqueta",
+      "roles": "Funciones"
+    },
+    "placeholders": {
+      "code": "ej: ADMIN, EDITOR"
+    },
+    "labels": {
+      "code": "Código",
+      "label": "Etiqueta",
+      "roles": "Funciones"
+    },
+    "addLanguage": "Seleccionar idioma a agregar",
+    "labelPlaceholder": "Ingrese la etiqueta",
+    "selectRoles": "Seleccionar funciones",
+    "rolesHint": "Asignar funciones a este grupo. Los usuarios en este grupo tendrán estas funciones.",
+    "codeRequired": "El código es obligatorio",
+    "labelRequired": "Se requiere al menos una etiqueta de idioma",
+    "errorFetch": "Error al obtener grupos",
+    "errorSave": "Error al guardar grupo",
+    "errorDelete": "Error al eliminar grupo",
+    "createSuccess": "Grupo creado con éxito",
+    "updateSuccess": "Grupo actualizado con éxito",
+    "deleteSuccess": "Grupo eliminado con éxito",
+    "confirmDelete": "¿Está seguro de que desea eliminar este grupo?"
+  },
+  "roles": {
+    "title": "Funciones",
+    "description": "Gestionar funciones y permisos del sistema",
+    "createTitle": "Crear función",
+    "editTitle": "Editar función",
+    "fields": {
+      "code": "Código",
+      "label": "Etiqueta"
+    },
+    "placeholders": {
+      "code": "ej: NAV:admin, MODULE:website, ACTION:create"
+    },
+    "labels": {
+      "code": "Código",
+      "label": "Etiqueta"
+    },
+    "addLanguage": "Seleccionar idioma a agregar",
+    "labelPlaceholder": "Ingrese la etiqueta",
+    "codeHint": "El código debe comenzar con NAV:, MODULE: o ACTION:",
+    "codeRequired": "El código es obligatorio",
+    "labelRequired": "Se requiere al menos una etiqueta de idioma",
+    "errorFetch": "Error al obtener funciones",
+    "errorSave": "Error al guardar función",
+    "errorDelete": "Error al eliminar función",
+    "createSuccess": "Función creada con éxito",
+    "updateSuccess": "Función actualizada con éxito",
+    "deleteSuccess": "Función eliminada con éxito",
+    "confirmDelete": "¿Está seguro de que desea eliminar esta función?"
+  },
+  "users": {
+    "title": "Usuarios",
+    "description": "Gestionar usuarios del sistema y sus asignaciones de grupos",
+    "createTitle": "Crear usuario",
+    "editTitle": "Editar usuario",
+    "fields": {
+      "name": "Nombre",
+      "email": "Correo electrónico",
+      "password": "Contraseña",
+      "confirmPassword": "Confirmar contraseña",
+      "groups": "Grupos"
+    },
+    "placeholders": {
+      "name": "Ingrese el nombre del usuario",
+      "email": "Ingrese la dirección de correo electrónico",
+      "password": "Ingrese la contraseña",
+      "confirmPassword": "Confirme la contraseña"
+    },
+    "labels": {
+      "name": "Nombre",
+      "email": "Correo electrónico",
+      "password": "Contraseña",
+      "confirmPassword": "Confirmar contraseña",
+      "groups": "Grupos"
+    },
+    "selectGroups": "Seleccionar grupos",
+    "groupsHint": "Asignar grupos a este usuario. Los usuarios tendrán todas las funciones de sus grupos asignados.",
+    "nameRequired": "El nombre es obligatorio",
+    "emailRequired": "El correo electrónico es obligatorio",
+    "emailInvalid": "Ingrese una dirección de correo electrónico válida",
+    "passwordRequired": "La contraseña es obligatoria",
+    "passwordMinLength": "La contraseña debe tener al menos 6 caracteres",
+    "passwordMismatch": "Las contraseñas no coinciden",
+    "errorFetch": "Error al obtener usuarios",
+    "errorSave": "Error al guardar usuario",
+    "errorDelete": "Error al eliminar usuario",
+    "createSuccess": "Usuario creado con éxito",
+    "updateSuccess": "Usuario actualizado con éxito",
+    "deleteSuccess": "Usuario eliminado con éxito",
+    "confirmDelete": "¿Está seguro de que desea eliminar este usuario?"
+  },
+  "structures": {
+    "title": "Estructuras Organizacionales",
+    "description": "Gestionar la estructura organizacional jerárquica",
+    "createTitle": "Crear Estructura",
+    "editTitle": "Editar Estructura",
+    "fields": {
+      "label": "Etiqueta",
+      "code": "Código",
+      "id_parent": "Estructura Principal"
+    },
+    "placeholders": {
+      "label": "ej. Director",
+      "code": "ej. DIRECTOR",
+      "id_parent": "Seleccionar estructura principal (opcional)"
+    },
+    "labels": {
+      "label": "Etiqueta",
+      "code": "Código",
+      "parent": "Principal"
+    },
+    "newStructure": "Nueva Estructura",
+    "selectParent": "Seleccionar estructura principal (opcional)",
+    "noParent": "-",
+    "labelRequired": "La etiqueta y el código son requeridos",
+    "errorFetch": "Error al cargar estructuras",
+    "errorSave": "Error al guardar la estructura",
+    "errorDelete": "Error al eliminar la estructura",
+    "createSuccess": "Estructura creada exitosamente",
+    "updateSuccess": "Estructura actualizada exitosamente",
+    "deleteSuccess": "Estructura eliminada exitosamente",
+    "confirmDelete": "¿Estás seguro de que deseas eliminar",
+    "edit": "Editar",
+    "delete": "Eliminar",
+    "cancel": "Cancelar",
+    "save": "Guardar"
+  },
+  "applications": {
+    "title": "Aplicaciones",
+    "description": "Gestionar aplicaciones y módulos del sistema",
+    "createTitle": "Crear aplicación",
+    "editTitle": "Editar aplicación",
+    "fields": {
+      "code": "Código",
+      "label": "Etiqueta",
+      "color": "Color",
+      "icon": "Icono"
+    },
+    "placeholders": {
+      "code": "ej: admin",
+      "label": "Ingrese la etiqueta de la aplicación",
+      "color": "Seleccionar un color",
+      "icon": "Seleccionar un icono"
+    },
+    "labels": {
+      "code": "Código",
+      "label": "Etiqueta",
+      "color": "Color",
+      "icon": "Icono"
+    },
+    "addLanguage": "Agregar idioma",
+    "labelPlaceholder": "Ingrese la etiqueta",
+    "selectIcon": "Seleccionar un icono",
+    "codeRequired": "El código es obligatorio",
+    "labelRequired": "Se requiere al menos una etiqueta de idioma",
+    "errorFetch": "Error al obtener aplicaciones",
+    "errorLoading": "Error al cargar la aplicación",
+    "errorSave": "Error al guardar la aplicación",
+    "errorDelete": "Error al eliminar la aplicación",
+    "createSuccess": "Aplicación creada exitosamente",
+    "updateSuccess": "Aplicación actualizada exitosamente",
+    "deleteSuccess": "Aplicación eliminada exitosamente",
+    "confirmDelete": "¿Estás seguro de que deseas eliminar esta aplicación?",
+    "table": {
+      "code": "Código",
+      "label": "Etiqueta",
+      "icon": "Icono",
+      "color": "Color",
+      "updated": "Última actualización",
+      "actions": "Acciones"
+    },
+    "empty": "Sin aplicaciones por ahora"
   }
 }

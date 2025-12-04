@@ -14,10 +14,36 @@ interface DocumentCardProps {
 
 const DocumentCard: React.FC<DocumentCardProps> = ({ title, fileUrl, type }) => {
   const [visible, setVisible] = useState(false)
+  const [isOnline, setIsOnline] = useState(navigator.onLine)
+  const [imageError, setImageError] = useState(false)
+  const [pdfError, setPdfError] = useState(false)
   const navigate = useNavigate()
   const { t } = useTranslation()
 
+  // Monitor online/offline status
+  React.useEffect(() => {
+    const handleOnline = () => setIsOnline(true)
+    const handleOffline = () => setIsOnline(false)
+
+    window.addEventListener('online', handleOnline)
+    window.addEventListener('offline', handleOffline)
+
+    return () => {
+      window.removeEventListener('online', handleOnline)
+      window.removeEventListener('offline', handleOffline)
+    }
+  }, [])
+
   const isPDF = type === 'pdf' || fileUrl.toLowerCase().endsWith('.pdf')
+
+  // Handle iframe load timeout
+  const handleIframeTimeout = () => {
+    const timeout = setTimeout(() => {
+      console.warn('PDF iframe failed to load within timeout')
+      setPdfError(true)
+    }, 8000) // 8 second timeout
+    return () => clearTimeout(timeout)
+  }
 
   const handleShare = (e: React.MouseEvent) => {
     e.stopPropagation()
@@ -52,6 +78,14 @@ const DocumentCard: React.FC<DocumentCardProps> = ({ title, fileUrl, type }) => 
   // ✅ fallback image constant
   const fallbackImage = 'https://via.placeholder.com/200x150?text=' + encodeURIComponent(t('noImage'))
 
+  // ✅ Fallback placeholder component
+  const FallbackPlaceholder = ({ icon, message }: { icon: string; message: string }) => (
+    <div className="flex flex-col items-center justify-center h-40 bg-gradient-to-br from-gray-100 to-gray-200 text-gray-600 gap-2 rounded-lg">
+      <div className="text-3xl">{icon}</div>
+      <p className="text-sm font-medium">{message}</p>
+    </div>
+  )
+
   return (
     <>
       <Card
@@ -60,23 +94,33 @@ const DocumentCard: React.FC<DocumentCardProps> = ({ title, fileUrl, type }) => 
         onClick={() => setVisible(true)}
       >
         {isPDF ? (
-          <div className="flex flex-col items-center justify-center h-40 bg-gray-100 text-gray-600">
-             <iframe
-            src={fileUrl}
-            title={title}
-            className="w-full"
-            style={{ height: '80vh', border: 'none' }}
+          !isOnline || pdfError ? (
+            <FallbackPlaceholder
+              icon="📄"
+              message={!isOnline ? t('common.offline', 'You are offline') : t('common.loadError', 'Failed to load PDF')}
+            />
+          ) : (
+            <iframe
+              src={fileUrl}
+              title={title}
+              className="w-full"
+              style={{ height: '150px', border: 'none' }}
+              onError={() => setPdfError(true)}
+              onLoad={handleIframeTimeout() as any}
+              sandbox="allow-same-origin"
+            />
+          )
+        ) : imageError ? (
+          <FallbackPlaceholder
+            icon="🖼️"
+            message={t('common.imageLoadError', 'Failed to load image')}
           />
-          </div>
         ) : (
           <img
             src={fileUrl || fallbackImage}
             alt={title}
             className="h-40 w-full object-cover rounded-lg"
-            onError={(e: React.SyntheticEvent<HTMLImageElement, Event>) => {
-              console.warn('Image failed to load:', fileUrl)
-              e.currentTarget.src = fallbackImage
-            }}
+            onError={() => setImageError(true)}
           />
         )}
       </Card>
@@ -90,11 +134,26 @@ const DocumentCard: React.FC<DocumentCardProps> = ({ title, fileUrl, type }) => 
         onHide={() => setVisible(false)}
       >
         {isPDF ? (
-          <iframe
-            src={fileUrl}
-            title={title}
-            className="w-full"
-            style={{ height: '80vh', border: 'none' }}
+          !isOnline || pdfError ? (
+            <FallbackPlaceholder
+              icon="📄"
+              message={!isOnline ? t('common.offline', 'You are offline') : t('common.loadError', 'Failed to load PDF')}
+            />
+          ) : (
+            <iframe
+              src={fileUrl}
+              title={title}
+              className="w-full"
+              style={{ height: '80vh', border: 'none' }}
+              onError={() => setPdfError(true)}
+              onLoad={handleIframeTimeout() as any}
+              sandbox="allow-same-origin"
+            />
+          )
+        ) : imageError ? (
+          <FallbackPlaceholder
+            icon="🖼️"
+            message={t('common.imageLoadError', 'Failed to load image')}
           />
         ) : (
           <img
@@ -102,9 +161,7 @@ const DocumentCard: React.FC<DocumentCardProps> = ({ title, fileUrl, type }) => 
             alt={title}
             className="w-full object-contain rounded-lg"
             style={{ maxHeight: '80vh' }}
-            onError={(e: React.SyntheticEvent<HTMLImageElement, Event>) => {
-              e.currentTarget.src = fallbackImage
-            }}
+            onError={() => setImageError(true)}
           />
         )}
       </Dialog>

@@ -13,6 +13,7 @@ return new class extends Migration {
             $table->json('label');
             $table->string('icon');
             $table->string('path');
+            $table->boolean('enabled')->default(true);
             $table->timestamps();
         });
     }

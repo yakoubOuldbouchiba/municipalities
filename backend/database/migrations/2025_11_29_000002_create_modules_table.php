@@ -13,6 +13,7 @@ return new class extends Migration {
             $table->json('label');
             $table->string('color')->nullable();
             $table->string('icon')->nullable();
+            $table->boolean('enabled')->default(true);
             $table->timestamps();
         });
     }

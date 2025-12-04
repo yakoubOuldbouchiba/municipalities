@@ -68,6 +68,15 @@
       "description": "Gérez les réclamations des citoyens, des entreprises et des organisations",
       "label": "Réclamations"
     },
+    "documents": {
+      "name": "Documents",
+      "description": "Gérez les documents officiels, les formulaires, les rapports et les archives",
+      "label": "Documents",
+      "official": "Documents Officiels",
+      "forms": "Formulaires",
+      "reports": "Rapports",
+      "archives": "Archives"
+    },
     "selectModule": "Sélectionner un Module",
     "currentModule": "Module Actuel",
     "switchModule": "Changer de Module",
@@ -111,6 +120,7 @@
     "companyClaim": "Réclamation Entreprise",
     "organizationClaim": "Réclamation Organisation"
   },
+  "applicationName": "Applications",
   "ads": {
     "title": "Publicités",
     "manage": "Gérer les publicités ici",
@@ -195,9 +205,11 @@
     "title": "Numéros importants",
     "addLangPlaceholder": "Sélectionner la langue",
     "fields": {
+      "label": "Libellé",
       "value": "Valeur"
     },
     "placeholders": {
+      "label": "Entrez le libellé",
       "value": "Ex: +33 1 23 45 67 89"
     },
     "actions": {
@@ -208,7 +220,7 @@
     "confirmDelete": "Supprimer ce numéro ?",
     "confirmHeader": "Veuillez confirmer",
     "table": {
-      "title": "Titre",
+      "label": "Titre",
       "value": "Valeur",
       "actions": "Actions"
     },
@@ -435,6 +447,247 @@
       "description_de": "Description (Allemand)",
       "description_es": "Description (Espagnol)"
     },
+    "actions": {
+      "add": "Ajouter",
+      "update": "Mettre à jour",
+      "clear": "Effacer"
+    },
+    "confirmDelete": "Supprimer ce potentiel ?",
+    "confirmHeader": "Veuillez confirmer",
+    "table": {
+      "slug": "Slug",
+      "title": "Titre",
+      "description": "Description",
+      "actions": "Actions"
+    },
     "empty": "Aucun potentiel pour le moment"
+  },
+  "common": {
+    "add": "Ajouter",
+    "edit": "Modifier",
+    "delete": "Supprimer",
+    "save": "Enregistrer",
+    "cancel": "Annuler",
+    "confirm": "Confirmer",
+    "close": "Fermer",
+    "noData": "Aucune donnée trouvée",
+    "loading": "Chargement...",
+    "error": "Erreur",
+    "success": "Succès",
+    "warning": "Avertissement",
+    "info": "Information",
+    "language": "Langue",
+    "lastUpdated": "Dernière mise à jour",
+    "actions": "Actions",
+    "validation": "Validation",
+    "active": "Actif",
+    "inactive": "Inactif"
+  },
+  "groups": {
+    "title": "Groupes",
+    "description": "Gérer les groupes d'utilisateurs et leurs attributions de rôles",
+    "createTitle": "Créer un groupe",
+    "editTitle": "Modifier le groupe",
+    "fields": {
+      "code": "Code",
+      "label": "Étiquette",
+      "roles": "Rôles"
+    },
+    "placeholders": {
+      "code": "ex: ADMIN, EDITOR"
+    },
+    "labels": {
+      "code": "Code",
+      "label": "Étiquette",
+      "roles": "Rôles"
+    },
+    "addLanguage": "Sélectionner la langue à ajouter",
+    "labelPlaceholder": "Entrez l'étiquette",
+    "selectRoles": "Sélectionner les rôles",
+    "rolesHint": "Attribuer des rôles à ce groupe. Les utilisateurs de ce groupe auront ces rôles.",
+    "codeRequired": "Le code est obligatoire",
+    "labelRequired": "Au moins une étiquette de langue est requise",
+    "errorFetch": "Impossible de récupérer les groupes",
+    "errorLoading": "Impossible de charger le groupe",
+    "errorSave": "Impossible d'enregistrer le groupe",
+    "errorDelete": "Impossible de supprimer le groupe",
+    "createSuccess": "Groupe créé avec succès",
+    "updateSuccess": "Groupe mis à jour avec succès",
+    "deleteSuccess": "Groupe supprimé avec succès",
+    "confirmDelete": "Êtes-vous sûr de vouloir supprimer ce groupe ?"
+  },
+  "roles": {
+    "title": "Rôles",
+    "description": "Gérer les rôles et autorisations du système",
+    "createTitle": "Créer un rôle",
+    "editTitle": "Modifier le rôle",
+    "fields": {
+      "code": "Code",
+      "label": "Étiquette"
+    },
+    "placeholders": {
+      "code": "ex: NAV:admin, MODULE:website, ACTION:create"
+    },
+    "labels": {
+      "code": "Code",
+      "label": "Étiquette"
+    },
+    "addLanguage": "Sélectionner la langue à ajouter",
+    "labelPlaceholder": "Entrez l'étiquette",
+    "codeHint": "Le code doit commencer par NAV:, MODULE: ou ACTION:",
+    "codeRequired": "Le code est obligatoire",
+    "labelRequired": "Au moins une étiquette de langue est requise",
+    "errorFetch": "Impossible de récupérer les rôles",
+    "errorLoading": "Impossible de charger le rôle",
+    "errorSave": "Impossible d'enregistrer le rôle",
+    "errorDelete": "Impossible de supprimer le rôle",
+    "createSuccess": "Rôle créé avec succès",
+    "updateSuccess": "Rôle mis à jour avec succès",
+    "deleteSuccess": "Rôle supprimé avec succès",
+    "confirmDelete": "Êtes-vous sûr de vouloir supprimer ce rôle ?"
+  },
+  "users": {
+    "title": "Utilisateurs",
+    "description": "Gérer les utilisateurs du système et leurs attributions de groupes",
+    "createTitle": "Créer un utilisateur",
+    "editTitle": "Modifier l'utilisateur",
+    "fields": {
+      "name": "Nom",
+      "firstName": "Prénom",
+      "lastName": "Nom de famille",
+      "email": "Email",
+      "password": "Mot de passe",
+      "confirmPassword": "Confirmer le mot de passe",
+      "groups": "Groupes",
+      "roles": "Rôles",
+      "structures": "Structures",
+      "status": "Statut",
+      "nin": "NIN",
+      "birthdate": "Date de naissance",
+      "birthplace": "Lieu de naissance",
+      "address": "Adresse",
+      "city": "Ville",
+      "country": "Pays",
+      "phone": "Téléphone",
+      "iphone": "iPhone"
+    },
+    "placeholders": {
+      "name": "Entrez le nom de l'utilisateur",
+      "email": "Entrez l'adresse email",
+      "password": "Entrez le mot de passe",
+      "confirmPassword": "Confirmez le mot de passe",
+      "passwordOptional": "Laisser vide pour conserver le mot de passe actuel"
+    },
+    "labels": {
+      "name": "Nom",
+      "email": "Email",
+      "password": "Mot de passe",
+      "confirmPassword": "Confirmer le mot de passe",
+      "groups": "Groupes"
+    },
+    "selectGroups": "Sélectionner les groupes",
+    "selectRoles": "Sélectionner les rôles",
+    "selectStructures": "Sélectionner les structures",
+    "groupsHint": "Attribuer des groupes à cet utilisateur. Les utilisateurs auront tous les rôles de leurs groupes attribués.",
+    "rolesHint": "Attribuer des rôles spécifiques à cet utilisateur.",
+    "structuresHint": "Attribuer des structures organisationnelles à cet utilisateur.",
+    "searchPlaceholder": "Rechercher des utilisateurs...",
+    "nameRequired": "Le nom est obligatoire",
+    "emailRequired": "L'email est obligatoire",
+    "emailInvalid": "Veuillez entrer une adresse email valide",
+    "invalidEmail": "Format d'email invalide",
+    "passwordRequired": "Le mot de passe est obligatoire",
+    "passwordMinLength": "Le mot de passe doit comporter au moins 6 caractères",
+    "passwordMismatch": "Les mots de passe ne correspondent pas",
+    "errorFetch": "Impossible de récupérer les utilisateurs",
+    "errorLoading": "Impossible de charger l'utilisateur",
+    "errorSave": "Impossible d'enregistrer l'utilisateur",
+    "errorDelete": "Impossible de supprimer l'utilisateur",
+    "createSuccess": "Utilisateur créé avec succès",
+    "updateSuccess": "Utilisateur mis à jour avec succès",
+    "deleteSuccess": "Utilisateur supprimé avec succès",
+    "confirmDelete": "Êtes-vous sûr de vouloir supprimer cet utilisateur ?"
+  },
+  "structures": {
+    "title": "Structures Organisationnelles",
+    "description": "Gérer la structure organisationnelle hiérarchique",
+    "createTitle": "Créer une Structure",
+    "editTitle": "Modifier la Structure",
+    "fields": {
+      "label": "Libellé",
+      "code": "Code",
+      "id_parent": "Structure Parent"
+    },
+    "placeholders": {
+      "label": "ex. Directeur",
+      "code": "ex. DIRECTEUR",
+      "id_parent": "Sélectionner la structure parent (optionnel)"
+    },
+    "labels": {
+      "label": "Libellé",
+      "code": "Code",
+      "parent": "Parent"
+    },
+    "newStructure": "Nouvelle Structure",
+    "selectParent": "Sélectionner la structure parent (optionnel)",
+    "noParent": "-",
+    "labelRequired": "Le libellé et le code sont requis",
+    "errorFetch": "Échec du chargement des structures",
+    "errorSave": "Échec de l'enregistrement de la structure",
+    "errorDelete": "Échec de la suppression de la structure",
+    "createSuccess": "Structure créée avec succès",
+    "updateSuccess": "Structure mise à jour avec succès",
+    "deleteSuccess": "Structure supprimée avec succès",
+    "confirmDelete": "Êtes-vous sûr de vouloir supprimer",
+    "edit": "Modifier",
+    "delete": "Supprimer",
+    "cancel": "Annuler",
+    "save": "Enregistrer"
+  },
+  "applications": {
+    "title": "Applications",
+    "description": "Gérer les applications et modules du système",
+    "createTitle": "Créer une application",
+    "editTitle": "Modifier l'application",
+    "fields": {
+      "code": "Code",
+      "label": "Étiquette",
+      "color": "Couleur",
+      "icon": "Icône"
+    },
+    "placeholders": {
+      "code": "ex: admin",
+      "label": "Entrez l'étiquette de l'application",
+      "color": "Sélectionner une couleur",
+      "icon": "Sélectionner une icône"
+    },
+    "labels": {
+      "code": "Code",
+      "label": "Étiquette",
+      "color": "Couleur",
+      "icon": "Icône"
+    },
+    "addLanguage": "Ajouter une langue",
+    "labelPlaceholder": "Entrez l'étiquette",
+    "selectIcon": "Sélectionner une icône",
+    "codeRequired": "Le code est obligatoire",
+    "labelRequired": "Au moins une étiquette de langue est requise",
+    "errorFetch": "Impossible de récupérer les applications",
+    "errorLoading": "Impossible de charger l'application",
+    "errorSave": "Impossible d'enregistrer l'application",
+    "errorDelete": "Impossible de supprimer l'application",
+    "createSuccess": "Application créée avec succès",
+    "updateSuccess": "Application mise à jour avec succès",
+    "deleteSuccess": "Application supprimée avec succès",
+    "confirmDelete": "Êtes-vous sûr de vouloir supprimer cette application ?",
+    "table": {
+      "code": "Code",
+      "label": "Étiquette",
+      "icon": "Icône",
+      "color": "Couleur",
+      "updated": "Dernière mise à jour",
+      "actions": "Actions"
+    },
+    "empty": "Aucune application pour le moment"
   }
 }

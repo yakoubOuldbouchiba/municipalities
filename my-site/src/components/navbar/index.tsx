@@ -6,10 +6,24 @@ import { useTranslation } from 'react-i18next'
 import './Navbar.css'
 import logo from '../../assets/logo.jpg'
 
+interface NavItem {
+  id: number
+  label: Record<string, string>
+  icon: string
+  path: string
+  enabled: boolean
+}
+
+interface NavConfig {
+  items: NavItem[]
+}
+
 const Navbar: React.FC = () => {
   const navigate = useNavigate()
   const { t, i18n } = useTranslation()
   const [lang, setLang] = useState(i18n.language || 'en')
+  const [navItems, setNavItems] = useState<NavItem[]>([])
+  const [loading, setLoading] = useState(true)
   const isRtl = lang === 'ar'
 
   const languages = [
@@ -17,6 +31,26 @@ const Navbar: React.FC = () => {
     { label: '🇫🇷 Français', value: 'fr' },
     { label: '🇩🇿 العربية', value: 'ar' }
   ]
+
+  // Fetch navigation configuration from JSON file
+  useEffect(() => {
+    const fetchNavConfig = async () => {
+      try {
+        const response = await fetch('/nav-config.json')
+        const data: NavConfig = await response.json()
+        // Filter only enabled items
+        const enabledItems = data.items.filter(item => item.enabled)
+        setNavItems(enabledItems)
+      } catch (error) {
+        console.error('Failed to load navigation config:', error)
+        setNavItems([])
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchNavConfig()
+  }, [])
 
   const handleNavigation = (path: string) => {
     window.scrollTo(0, 0)
@@ -34,16 +68,12 @@ const Navbar: React.FC = () => {
     document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr'
   }, [lang])
 
-  const items = [
-    { label: t('home'), icon: 'pi pi-home', command: () => handleNavigation('/') },
-    { label: t('potentials'), icon: 'pi pi-chart-line', command: () => handleNavigation('/potentials') },
-    { label: t('mayor'), icon: 'pi pi-user', command: () => handleNavigation('/mayor') },
-    { label: t('secretaryGeneral'), icon: 'pi pi-users', command: () => handleNavigation('/secretary-general') },
-    { label: t('history'), icon: 'pi pi-book', command: () => handleNavigation('/history') },
-    { label: t('citizen_papers'), icon: 'pi pi-file', command: () => handleNavigation('/papers') },
-    { label: t('state'), icon: 'pi pi-map', command: () => handleNavigation('/state') },
-    { label: t('contact'), icon: 'pi pi-envelope', command: () => handleNavigation('/contact') }
-  ]
+  // Convert nav config to menubar items format
+  const items = navItems.map(navItem => ({
+    label: navItem.label[lang] || navItem.label['en'] || '',
+    icon: navItem.icon,
+    command: () => handleNavigation(navItem.path)
+  }))
 
   const langSwitcher = (
     <div className="lang-switcher">
@@ -74,7 +104,7 @@ const Navbar: React.FC = () => {
           <h1 className="navbar-title">{t('municipality')}</h1>
         </div>
       </div>
-      <Menubar model={items} className={`navbar-menu ${isRtl ? 'rtl-menu' : ''}`} end={langSwitcher} />
+      {!loading && <Menubar model={items} className={`navbar-menu ${isRtl ? 'rtl-menu' : ''}`} end={langSwitcher} />}
     </header>
   )
 }

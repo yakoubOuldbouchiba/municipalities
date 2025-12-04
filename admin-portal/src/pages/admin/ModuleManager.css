@@ -27,14 +27,16 @@
 }
 
 .module-manager .p-datatable .p-datatable-thead > tr > th {
-  background-color: #f3f4f6;
+  background: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%);
+  color: white;
   font-weight: 600;
-  border-bottom: 2px solid #e5e7eb;
+  border: none;
 }
 
 .module-manager .p-dialog .p-dialog-header {
-  background: #f9fafb;
-  border-bottom: 1px solid #e5e7eb;
+  background: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%);
+  color: white;
+  border: none;
 }
 
 .module-manager .p-colorpicker-preview {

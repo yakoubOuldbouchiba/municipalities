@@ -109,6 +109,13 @@ const ImportantNumbersPage: React.FC = () => {
     </div>
   );
 
+  const getLabel = (data: any, lang: string): string => {
+    if (typeof data === 'string') return data;
+    if (typeof data === 'object' && data[lang]) return data[lang];
+    if (typeof data === 'object' && data['en']) return data['en'];
+    return '';
+  };
+
   return (
     <div className="p-4">
       <ConfirmDialog />
@@ -196,7 +203,7 @@ const ImportantNumbersPage: React.FC = () => {
           <div className="text-sm text-gray-500">{t('importantNumbers.empty', 'No important numbers yet')}</div>
         ) : (
           <DataTable value={items} responsiveLayout="scroll">
-            <Column field="label" header={t('importantNumbers.table.label', 'Label')} />
+            <Column field="label" header={t('importantNumbers.table.label', 'Label')} body={(rowData) => getLabel(rowData.label, i18n.language)} />
             <Column field="value" header={t('importantNumbers.table.value', 'Value')} />
             <Column header={t('importantNumbers.table.actions', 'Actions')} body={actionBodyTemplate} style={{ width: '150px' }} />
           </DataTable>

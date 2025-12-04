@@ -7,10 +7,18 @@ import './Sidebar.css';
 const Sidebar: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { currentModule, setCurrentModule, moduleConfig, allModules } = useModule();
 
   const modules = allModules.map(m => m.code as ModuleType);
+
+  const getLabel = (label: any, fallbackKey: string = ''): string => {
+    if (typeof label === 'string') return label;
+    if (typeof label === 'object' && label !== null) {
+      return label[i18n.language] || label['en'] || '';
+    }
+    return fallbackKey ? t(fallbackKey) : '';
+  };
 
   const handleModuleChange = (module: ModuleType) => {
     setCurrentModule(module);
@@ -35,10 +43,10 @@ const Sidebar: React.FC = () => {
                 borderLeftColor:
                   currentModule === module ? moduleData.color : 'transparent',
               }}
-              title={moduleData.label || t(moduleData.nameKey || '')}
+              title={getLabel(moduleData.label, moduleData.nameKey || '')}
             >
               <i className={moduleData.icon}></i>
-              <span>{moduleData.label || t(moduleData.nameKey || '')}</span>
+              <span>{getLabel(moduleData.label, moduleData.nameKey || '')}</span>
             </button>
           );
         })}
@@ -50,7 +58,7 @@ const Sidebar: React.FC = () => {
           <>
             <div className="current-module">
               <i className={moduleConfig.icon} style={{ color: moduleConfig.color }}></i>
-              <span>{moduleConfig.label || t(moduleConfig.nameKey)}</span>
+              <span>{getLabel(moduleConfig.label, moduleConfig.nameKey)}</span>
             </div>
 
             {moduleConfig.navItems.map((item) => (
@@ -60,8 +68,7 @@ const Sidebar: React.FC = () => {
                 className={`sidebar-link ${location.pathname === item.path ? 'active' : ''}`}
               >
                 <i className={`${item.icon} mr-2`}></i>
-                {/* Use label if available (from database), otherwise use labelKey for translation */}
-                {item.label ? item.label : t(item.labelKey)}
+                {getLabel(item.label, item.labelKey)}
               </Link>
             ))}
           </>

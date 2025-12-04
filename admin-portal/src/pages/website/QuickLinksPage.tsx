@@ -113,6 +113,13 @@ const QuickLinksPage: React.FC = () => {
     </a>
   );
 
+  const getLabel = (data: any, lang: string): string => {
+    if (typeof data === 'string') return data;
+    if (typeof data === 'object' && data[lang]) return data[lang];
+    if (typeof data === 'object' && data['en']) return data['en'];
+    return '';
+  };
+
   return (
     <div className="p-4">
       <ConfirmDialog />
@@ -200,7 +207,7 @@ const QuickLinksPage: React.FC = () => {
           <div className="text-sm text-gray-500">{t('quickLinks.empty', 'No quick links yet')}</div>
         ) : (
           <DataTable value={links} responsiveLayout="scroll">
-              <Column field="label" header={t('quickLinks.table.title', 'Title')} />
+              <Column field="label" header={t('quickLinks.table.title', 'Title')} body={(rowData) => getLabel(rowData.label, i18n.language)} />
             <Column header={t('quickLinks.table.url', 'URL')} body={urlBodyTemplate} />
             <Column header={t('quickLinks.table.actions', 'Actions')} body={actionBodyTemplate} style={{ width: '150px' }} />
           </DataTable>

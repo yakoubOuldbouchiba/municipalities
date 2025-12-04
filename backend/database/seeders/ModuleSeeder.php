@@ -45,6 +45,11 @@ class ModuleSeeder extends Seeder
                 'icon' => 'pi pi-window-maximize',
                 'path' => '/admin/applications',
             ],
+            [
+                'label' => json_encode(['en' => 'Structures', 'ar' => 'الهياكل', 'fr' => 'Structures', 'es' => 'Estructuras']),
+                'icon' => 'pi pi-sitemap',
+                'path' => '/admin/structures',
+            ],
         ];
 
         foreach ($adminNavItems as $item) {
