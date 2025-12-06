@@ -8,16 +8,29 @@ use Illuminate\Http\JsonResponse;
 
 class ModuleController extends Controller
 {
-    /**
-     * Get all modules with localization support and their nav items.
-     */
     public function index(Request $request): JsonResponse
     {
         $lang = $request->query('lang', 'en');
+        $user = auth()->user();
+        if (!$user) {
+            return response()->json(['message' => 'Unauthorized'], 401);
+        }
 
-        $modules = Module::with('navItems')->get()->map(function ($module) use ($lang) {
-            // Ensure label is decoded as an array
-            $label = is_array($module->label) ? $module->label : (is_string($module->label) ? json_decode($module->label, true) : []);
+        $userRoles = $user->roles->pluck('id')->toArray();
+        if (empty($userRoles)) {
+            return response()->json([]);
+        }
+
+        $modules = Module::whereHas('roles', function ($query) use ($userRoles) {
+            $query->whereIn('roles.id', $userRoles);
+        })->with(['navItems' => function ($query) use ($userRoles) {
+            $query->whereHas('roles', function ($subQuery) use ($userRoles) {
+                $subQuery->whereIn('roles.id', $userRoles);
+            });
+        }])->get()->map(function ($module) use ($lang) {
+            $label = is_array($module->label) 
+                ? $module->label 
+                : (is_string($module->label) ? json_decode($module->label, true) : []);
             
             return [
                 'id' => $module->id,
@@ -26,8 +39,9 @@ class ModuleController extends Controller
                 'color' => $module->color,
                 'icon' => $module->icon,
                 'navItems' => $module->navItems->map(function ($item) use ($lang) {
-                    // Decode the item label
-                    $itemLabel = is_array($item->label) ? $item->label : (is_string($item->label) ? json_decode($item->label, true) : []);
+                    $itemLabel = is_array($item->label) 
+                        ? $item->label 
+                        : (is_string($item->label) ? json_decode($item->label, true) : []);
                     
                     return [
                         'id' => $item->id,
@@ -44,11 +58,20 @@ class ModuleController extends Controller
         return response()->json($modules);
     }
 
-    /**
-     * Get a single module with full localized object and nav items for editing.
-     */
     public function show(Module $module): JsonResponse
     {
+        $user = auth()->user();
+        if (!$user) {
+            return response()->json(['message' => 'Unauthorized'], 401);
+        }
+
+        $userRoles = $user->roles->pluck('id')->toArray();
+        $hasAccess = $module->roles()->whereIn('roles.id', $userRoles)->exists();
+        
+        if (!$hasAccess) {
+            return response()->json(['message' => 'Unauthorized. Module not accessible.'], 403);
+        }
+
         return response()->json([
             'id' => $module->id,
             'code' => $module->code,
@@ -61,9 +84,6 @@ class ModuleController extends Controller
         ]);
     }
 
-    /**
-     * Create a new module.
-     */
     public function store(Request $request): JsonResponse
     {
         $validated = $request->validate([
@@ -71,15 +91,21 @@ class ModuleController extends Controller
             'label' => 'required|array|min:1',
             'color' => 'nullable|string',
             'icon' => 'nullable|string',
+            'roles' => 'nullable|array',
+            'roles.*' => 'integer|exists:roles,id',
         ]);
 
+        $roles = $validated['roles'] ?? null;
+        unset($validated['roles']);
+
         $module = Module::create($validated);
+        if (!empty($roles)) {
+            $module->roles()->attach($roles);
+        }
+
         return response()->json($module, 201);
     }
 
-    /**
-     * Update an existing module.
-     */
     public function update(Request $request, Module $module): JsonResponse
     {
         $validated = $request->validate([
@@ -87,15 +113,21 @@ class ModuleController extends Controller
             'label' => 'sometimes|array|min:1',
             'color' => 'nullable|string',
             'icon' => 'nullable|string',
+            'roles' => 'nullable|array',
+            'roles.*' => 'integer|exists:roles,id',
         ]);
 
+        $roles = $validated['roles'] ?? null;
+        unset($validated['roles']);
+
         $module->update($validated);
+        if ($roles !== null) {
+            $module->roles()->sync($roles);
+        }
+
         return response()->json($module);
     }
 
-    /**
-     * Delete a module.
-     */
     public function destroy(Module $module): JsonResponse
     {
         $module->delete();

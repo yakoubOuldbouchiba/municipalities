@@ -54,6 +54,15 @@ class RoleSeeder extends Seeder
                 ]
             ],
             [
+                'code' => 'MODULE:superadmin',
+                'label' => [
+                    'en' => 'Super Admin Access',
+                    'ar' => 'وصول المسؤول الأول',
+                    'fr' => 'Accès super administrateur',
+                    'es' => 'Acceso de superadministrador',
+                ]
+            ],
+            [
                 'code' => 'NAV:Events',
                 'label' => [
                     'en' => 'Events Manager',

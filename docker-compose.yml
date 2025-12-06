@@ -15,3 +15,79 @@ services:
     volumes:
       - ./mysql_data:/var/lib/mysql
     command: --default-authentication-plugin=mysql_native_password
+
+  redis:
+    image: redis:7
+    container_name: redis_baladia
+    restart: always
+    ports:
+      - "6379:6379"
+    volumes:
+      - ./redis_data:/data
+    command: ["redis-server", "--appendonly", "yes"]
+
+  # phpMyAdmin for database management
+  phpmyadmin:
+    image: phpmyadmin:latest
+    container_name: phpmyadmin_baladia
+    restart: always
+    ports:
+      - "8080:80"
+    environment:
+      PMA_HOST: baladia-web-db-service
+      PMA_USER: root
+      PMA_PASSWORD: root
+      PMA_PORT: 3306
+    depends_on:
+      - baladia-web-db-service
+
+  # Redis Commander for Redis management
+  redis-commander:
+    image: rediscommander/redis-commander:latest
+    container_name: redis_commander_baladia
+    restart: always
+    ports:
+      - "8001:8081"
+    environment:
+      REDIS_HOSTS: local:redis:6379
+    depends_on:
+      - redis
+
+  # Prometheus for metrics collection
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus_baladia
+    restart: always
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - ./prometheus_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+    networks:
+      - monitoring
+
+  # Grafana for visualization and dashboards
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana_baladia
+    restart: always
+    ports:
+      - "3001:3000"
+    environment:
+      GF_SECURITY_ADMIN_USER: admin
+      GF_SECURITY_ADMIN_PASSWORD: admin
+      GF_INSTALL_PLUGINS: 'grafana-piechart-panel'
+    volumes:
+      - ./grafana_data:/var/lib/grafana
+      - ./grafana/provisioning:/etc/grafana/provisioning:ro
+    depends_on:
+      - prometheus
+    networks:
+      - monitoring
+
+networks:
+  monitoring:
+    driver: bridge

@@ -17,6 +17,7 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\GroupController;
 use App\Http\Controllers\StructureController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\SuperAdminController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -81,7 +82,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/structures/tree', [StructureController::class, 'tree']);
     Route::get('/structures/{structure}', [StructureController::class, 'show']);
 
-    // Modules - Read endpoints (public)
+    // Modules - Read endpoints (protected)
     Route::get('/modules', [ModuleController::class, 'index']);
     Route::get('/modules/{module}', [ModuleController::class, 'show']);
     Route::get('/modules/{moduleId}/nav-items', [NavItemController::class, 'index']);
@@ -170,4 +171,21 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/users', [UserController::class, 'store']);
     Route::put('/users/{user}', [UserController::class, 'update']);
     Route::delete('/users/{user}', [UserController::class, 'destroy']);
+
+    // Super Admin - Database, Redis, System monitoring
+    Route::prefix('superadmin')->group(function () {
+        // Database endpoints
+        Route::get('/databases', [SuperAdminController::class, 'getDatabases']);
+        Route::get('/databases/{database}/tables', [SuperAdminController::class, 'getTables']);
+        Route::get('/databases/{database}/tables/{table}/structure', [SuperAdminController::class, 'getTableStructure']);
+        Route::get('/databases/{database}/tables/{table}/data', [SuperAdminController::class, 'getTableData']);
+        Route::post('/databases/{database}/tables/{table}/optimize', [SuperAdminController::class, 'optimizeTable']);
+        Route::post('/databases/{database}/tables/{table}/repair', [SuperAdminController::class, 'repairTable']);
+
+        // Redis endpoints
+        Route::get('/redis/stats', [SuperAdminController::class, 'getRedisStats']);
+
+        // System endpoints
+        Route::get('/system/info', [SuperAdminController::class, 'getSystemInfo']);
+    });
 });

@@ -55,7 +55,7 @@ class UserSeeder extends Seeder
             $admin->structures()->attach($allStructures->pluck('id')->toArray());
         }
 
-        $this->command->info('✓ Admin user created: admin@baladia.local');
+        $this->command->info('✓ Admin user created: admin@baladia.local (all 25 roles)');
 
         // Create module-specific users based on actual modules
         $modules = Module::all();
@@ -84,15 +84,25 @@ class UserSeeder extends Seeder
                 'active' => true,
             ]);
 
-            // Find role matching module code if exists
-            $moduleRole = $allRoles->firstWhere('code', $module->code);
-            $roleCode = $moduleRole ? $moduleRole->code : 'no role';
+            // Find role matching MODULE:modulecode pattern
+            $moduleRoleCode = 'MODULE:' . $module->code;
+            $moduleRole = $allRoles->firstWhere('code', $moduleRoleCode);
+            $roleIds = [];
             
             if ($moduleRole) {
-                $user->roles()->attach($moduleRole->id);
-            } else if ($allRoles->count() > 0) {
-                // Attach first available role as fallback
-                $user->roles()->attach($allRoles->first()->id);
+                $roleIds[] = $moduleRole->id;
+            }
+
+            // Get all nav items for this module and attach their roles
+            $navItems = $module->navItems()->get();
+            foreach ($navItems as $navItem) {
+                $navItemRoles = $navItem->roles()->select('roles.id')->pluck('roles.id')->toArray();
+                $roleIds = array_merge($roleIds, $navItemRoles);
+            }
+
+            // Attach all collected roles to user
+            if (!empty($roleIds)) {
+                $user->roles()->attach(array_unique($roleIds));
             }
 
             // Attach first group and structure
@@ -103,10 +113,11 @@ class UserSeeder extends Seeder
                 $user->structures()->attach($allStructures->first()->id);
             }
 
-            $this->command->info("✓ Created user for module: {$module->code} ({$roleCode})");
+            $roleCount = count(array_unique($roleIds));
+            $this->command->info("✓ manager_{$module->code}@baladia.local ($roleCount roles)");
         }
 
         $this->command->info('✅ UserSeeder completed successfully!');
-        $this->command->info('Password for all users: password123');
+        $this->command->info('Default password: password123');
     }
 }

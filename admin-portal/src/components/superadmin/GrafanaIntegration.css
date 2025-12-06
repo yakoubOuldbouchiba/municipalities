@@ -1,0 +1,70 @@
+.grafana-integration {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.grafana-info-card,
+.prometheus-info-card {
+  padding: 1.5rem;
+}
+
+.grafana-info-card h5,
+.prometheus-info-card h5 {
+  margin: 0 0 1rem 0;
+  color: #333;
+  font-weight: 600;
+}
+
+.grafana-info-card p,
+.prometheus-info-card p {
+  margin: 0.5rem 0;
+  color: #666;
+  line-height: 1.6;
+}
+
+.grafana-buttons {
+  display: flex;
+  gap: 1rem;
+  margin: 1.5rem 0;
+  flex-wrap: wrap;
+}
+
+.grafana-info {
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #e5e7eb;
+}
+
+.grafana-info strong {
+  color: #333;
+}
+
+.grafana-info code {
+  background: #f3f4f6;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-family: 'Monaco', 'Menlo', monospace;
+  color: #374151;
+}
+
+.grafana-info ul {
+  margin: 0.5rem 0 0 1.5rem;
+  padding: 0;
+  list-style: disc;
+}
+
+.grafana-info li {
+  margin: 0.25rem 0;
+  color: #666;
+}
+
+@media (max-width: 768px) {
+  .grafana-buttons {
+    flex-direction: column;
+  }
+
+  .grafana-buttons button {
+    width: 100%;
+  }
+}

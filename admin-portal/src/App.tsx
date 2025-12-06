@@ -30,6 +30,10 @@ const GroupsPage = lazy(() => import('./pages/admin/GroupsPage'));
 const RolesPage = lazy(() => import('./pages/admin/RolesPage'));
 const ApplicationsPage = lazy(() => import('./pages/admin/ApplicationsPage'));
 const StructuresPage = lazy(() => import('./pages/admin/StructuresPage'));
+const AdminModulesPage = lazy(() => import('./pages/admin/AdminModulesPage'));
+
+// Super Admin pages
+const SuperAdminDashboard = lazy(() => import('./pages/superadmin/SuperAdminDashboard'));
 
 // Claims pages
 const CitizenClaimPage = lazy(() => import('./pages/claims/CitizenClaimPage'));
@@ -47,8 +51,8 @@ const LoadingFallback = () => (
 function App() {
   return (
     <PrimeReactProvider>
-      <ModuleProvider>
-        <BrowserRouter>
+      <BrowserRouter>
+        <ModuleProvider>
           <Routes>
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />
@@ -113,6 +117,28 @@ function App() {
                   <Suspense fallback={<LoadingFallback />}>
                     <RequireAuth>
                       <StructuresPage />
+                    </RequireAuth>
+                  </Suspense>
+                }
+              />
+              <Route
+                path="/admin/modules"
+                element={
+                  <Suspense fallback={<LoadingFallback />}>
+                    <RequireAuth>
+                      <AdminModulesPage />
+                    </RequireAuth>
+                  </Suspense>
+                }
+              />
+
+              {/* Super Admin Module Routes */}
+              <Route
+                path="/admin/superadmin"
+                element={
+                  <Suspense fallback={<LoadingFallback />}>
+                    <RequireAuth>
+                      <SuperAdminDashboard />
                     </RequireAuth>
                   </Suspense>
                 }
@@ -233,8 +259,8 @@ function App() {
               />
             </Route>
           </Routes>
-        </BrowserRouter>
-      </ModuleProvider>
+        </ModuleProvider>
+      </BrowserRouter>
     </PrimeReactProvider>
   );
 }

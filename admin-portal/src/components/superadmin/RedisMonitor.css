@@ -1,0 +1,63 @@
+.redis-monitor {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.redis-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.redis-stat-card {
+  padding: 1rem;
+}
+
+.stat-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.stat-header h5 {
+  margin: 0;
+  color: #333;
+  font-weight: 600;
+}
+
+.stat-value {
+  margin: 0.5rem 0 0 0;
+  font-size: 1.3rem;
+  font-weight: bold;
+  color: #8b5cf6;
+}
+
+.memory-card {
+  padding: 1.5rem;
+}
+
+.memory-card h5 {
+  margin: 0 0 1rem 0;
+  color: #333;
+  font-weight: 600;
+}
+
+.memory-info {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+  font-size: 0.95rem;
+  color: #666;
+}
+
+.memory-percent {
+  font-weight: bold;
+  color: #8b5cf6;
+}
+
+@media (max-width: 768px) {
+  .redis-stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}

@@ -9,32 +9,73 @@ use Illuminate\Http\JsonResponse;
 class NavItemController extends Controller
 {
     /**
-     * Get all nav items for a module with localization support.
+     * Get all nav items for a module with role-based filtering.
      */
     public function indexByModule(Request $request, int $moduleId): JsonResponse
     {
         $lang = $request->query('lang', 'en');
+        
+        // Get authenticated user's roles
+        $user = auth()->user();
+        if (!$user) {
+            return response()->json(['message' => 'Unauthorized'], 401);
+        }
 
-        $navItems = NavItem::where('module_id', $moduleId)->get()->map(function ($item) use ($lang) {
-            return [
-                'id' => $item->id,
-                'module_id' => $item->module_id,
-                'label' => $item->label[$lang] ?? $item->label['en'] ?? '',
-                'icon' => $item->icon,
-                'path' => $item->path,
-                'created_at' => $item->created_at,
-                'updated_at' => $item->updated_at,
-            ];
-        });
+        $userRoles = $user->roles->pluck('id')->toArray();
+        
+        // If user has no roles, return empty array
+        if (empty($userRoles)) {
+            return response()->json([]);
+        }
+
+        // Get nav items filtered by user's roles
+        $navItems = NavItem::where('module_id', $moduleId)
+            ->whereHas('roles', function ($query) use ($userRoles) {
+                $query->whereIn('roles.id', $userRoles);
+            })
+            ->get()
+            ->map(function ($item) use ($lang) {
+                $itemLabel = is_array($item->label) 
+                    ? $item->label 
+                    : (is_string($item->label) ? json_decode($item->label, true) : []);
+                
+                return [
+                    'id' => $item->id,
+                    'module_id' => $item->module_id,
+                    'label' => $itemLabel,
+                    'icon' => $item->icon,
+                    'path' => $item->path,
+                    'created_at' => $item->created_at,
+                    'updated_at' => $item->updated_at,
+                ];
+            });
 
         return response()->json($navItems);
     }
 
     /**
-     * Get a single nav item (returns full localized object for editing).
+     * Get a single nav item with role-based authorization check.
      */
     public function show(NavItem $navItem): JsonResponse
     {
+        $user = auth()->user();
+        if (!$user) {
+            return response()->json(['message' => 'Unauthorized'], 401);
+        }
+
+        $userRoles = $user->roles->pluck('id')->toArray();
+        
+        // Check if user has access to this nav item
+        $hasAccess = $navItem->roles()
+            ->whereIn('roles.id', $userRoles)
+            ->exists();
+        
+        if (!$hasAccess) {
+            return response()->json([
+                'message' => 'Unauthorized. Nav item not accessible.',
+            ], 403);
+        }
+
         return response()->json([
             'id' => $navItem->id,
             'module_id' => $navItem->module_id,
@@ -56,9 +97,19 @@ class NavItemController extends Controller
             'label' => 'required|array|min:1',
             'icon' => 'required|string',
             'path' => 'required|string',
+            'roles' => 'nullable|array',
+            'roles.*' => 'integer|exists:roles,id',
         ]);
 
+        $roles = $validated['roles'] ?? null;
+        unset($validated['roles']);
+
         $navItem = NavItem::create($validated);
+        
+        if (!empty($roles)) {
+            $navItem->roles()->attach($roles);
+        }
+
         return response()->json($navItem, 201);
     }
 
@@ -72,9 +123,19 @@ class NavItemController extends Controller
             'label' => 'sometimes|array|min:1',
             'icon' => 'sometimes|string',
             'path' => 'sometimes|string',
+            'roles' => 'nullable|array',
+            'roles.*' => 'integer|exists:roles,id',
         ]);
 
+        $roles = $validated['roles'] ?? null;
+        unset($validated['roles']);
+
         $navItem->update($validated);
+        
+        if ($roles !== null) {
+            $navItem->roles()->sync($roles);
+        }
+
         return response()->json($navItem);
     }
 

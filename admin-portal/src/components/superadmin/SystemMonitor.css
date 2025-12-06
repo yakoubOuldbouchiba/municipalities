@@ -1,0 +1,87 @@
+.system-monitor {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.monitor-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1rem;
+}
+
+.monitor-card {
+  padding: 1.5rem;
+}
+
+.monitor-card h5 {
+  margin: 0 0 1rem 0;
+  color: #333;
+  font-weight: 600;
+}
+
+.monitor-value {
+  margin: 0.5rem 0;
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.cpu-card {
+  border-top: 4px solid #3b82f6;
+}
+
+.cpu-card .monitor-value {
+  color: #3b82f6;
+}
+
+.memory-card {
+  border-top: 4px solid #8b5cf6;
+}
+
+.memory-card .monitor-value {
+  color: #8b5cf6;
+}
+
+.disk-card {
+  border-top: 4px solid #f59e0b;
+}
+
+.disk-card .monitor-value {
+  color: #f59e0b;
+}
+
+.uptime-card {
+  border-top: 4px solid #10b981;
+}
+
+.uptime-card .monitor-value {
+  color: #10b981;
+}
+
+.load-card {
+  border-top: 4px solid #ef4444;
+}
+
+.load-card .monitor-value {
+  color: #ef4444;
+}
+
+.process-card {
+  border-top: 4px solid #ec4899;
+}
+
+.process-card .monitor-value {
+  color: #ec4899;
+}
+
+.load-label {
+  margin: 0.5rem 0 0 0;
+  font-size: 0.85rem;
+  color: #999;
+}
+
+@media (max-width: 768px) {
+  .monitor-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}

@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
+import axiosClient from '../api/axiosClient';
 
 interface NavItem {
   id: number;
@@ -23,6 +25,7 @@ const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
 
 export const useModules = () => {
   const { i18n } = useTranslation();
+  const navigate = useNavigate();
   const [modules, setModules] = useState<Module[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -43,22 +46,32 @@ export const useModules = () => {
           return;
         }
 
-        const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:8000/api';
-        const response = await fetch(`${apiUrl}/modules?lang=${lang}`);
+        const response = await axiosClient.get(`/modules?lang=${lang}`);
         
-        if (!response.ok) {
-          throw new Error(`Failed to fetch modules: ${response.status}`);
-        }
-        
-        const data = await response.json();
+        const data = response.data;
         
         // Update cache
         modulesCache.set(cacheKey, { data, timestamp: Date.now() });
         
         setModules(data);
         setError(null);
-      } catch (err) {
+      } catch (err: any) {
         console.error('Error fetching modules:', err);
+        
+        // Handle 401 - redirect to login
+        if (err.response?.status === 401) {
+          navigate('/login');
+          return;
+        }
+        
+        // Handle 403 - no access to modules
+        if (err.response?.status === 403) {
+          console.warn('User does not have access to any modules');
+          setModules([]);
+          setError(null);
+          return;
+        }
+        
         setError(err instanceof Error ? err.message : 'An error occurred');
         setModules([]);
       } finally {
@@ -67,7 +80,7 @@ export const useModules = () => {
     };
 
     fetchModules();
-  }, [i18n.language]);
+  }, [i18n.language, navigate]);
 
   return { modules, loading, error };
 };
@@ -76,6 +89,7 @@ export const useModules = () => {
 const moduleByIdCache = new Map<string, { data: Module; timestamp: number }>();
 
 export const useModuleById = (moduleId: string | number) => {
+  const navigate = useNavigate();
   const [module, setModule] = useState<Module | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -97,20 +111,30 @@ export const useModuleById = (moduleId: string | number) => {
           return;
         }
 
-        const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:8000/api';
-        const response = await fetch(`${apiUrl}/modules/${moduleId}`);
+        const response = await axiosClient.get(`/modules/${moduleId}`);
         
-        if (!response.ok) {
-          throw new Error(`Failed to fetch module: ${response.status}`);
-        }
-        
-        const data = await response.json();
+        const data = response.data;
         moduleByIdCache.set(cacheKey, { data, timestamp: Date.now() });
         
         setModule(data);
         setError(null);
-      } catch (err) {
+      } catch (err: any) {
         console.error('Error fetching module:', err);
+        
+        // Handle 401 - redirect to login
+        if (err.response?.status === 401) {
+          navigate('/login');
+          return;
+        }
+        
+        // Handle 403 - no access to this module
+        if (err.response?.status === 403) {
+          console.warn('User does not have access to this module');
+          setError('You do not have access to this module');
+          setModule(null);
+          return;
+        }
+        
         setError(err instanceof Error ? err.message : 'An error occurred');
         setModule(null);
       } finally {
@@ -119,7 +143,7 @@ export const useModuleById = (moduleId: string | number) => {
     };
 
     fetchModule();
-  }, [moduleId]);
+  }, [moduleId, navigate]);
 
   return { module, loading, error };
 };
@@ -129,6 +153,7 @@ const navItemsCache = new Map<string, { data: NavItem[]; timestamp: number }>();
 
 export const useNavItems = (moduleId: number) => {
   const { i18n } = useTranslation();
+  const navigate = useNavigate();
   const [navItems, setNavItems] = useState<NavItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -151,20 +176,30 @@ export const useNavItems = (moduleId: number) => {
           return;
         }
 
-        const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:8000/api';
-        const response = await fetch(`${apiUrl}/modules/${moduleId}/nav-items?lang=${lang}`);
+        const response = await axiosClient.get(`/modules/${moduleId}/nav-items?lang=${lang}`);
         
-        if (!response.ok) {
-          throw new Error(`Failed to fetch nav items: ${response.status}`);
-        }
-        
-        const data = await response.json();
+        const data = response.data;
         navItemsCache.set(cacheKey, { data, timestamp: Date.now() });
         
         setNavItems(data);
         setError(null);
-      } catch (err) {
+      } catch (err: any) {
         console.error('Error fetching nav items:', err);
+        
+        // Handle 401 - redirect to login
+        if (err.response?.status === 401) {
+          navigate('/login');
+          return;
+        }
+        
+        // Handle 403 - no access to nav items
+        if (err.response?.status === 403) {
+          console.warn('User does not have access to any nav items in this module');
+          setNavItems([]);
+          setError(null);
+          return;
+        }
+        
         setError(err instanceof Error ? err.message : 'An error occurred');
         setNavItems([]);
       } finally {
@@ -173,7 +208,7 @@ export const useNavItems = (moduleId: number) => {
     };
 
     fetchNavItems();
-  }, [moduleId, i18n.language]);
+  }, [moduleId, i18n.language, navigate]);
 
   return { navItems, loading, error };
 };
