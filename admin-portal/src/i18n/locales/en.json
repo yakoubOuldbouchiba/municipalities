@@ -761,7 +761,10 @@
     "viewMetrics": "View Metrics",
     "fetchError": "Failed to fetch databases",
     "fetchTablesError": "Failed to fetch tables",
-    "fetchDataError": "Failed to fetch table data"
+    "fetchDataError": "Failed to fetch table data",
+    "dashboard": "Super Admin Dashboard",
+    "description": "Access monitoring and management tools",
+    "noTools": "No tools available"
   },
   "common": {
     "loading": "Loading...",

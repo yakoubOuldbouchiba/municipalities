@@ -134,7 +134,7 @@ function App() {
 
               {/* Super Admin Module Routes */}
               <Route
-                path="/admin/superadmin"
+                path="/admin/tools"
                 element={
                   <Suspense fallback={<LoadingFallback />}>
                     <RequireAuth>

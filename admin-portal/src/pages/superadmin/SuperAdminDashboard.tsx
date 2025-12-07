@@ -1,43 +1,92 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Card } from 'primereact/card';
 import { Button } from 'primereact/button';
+import { ProgressSpinner } from 'primereact/progressspinner';
+
 import './SuperAdminDashboard.css';
 
-const SuperAdminDashboard = () => {
-  const { t } = useTranslation();
-  const [activeTab, setActiveTab] = useState(0);
+interface Tool {
+  id: number;
+  code: string;
+  label: Record<string, string>;
+  description: Record<string, string>;
+  icon: string;
+  url: string;
+  color: string;
+  order: number;
+}
 
-  const tools = [
-    {
-      title: 'phpMyAdmin',
-      icon: 'pi pi-database',
-      description: 'Database management tool',
-      url: 'http://localhost:8080',
-      color: '#3B82F6',
-    },
-    {
-      title: 'Grafana',
-      icon: 'pi pi-chart-line',
-      description: 'System monitoring and visualization',
-      url: 'http://localhost:3001',
-      color: '#F59E0B',
-    },
-    {
-      title: 'Prometheus',
-      icon: 'pi pi-server',
-      description: 'Metrics collection and querying',
-      url: 'http://localhost:9090',
-      color: '#EC4899',
-    },
-    {
-      title: 'Redis Commander',
-      icon: 'pi pi-circle',
-      description: 'Redis cache management',
-      url: 'http://localhost:8001',
-      color: '#EF4444',
-    },
-  ];
+const SuperAdminDashboard = () => {
+  const { t, i18n } = useTranslation();
+  const [tools, setTools] = useState<Tool[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchTools = async () => {
+      try {
+        setLoading(true);
+        const response = await fetch('/api/tools', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem('token')}`,
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        
+        if (data.success && data.data) {
+          setTools(data.data);
+          setError(null);
+        } else {
+          throw new Error('Invalid response format');
+        }
+      } catch (err) {
+        console.error('Error fetching tools:', err);
+        setError(err instanceof Error ? err.message : 'Failed to fetch tools');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchTools();
+  }, []);
+
+  const getToolLabel = (tool: Tool): string => {
+    return tool.label[i18n.language] || tool.label['en'] || tool.code;
+  };
+
+  const getToolDescription = (tool: Tool): string => {
+    return tool.description[i18n.language] || tool.description['en'] || '';
+  };
+
+  if (loading) {
+    return (
+      <div className="superadmin-dashboard loading-container">
+        <ProgressSpinner />
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="superadmin-dashboard error-container">
+        <div className="dashboard-header">
+          <h1>{t('superadmin.dashboard', 'Super Admin Dashboard')}</h1>
+        </div>
+        <Card className="error-card">
+          <p className="error-message">{error}</p>
+        </Card>
+      </div>
+    );
+  }
 
   return (
     <div className="superadmin-dashboard">
@@ -47,23 +96,29 @@ const SuperAdminDashboard = () => {
       </div>
 
       <div className="tools-grid">
-        {tools.map((tool, index) => (
-          <Card key={index} className="tool-card">
-            <div className="tool-header" style={{ borderTopColor: tool.color }}>
-              <i className={`${tool.icon} tool-icon`}></i>
-              <h3>{tool.title}</h3>
-            </div>
-            <p className="tool-description">{tool.description}</p>
-            <div className="tool-actions">
-              <Button
-                label="Open"
-                icon="pi pi-external-link"
-                className="p-button-sm"
-                onClick={() => window.open(tool.url, '_blank')}
-              />
-            </div>
+        {tools.length > 0 ? (
+          tools.map((tool) => (
+            <Card key={tool.id} className="tool-card">
+              <div className="tool-header" style={{ borderTopColor: tool.color }}>
+                <i className={`${tool.icon} tool-icon`}></i>
+                <h3>{getToolLabel(tool)}</h3>
+              </div>
+              <p className="tool-description">{getToolDescription(tool)}</p>
+              <div className="tool-actions">
+                <Button
+                  label="Open"
+                  icon="pi pi-external-link"
+                  className="p-button-sm"
+                  onClick={() => window.open(tool.url, '_blank')}
+                />
+              </div>
+            </Card>
+          ))
+        ) : (
+          <Card className="no-tools-card">
+            <p>{t('superadmin.noTools', 'No tools available')}</p>
           </Card>
-        ))}
+        )}
       </div>
     </div>
   );

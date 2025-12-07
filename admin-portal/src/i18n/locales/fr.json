@@ -689,5 +689,10 @@
       "actions": "Actions"
     },
     "empty": "Aucune application pour le moment"
+  },
+  "superadmin": {
+    "dashboard": "Tableau de bord Super Admin",
+    "description": "Accédez aux outils de surveillance et de gestion",
+    "noTools": "Aucun outil disponible"
   }
 }

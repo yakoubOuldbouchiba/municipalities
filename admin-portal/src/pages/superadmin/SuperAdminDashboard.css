@@ -99,6 +99,41 @@
   padding: 1rem;
 }
 
+/* Loading and Error States */
+.superadmin-dashboard.loading-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 600px;
+}
+
+.superadmin-dashboard.error-container {
+  padding: 2rem;
+}
+
+.error-card {
+  background: #fee2e2;
+  border: 1px solid #fca5a5;
+  border-radius: 8px;
+}
+
+.error-message {
+  color: #991b1b;
+  margin: 0;
+  font-size: 1rem;
+}
+
+.no-tools-card {
+  text-align: center;
+  padding: 3rem;
+}
+
+.no-tools-card p {
+  color: #6b7280;
+  font-size: 1.1rem;
+  margin: 0;
+}
+
 iframe {
   display: block;
 }

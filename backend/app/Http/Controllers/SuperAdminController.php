@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Redis;
 use Illuminate\Http\Request;
 
 class SuperAdminController extends Controller
@@ -100,7 +101,8 @@ class SuperAdminController extends Controller
     public function getRedisStats()
     {
         try {
-            $redis = \Redis::instance();
+            $redis = Redis::connection();
+            $info = $redis->info();
             $info = $redis->info();
 
             return response()->json([

@@ -15,7 +15,6 @@ Homestead.json
 .phpunit.result.cache
 .php_cs.cache
 /.vscode
-/.DS_Store
 
 # Laravel logs & cache
 /storage/logs/*
@@ -32,121 +31,89 @@ Homestead.json
 # React Frontend (Admin Portal)
 # =====================================
 
-# Dependencies
 admin-portal/node_modules/
+admin-portal/build/
+admin-portal/dist/
 admin-portal/.env
 admin-portal/.env.local
 admin-portal/.env.development.local
 admin-portal/.env.production.local
 admin-portal/.env.test.local
-
-# Build output
-admin-portal/build/
-admin-portal/dist/
-
-# Logs
 admin-portal/npm-debug.log*
 admin-portal/yarn-debug.log*
 admin-portal/yarn-error.log*
 admin-portal/pnpm-debug.log*
 
-# Editor directories and files
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
-*.sw?
+# =====================================
+# React Frontend (My Site / Vite)
+# =====================================
+
+my-site/node_modules/
+my-site/dist/
+my-site/.env
+my-site/.env.local
+my-site/.env.development.local
+my-site/.env.production.local
+my-site/npm-debug.log*
+my-site/yarn-debug.log*
+my-site/yarn-error.log*
+my-site/pnpm-debug.log*
 
 # =====================================
 # Docker & Database Data
 # =====================================
 
 mysql_data/
-postgres_data/
 redis_data/
 grafana_data/
 prometheus_data/
 docker-compose.override.yml
 
 # =====================================
-# IDE & Editor Files
+# System & Editor Files
 # =====================================
 
 .DS_Store
 Thumbs.db
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
 *.swp
-*.swo
-*~
+.vscode/*
 .vscode/
+!.vscode/extensions.json
+
+# =====================================
+# IDE & Temporary Files
+# =====================================
+
 .idea/
 *.iml
-
-# =====================================
-# OS Files
-# =====================================
-
-.DS_Store
-.DS_Store?
-._*
-.Spotlight-V100
-.Trashes
-ehthumbs.db
-desktop.ini
-
-# =====================================
-# Temporary & Generated Files
-# =====================================
-
 *.log
-*.sqlite
-*.db
-.cache/
-.temp/
-tmp/
+*.pem
+*.key
 
 # =====================================
-# Documentation (Development Only)
+# Documentation (Optional - Generated)
 # =====================================
 
-README_*.md
 SUPERADMIN_*.md
-SUPERADMIN_*.txt
-IMPLEMENTATION_*.md
-ARCHITECTURE_*.md
-COMPLETION_*.md
-TRANSLATION_*.md
-MISSING_*.md
-VALIDATION_*.md
-MODULE_*.md
-I18N_*.md
-UI_*.md
-CSS_*.md
-SETUP_*.md
-FRENCH_*.md
-MULTILINGUAL_*.md
-GROUP_*.md
-REACT_*.md
-PROJECT_*.txt
+README_SUPERADMIN.md
+COMPLETION_SUMMARY.md
+IMPLEMENTATION_SUMMARY.md
+PROJECT_STATUS.txt
+VALIDATION_CHECKLIST.md
+TRANSLATION_KEYS_*.md
+*_COMPLETE.md
+*_REPORT.md
 
 # =====================================
-# Node.js
+# Package Lock Files (Optional)
 # =====================================
 
-node_modules/
-npm-debug.log
-yarn-error.log
-package-lock.json
-yarn.lock
-
-# =====================================
-# Python (if using any)
-# =====================================
-
-__pycache__/
-*.py[cod]
-*$py.class
-*.so
-.Python
-env/
-venv/
-ENV/
+# Uncomment if you want to ignore lock files
+# package-lock.json
+# yarn.lock
+# composer.lock

@@ -660,5 +660,10 @@
       "actions": "Acciones"
     },
     "empty": "Sin aplicaciones por ahora"
+  },
+  "superadmin": {
+    "dashboard": "Panel de Control del Administrador",
+    "description": "Acceder a herramientas de monitoreo y gestión",
+    "noTools": "Sin herramientas disponibles"
   }
 }
