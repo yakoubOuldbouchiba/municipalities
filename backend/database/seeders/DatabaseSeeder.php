@@ -22,6 +22,7 @@ class DatabaseSeeder extends Seeder
         $this->call(RoleSeeder::class);          // Run RoleSeeder FIRST
         $this->call(ModuleSeeder::class);        // Then ModuleSeeder (attaches roles)
         $this->call(SuperAdminModuleSeeder::class);  // Super Admin Module
+        $this->call(ToolSeeder::class);          // Admin tools (phpMyAdmin, Grafana, etc.)
         $this->call(GroupSeeder::class);
         $this->call(StructureSeeder::class);
         $this->call(QuickLinkSeeder::class);

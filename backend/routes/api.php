@@ -18,6 +18,7 @@ use App\Http\Controllers\GroupController;
 use App\Http\Controllers\StructureController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\SuperAdminController;
+use App\Http\Controllers\Api\ToolController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -86,6 +87,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/modules', [ModuleController::class, 'index']);
     Route::get('/modules/{module}', [ModuleController::class, 'show']);
     Route::get('/modules/{moduleId}/nav-items', [NavItemController::class, 'index']);
+
+    // Tools - Read endpoints (protected, role-based)
+    Route::get('/tools', [ToolController::class, 'index']);
 
     // Users - Read endpoints (public)
     Route::get('/users', [UserController::class, 'index']);

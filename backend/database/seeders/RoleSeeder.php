@@ -54,12 +54,12 @@ class RoleSeeder extends Seeder
                 ]
             ],
             [
-                'code' => 'MODULE:superadmin',
+                'code' => 'MODULE:admin-tools',
                 'label' => [
-                    'en' => 'Super Admin Access',
-                    'ar' => 'وصول المسؤول الأول',
-                    'fr' => 'Accès super administrateur',
-                    'es' => 'Acceso de superadministrador',
+                    'en' => 'Admin Tools Access',
+                    'ar' => 'الوصول إلى أدوات الإدارة',
+                    'fr' => 'Accès aux outils admin',
+                    'es' => 'Acceso a herramientas de administración',
                 ]
             ],
             [
