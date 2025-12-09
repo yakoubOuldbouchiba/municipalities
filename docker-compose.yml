@@ -15,6 +15,13 @@ services:
     volumes:
       - ./mysql_data:/var/lib/mysql
     command: --default-authentication-plugin=mysql_native_password
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   redis:
     image: redis:7
@@ -25,6 +32,13 @@ services:
     volumes:
       - ./redis_data:/data
     command: ["redis-server", "--appendonly", "yes"]
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   # phpMyAdmin for database management
   phpmyadmin:
@@ -39,7 +53,10 @@ services:
       PMA_PASSWORD: root
       PMA_PORT: 3306
     depends_on:
-      - baladia-web-db-service
+      baladia-web-db-service:
+        condition: service_healthy
+    networks:
+      - app-network
 
   # Redis Commander for Redis management
   redis-commander:
@@ -51,7 +68,10 @@ services:
     environment:
       REDIS_HOSTS: local:redis:6379
     depends_on:
-      - redis
+      redis:
+        condition: service_healthy
+    networks:
+      - app-network
 
   # Prometheus for metrics collection
   prometheus:
@@ -88,6 +108,116 @@ services:
     networks:
       - monitoring
 
+  # Nginx Reverse Proxy
+  baladia-nginx:
+    image: yakoubouldbouchiba/baladia-nginx:latest
+    container_name: baladia_nginx
+    restart: always
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/conf.d/app.conf:ro
+    depends_on:
+      baladia-api:
+        condition: service_started
+      baladia-admin:
+        condition: service_started
+      baladia-site:
+        condition: service_started
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  # Laravel Backend API (using pre-built Docker Hub image)
+  baladia-api:
+    image: baladia-api:local
+    container_name: baladia_api
+    restart: always
+    expose:
+      - "9000"
+    environment:
+      APP_ENV: production
+      APP_DEBUG: "true"
+      APP_KEY: base64:Eby8vdAQZ5XKKMAK527ZrRm763DJjNaps9qP5eW05j0=
+      DB_HOST: baladia-web-db-service
+      DB_PORT: 3306
+      DB_DATABASE: baladia-web
+      DB_USERNAME: user
+      DB_PASSWORD: admin
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      MEMCACHED_HOST: memcached
+      MAIL_HOST: mailpit
+      MAIL_PORT: 1025
+    volumes:
+      - ./backend/storage:/app/storage
+      - ./backend/bootstrap/cache:/app/bootstrap/cache
+    depends_on:
+      baladia-web-db-service:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/health || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # Admin Portal (React) - using pre-built Docker Hub image
+  baladia-admin:
+    image: yakoubouldbouchiba/baladia-admin:latest
+    container_name: baladia_admin
+    restart: always
+    expose:
+      - "3000"
+    environment:
+      REACT_APP_API_URL: http://baladia-api:9000
+    depends_on:
+      baladia-api:
+        condition: service_started
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:3000"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Public Website (Vite) - using pre-built Docker Hub image
+  baladia-site:
+    image: yakoubouldbouchiba/baladia-site:latest
+    container_name: baladia_site
+    restart: always
+    expose:
+      - "80"
+    environment:
+      VITE_API_URL: http://baladia-api:9000
+    depends_on:
+      baladia-api:
+        condition: service_started
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:80"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
 networks:
   monitoring:
     driver: bridge
+  app-network:
+    driver: bridge
+
+volumes:
+  mysql_data:
+  redis_data:
+  prometheus_data:
+  grafana_data:

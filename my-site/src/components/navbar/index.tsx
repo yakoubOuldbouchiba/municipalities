@@ -3,7 +3,7 @@ import { Menubar } from 'primereact/menubar'
 import { Dropdown } from 'primereact/dropdown'
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import './Navbar.css'
+import './navbar.css'
 import logo from '../../assets/logo.jpg'
 
 interface NavItem {

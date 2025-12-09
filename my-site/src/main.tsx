@@ -14,9 +14,12 @@ import 'primeflex/primeflex.css'
 import './theme.css'
 import './index.css'
 
+// Use VITE_BASENAME from environment, defaults to empty string for local dev
+const basename = import.meta.env.VITE_BASENAME || ''
+
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <BrowserRouter>
+    <BrowserRouter basename={basename}>
       <App />
     </BrowserRouter>
   </React.StrictMode>

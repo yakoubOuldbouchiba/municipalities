@@ -1,0 +1,16 @@
+vendor
+node_modules
+storage/logs/*
+storage/framework/sessions/*
+storage/framework/views/*
+storage/framework/cache/*
+bootstrap/cache/*
+.git
+.gitignore
+.env
+.env.*.local
+.DS_Store
+.idea
+.vscode
+*.log
+tests

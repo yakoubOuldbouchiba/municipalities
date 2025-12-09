@@ -3,9 +3,6 @@
 namespace Database\Seeders;
 
 use App\Models\Role;
-use App\Models\Module;
-use App\Models\NavItem;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class RoleSeeder extends Seeder

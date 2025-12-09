@@ -4,7 +4,7 @@ import { Button } from 'primereact/button'
 import { motion } from 'framer-motion'
 import { useTranslation } from 'react-i18next'
 import HistoryGeo from '../../components/history-geo/HistoryGeo'
-import './Home.css'
+import './home.css'
 import api from '../../lib/api'
 
 const Home: React.FC = () => {

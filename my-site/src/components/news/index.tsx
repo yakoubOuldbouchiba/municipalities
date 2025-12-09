@@ -3,7 +3,7 @@ import { Carousel } from 'primereact/carousel'
 import { useTranslation } from 'react-i18next'
 import MediaCard from '../media-card'
 import api from '../../lib/api'
-import './News.css'
+import './news.css'
 
 interface NewsItem {
   id: number
