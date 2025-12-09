@@ -1,8 +1,8 @@
 import axios from 'axios';
 
-// Read API base URL from Vite env var VITE_API_URL with a safe fallback.
-// Vite exposes env vars on import.meta.env and requires the VITE_ prefix for client-side usage.
-const baseURL = (import.meta as any).env?.VITE_API_URL ?? 'http://localhost:8000/api';
+// Read API base URL from React Create App env var REACT_APP_API_URL with a safe fallback.
+// React Create App exposes env vars on process.env and requires the REACT_APP_ prefix for client-side usage.
+const baseURL = process.env.REACT_APP_API_URL ?? 'http://localhost/api';
 
 // Derive API root (strip a trailing /api) so we can call sanctum's csrf endpoint
 // which is registered at /sanctum/csrf-cookie (not under /api).

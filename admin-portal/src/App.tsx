@@ -49,9 +49,12 @@ const LoadingFallback = () => (
 
 
 function App() {
+  // Use REACT_APP_BASENAME from environment, defaults to empty string for local dev
+  const basename = process.env.REACT_APP_BASENAME || '';
+  
   return (
     <PrimeReactProvider>
-      <BrowserRouter>
+      <BrowserRouter basename={basename}>
         <ModuleProvider>
           <Routes>
             <Route path="/login" element={<LoginPage />} />
