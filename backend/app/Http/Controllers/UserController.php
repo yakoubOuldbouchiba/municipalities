@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Jobs\SendWelcomeEmail;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 
 
@@ -65,12 +67,15 @@ class UserController extends Controller
             'roles.*' => 'integer|exists:roles,id',
         ]);
 
+        // Store plain password for email before hashing
+        $plainPassword = $validated['password'];
+
         $user = User::create([
             'firstname' => $validated['firstname'],
             'lastname' => $validated['lastname'],
             'name' => $validated['name'],
             'email' => $validated['email'],
-            'password' => $validated['password'],
+            'password' => Hash::make($validated['password']),
             'birthdate' => $validated['birthdate'] ?? null,
             'birthplace' => $validated['birthplace'] ?? null,
             'nin' => $validated['nin'] ?? null,
@@ -80,7 +85,7 @@ class UserController extends Controller
             'photo' => $validated['photo'] ?? null,
             'address' => $validated['address'] ?? null,
             'active' => $validated['active'] ?? true,
-        ]   );
+        ]);
 
         // Sync roles, groups, and structures if provided
         if(isset($validated['roles'])) {
@@ -92,6 +97,9 @@ class UserController extends Controller
         if(isset($validated['structures'])) {
             $user->structures()->sync($validated['structures']);
         }
+
+        // Dispatch async welcome email with password
+        SendWelcomeEmail::dispatch($user, $plainPassword);
 
         return response()->json($user, 201);
 

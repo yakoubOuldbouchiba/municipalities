@@ -9,6 +9,8 @@ storage/*.key
 .env
 .env.backup
 .env.local
+.env.docker
+.env.production
 Homestead.yaml
 Homestead.json
 .idea

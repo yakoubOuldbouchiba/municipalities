@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\SendPasswordResetEmail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\DB;
 
 class PasswordResetController extends Controller
 {
@@ -13,11 +15,33 @@ class PasswordResetController extends Controller
     {
         $request->validate(['email' => 'required|email']);
 
-        $status = Password::sendResetLink($request->only('email'));
+        $email = $request->email;
 
-        return $status === Password::RESET_LINK_SENT
-            ? response()->json(['message' => 'Reset link sent to your email'])
-            : response()->json(['message' => 'Unable to send reset link'], 400);
+        // Check if email exists
+        $userExists = DB::table('users')->where('email', $email)->exists();
+        if (!$userExists) {
+            return response()->json(['message' => 'Email not found'], 404);
+        }
+
+        // Generate reset token
+        $token = Str::random(64);
+
+        // Store token in database
+        DB::table('password_reset_tokens')->updateOrInsert(
+            ['email' => $email],
+            [
+                'token' => Hash::make($token),
+                'created_at' => now(),
+            ]
+        );
+
+        // Generate reset URL
+        $resetUrl = env('FRONTEND_URL', 'http://localhost:3000') . '/reset-password?token=' . $token . '&email=' . urlencode($email);
+
+        // Dispatch async job
+        SendPasswordResetEmail::dispatch($email, $token, $resetUrl);
+
+        return response()->json(['message' => 'Reset link sent to your email']);
     }
 
     public function resetPassword(Request $request)

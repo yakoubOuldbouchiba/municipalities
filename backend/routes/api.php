@@ -83,9 +83,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/structures/tree', [StructureController::class, 'tree']);
     Route::get('/structures/{structure}', [StructureController::class, 'show']);
 
-    // Modules - Read endpoints (protected)
-    Route::get('/modules', [ModuleController::class, 'index']);
-    Route::get('/modules/{module}', [ModuleController::class, 'show']);
+    // Modules - Nav items only (protected)
     Route::get('/modules/{moduleId}/nav-items', [NavItemController::class, 'index']);
 
     // Tools - Read endpoints (protected, role-based)
@@ -147,6 +145,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('/papers/{paper}', [PaperController::class, 'destroy']);
 
     // Modules CRUD - Write operations only
+    // Private modules endpoints (needed for all pages including registration)
+    Route::get('/modules', [ModuleController::class, 'index']);
+    Route::get('/modules/{module}', [ModuleController::class, 'show']);
     Route::post('/modules', [ModuleController::class, 'store']);
     Route::put('/modules/{module}', [ModuleController::class, 'update']);
     Route::delete('/modules/{module}', [ModuleController::class, 'destroy']);

@@ -13,7 +13,7 @@ RUN npm ci && npm install react-qr-code
 COPY . .
 
 # Use production env for Docker build
-RUN cp .env.production .env
+RUN cp .env.docker .env
 
 # Modify tsconfig to skip unused variable checks
 RUN sed -i 's/"noUnusedLocals": true/"noUnusedLocals": false/g' tsconfig.app.json && \

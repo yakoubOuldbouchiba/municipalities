@@ -15,7 +15,7 @@ RUN npm ci --only=production && npm install
 COPY . .
 
 # Use production .env for Docker build (Nginx proxy at localhost/api)
-RUN cp .env .env.docker
+RUN cp .env.docker .env
 
 # Use BUILD_ID to ensure build always runs
 RUN echo "Build ID: $BUILD_ID" && npm run build

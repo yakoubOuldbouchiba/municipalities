@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Casts\DoubleEncodedJson;
+use App\Events\UserCreated;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -61,6 +62,12 @@ class User extends Authenticatable implements Auditable
         'lastname' => DoubleEncodedJson::class,
         'birthplace' => DoubleEncodedJson::class,
     ];
+
+
+    protected $dispatchesEvents = [
+        'created' => UserCreated::class,
+    ];
+
 
     public function roles()
     {

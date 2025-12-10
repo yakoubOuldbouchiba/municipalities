@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Jobs\SendWelcomeEmail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
@@ -18,11 +19,23 @@ class AuthController extends Controller
             'password' => 'required|min:6|confirmed'
         ]);
 
+        $plainPassword = $validated['password'];
+
         $user = User::create([
             'name' => $validated['name'],
             'email' => $validated['email'],
             'password' => Hash::make($validated['password']),
+            'firstname' => json_encode(['en' => $validated['name']]),
+            'lastname' => json_encode(['en' => '']),
+            'birthdate' => date('Y-m-d'),
+            'birthplace' => 'Unknown',
+            'nin' => uniqid(),
+            'gender' => 'male',
+            'address' => json_encode(['en' => '']),
         ]);
+
+        // Dispatch async email job with password
+        SendWelcomeEmail::dispatch($user, $plainPassword);
 
         return response()->json(['message' => 'User registered successfully'], 201);
     }

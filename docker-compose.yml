@@ -110,7 +110,7 @@ services:
 
   # Nginx Reverse Proxy
   baladia-nginx:
-    image: yakoubouldbouchiba/baladia-nginx:latest
+    image: baladia-nginx:feature-mails
     container_name: baladia_nginx
     restart: always
     ports:
@@ -134,7 +134,7 @@ services:
 
   # Laravel Backend API (using pre-built Docker Hub image)
   baladia-api:
-    image: baladia-api:local
+    image: baladia-api:feature-mails
     container_name: baladia_api
     restart: always
     expose:
@@ -151,8 +151,6 @@ services:
       REDIS_HOST: redis
       REDIS_PORT: 6379
       MEMCACHED_HOST: memcached
-      MAIL_HOST: mailpit
-      MAIL_PORT: 1025
     volumes:
       - ./backend/storage:/app/storage
       - ./backend/bootstrap/cache:/app/bootstrap/cache
@@ -172,13 +170,13 @@ services:
 
   # Admin Portal (React) - using pre-built Docker Hub image
   baladia-admin:
-    image: yakoubouldbouchiba/baladia-admin:latest
+    image: baladia-admin:feature-mails
     container_name: baladia_admin
     restart: always
     expose:
       - "3000"
     environment:
-      REACT_APP_API_URL: http://baladia-api:9000
+      REACT_APP_API_URL: http://baladia-api:9000/api
     depends_on:
       baladia-api:
         condition: service_started
@@ -192,13 +190,13 @@ services:
 
   # Public Website (Vite) - using pre-built Docker Hub image
   baladia-site:
-    image: yakoubouldbouchiba/baladia-site:latest
+    image: baladia-site:feature-mails
     container_name: baladia_site
     restart: always
     expose:
       - "80"
     environment:
-      VITE_API_URL: http://baladia-api:9000
+      VITE_API_BASE: http://baladia-api:9000/api
     depends_on:
       baladia-api:
         condition: service_started

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import axiosClient from '../api/axiosClient';
 
 interface NavItem {
@@ -26,11 +26,24 @@ const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
 export const useModules = () => {
   const { i18n } = useTranslation();
   const navigate = useNavigate();
+  const location = useLocation();
   const [modules, setModules] = useState<Module[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    const publicRoutes = ['/login', '/register', '/forgot-password', '/reset-password'];
+    
+    // Check if current route is public
+    const isPublicRoute = publicRoutes.some(route => location.pathname.startsWith(route));
+    
+    // Skip fetching modules on public routes
+    if (isPublicRoute) {
+      setModules([]);
+      setLoading(false);
+      return;
+    }
+
     const fetchModules = async () => {
       try {
         setLoading(true);
@@ -80,7 +93,7 @@ export const useModules = () => {
     };
 
     fetchModules();
-  }, [i18n.language, navigate]);
+  }, [i18n.language, navigate, location.pathname]);
 
   return { modules, loading, error };
 };
@@ -96,6 +109,15 @@ export const useModuleById = (moduleId: string | number) => {
 
   useEffect(() => {
     if (!moduleId) return;
+
+    const publicRoutes = ['/login', '/register', '/forgot-password', '/reset-password'];
+    const currentPath = window.location.pathname;
+    
+    // Skip fetching module on public routes
+    if (publicRoutes.includes(currentPath)) {
+      setLoading(false);
+      return;
+    }
 
     const fetchModule = async () => {
       try {
@@ -120,7 +142,7 @@ export const useModuleById = (moduleId: string | number) => {
         setError(null);
       } catch (err: any) {
         console.error('Error fetching module:', err);
-        
+
         // Handle 401 - redirect to login
         if (err.response?.status === 401) {
           navigate('/login');
@@ -161,6 +183,15 @@ export const useNavItems = (moduleId: number) => {
   useEffect(() => {
     if (!moduleId) return;
 
+    const publicRoutes = ['/login', '/register', '/forgot-password', '/reset-password'];
+    const currentPath = window.location.pathname;
+    
+    // Skip fetching nav items on public routes
+    if (publicRoutes.includes(currentPath)) {
+      setLoading(false);
+      return;
+    }
+
     const fetchNavItems = async () => {
       try {
         setLoading(true);
@@ -185,7 +216,7 @@ export const useNavItems = (moduleId: number) => {
         setError(null);
       } catch (err: any) {
         console.error('Error fetching nav items:', err);
-        
+
         // Handle 401 - redirect to login
         if (err.response?.status === 401) {
           navigate('/login');
