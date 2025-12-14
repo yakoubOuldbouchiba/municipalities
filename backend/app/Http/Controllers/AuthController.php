@@ -4,10 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Jobs\SendWelcomeEmail;
-use App\Events\UserCreated;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Event;
 use App\Models\User;
 
 class AuthController extends Controller
