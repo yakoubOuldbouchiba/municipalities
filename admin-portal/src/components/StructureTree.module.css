@@ -160,78 +160,12 @@
   box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
 }
 
-/* PrimeReact TreeTable customization */
-:global(.p-treetable) {
+/* PrimeReact component styles - local only */
+.treeTable {
   border: none;
 }
 
-:global(.p-treetable .p-treetable-thead > tr > th) {
-  background: #f8f9fa;
-  color: #333;
-  font-weight: 600;
-  border-bottom: 2px solid #e0e0e0;
-  padding: 1rem;
-}
-
-:global(.p-treetable .p-treetable-tbody > tr) {
-  border-bottom: 1px solid #f0f0f0;
-}
-
-:global(.p-treetable .p-treetable-tbody > tr:hover) {
-  background: #f9f9f9;
-}
-
-:global(.p-treetable .p-treetable-tbody > tr > td) {
-  padding: 1rem;
-  color: #333;
-}
-
-:global(.p-treetable .p-treetable-toggler) {
-  margin-right: 0.5rem;
-}
-
-/* Button styles */
-:global(.p-button) {
-  border-radius: 4px;
-  font-weight: 500;
-}
-
-:global(.p-button-success) {
-  background: #27ae60 !important;
-  border-color: #27ae60 !important;
-}
-
-:global(.p-button-success:hover) {
-  background: #229954 !important;
-  border-color: #229954 !important;
-}
-
-:global(.p-button-warning) {
-  background: #f39c12 !important;
-  border-color: #f39c12 !important;
-}
-
-:global(.p-button-warning:hover) {
-  background: #e67e22 !important;
-  border-color: #e67e22 !important;
-}
-
-:global(.p-button-danger) {
-  background: #e74c3c !important;
-  border-color: #e74c3c !important;
-}
-
-:global(.p-button-danger:hover) {
-  background: #c0392b !important;
-  border-color: #c0392b !important;
-}
-
-:global(.p-button-text) {
-  color: #666 !important;
-}
-
-/* Toolbar */
-:global(.p-toolbar) {
+.toolbar {
   background: white !important;
   border: 1px solid #e0e0e0;
   border-radius: 6px;
@@ -239,49 +173,47 @@
   margin-bottom: 1.5rem;
 }
 
-/* Toast */
-:global(.p-toast) {
+.toast {
   width: 90%;
   max-width: 400px;
 }
 
-/* Dialog */
-:global(.p-dialog) {
+.dialogBox {
   border-radius: 8px;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
 }
 
-:global(.p-dialog .p-dialog-header) {
+.dialogHeader {
   background: #f8f9fa;
   border-bottom: 1px solid #e0e0e0;
   padding: 1.5rem;
 }
 
-:global(.p-dialog .p-dialog-content) {
+.dialogContent {
   padding: 1.5rem;
 }
 
-:global(.p-dialog .p-dialog-footer) {
+.dialogFooter {
   background: #f8f9fa;
   border-top: 1px solid #e0e0e0;
   padding: 1rem;
 }
 
-/* Confirm Dialog */
-:global(.p-confirm-dialog) {
+/* Confirm Dialog - LOCAL TO COMPONENT */
+.container .p-confirm-dialog {
   border-radius: 8px;
 }
 
-:global(.p-confirm-dialog .p-confirm-dialog-message) {
+.container .p-confirm-dialog .p-confirm-dialog-message {
   color: #333;
 }
 
-/* Dropdown */
-:global(.p-dropdown) {
+/* Dropdown - LOCAL TO COMPONENT */
+.container .p-dropdown {
   border-radius: 4px !important;
 }
 
-:global(.p-dropdown:not(.p-disabled).p-focus > .p-dropdown-trigger) {
+.container .p-dropdown:not(.p-disabled).p-focus > .p-dropdown-trigger {
   background: transparent;
 }
 
@@ -299,7 +231,7 @@
     gap: 0.25rem;
   }
 
-  :global(.p-treetable .p-treetable-tbody > tr > td) {
+  .container :global(.p-treetable .p-treetable-tbody > tr > td) {
     padding: 0.75rem 0.5rem;
   }
 

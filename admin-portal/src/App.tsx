@@ -25,11 +25,11 @@ const PapersPage = lazy(() => import('./pages/website/PapersPage'));
 const PersonsPage = lazy(() => import('./pages/website/PersonsPage'));
 
 // Admin pages
-const UsersPage = lazy(() => import('./pages/admin/UsersPage'));
-const GroupsPage = lazy(() => import('./pages/admin/GroupsPage'));
-const RolesPage = lazy(() => import('./pages/admin/RolesPage'));
-const ApplicationsPage = lazy(() => import('./pages/admin/ApplicationsPage'));
-const StructuresPage = lazy(() => import('./pages/admin/StructuresPage'));
+const UsersPage = lazy(() => import('./pages/admin/users/UsersPage'));
+const GroupsPage = lazy(() => import('./pages/admin/groups/GroupsPage'));
+const RolesPage = lazy(() => import('./pages/admin/roles/RolesPage'));
+const ApplicationsPage = lazy(() => import('./pages/admin/application/ApplicationsPage'));
+const StructuresPage = lazy(() => import('./pages/admin/structures/StructuresPage'));
 const AdminModulesPage = lazy(() => import('./pages/admin/AdminModulesPage'));
 
 // Super Admin pages

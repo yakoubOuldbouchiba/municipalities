@@ -3,10 +3,12 @@ import { Button } from 'primereact/button';
 import { useTranslation } from 'react-i18next';
 import LangSwitcher from '../LangSwitcher';
 import './Header.css';
+import { useNavigate } from 'react-router-dom';
 
 const Header: React.FC = () => {
   const [userName, setUserName] = useState<string>('');
   const { t } = useTranslation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const sanitize = (v: any) => {
@@ -57,8 +59,7 @@ const Header: React.FC = () => {
     );
     sessionStorage.clear();
 
-    // Redirect to login page (adjust path if your app uses a different route)
-    window.location.href = '/login';
+    navigate('/login');
   };
 
   return (

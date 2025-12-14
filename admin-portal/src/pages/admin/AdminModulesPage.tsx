@@ -113,7 +113,6 @@ const AdminModulesPage: React.FC = () => {
                 label={t('admin.access', 'Access')}
                 icon="pi pi-arrow-right"
                 onClick={() => handleModuleClick(module)}
-                className="p-button-raised"
                 style={{
                   backgroundColor: module.color,
                   borderColor: module.color

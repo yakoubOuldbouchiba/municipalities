@@ -140,9 +140,6 @@ services:
     expose:
       - "9000"
     environment:
-      APP_ENV: production
-      APP_DEBUG: "true"
-      APP_KEY: base64:Eby8vdAQZ5XKKMAK527ZrRm763DJjNaps9qP5eW05j0=
       DB_HOST: baladia-web-db-service
       DB_PORT: 3306
       DB_DATABASE: baladia-web

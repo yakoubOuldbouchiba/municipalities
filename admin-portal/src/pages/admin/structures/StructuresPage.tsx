@@ -1,5 +1,5 @@
 import React from 'react';
-import { StructureTree } from '../../components/StructureTree';
+import { StructureTree } from '../../../components/StructureTree';
 
 const StructuresPage: React.FC = () => {
   return <StructureTree />;

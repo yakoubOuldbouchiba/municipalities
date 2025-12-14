@@ -71,10 +71,10 @@ build_image() {
     echo ""
 
     # Build with docker buildx and --load to avoid unpacking hang
-    docker buildx build --load \
+    DOCKER_BUILDKIT=0 docker build  \
         -t "${full_image_name}" \
         "${dockerfile_path}" \
-        2>&1
+
 
     if [ $? -eq 0 ]; then
         print_success "$name built successfully"

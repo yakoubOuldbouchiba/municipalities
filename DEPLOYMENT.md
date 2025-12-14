@@ -72,22 +72,24 @@ Build images with registry prefix for pushing to Docker Hub:
 
 #### Backend API
 ```bash
-docker build -t baladia-api:feature-mails ./backend
+DOCKER_BUILDKIT=0 docker build -t baladia-api:feature-mails ./backend
 ```
+
+**Note:** The backend Dockerfile includes development dependencies (collision package, phpunit, etc.) in production builds to ensure Laravel error handling works correctly. These lightweight packages improve debugging without significantly impacting image size.
 
 #### Admin Portal
 ```bash
-docker build -t baladia-admin:feature-mails ./admin-portal
+DOCKER_BUILDKIT=0 docker build -t baladia-admin:feature-mails ./admin-portal
 ```
 
 #### Website
 ```bash
-docker build -t baladia-site:feature-mails ./my-site
+DOCKER_BUILDKIT=0 docker build -t baladia-site:feature-mails ./my-site
 ```
 
 #### Nginx Reverse Proxy
 ```bash
-docker build -t baladia-nginx:feature-mails ./nginx
+DOCKER_BUILDKIT=0 docker build -t baladia-nginx:feature-mails ./nginx
 ```
 
 ### Verify Built Images
@@ -372,8 +374,8 @@ docker-compose ps mysql_baladia
 # Test connection
 docker exec mysql_baladia mysql -u user -padmin -e "SELECT 1"
 
-# Check connection string in .env
-cat .env | grep DB_
+# Check connection string in .env.docker
+cat .env.docker | grep DB_
 ```
 
 ### Out of Disk Space
@@ -402,6 +404,27 @@ docker image rm baladia-api:feature-mails baladia-admin:feature-mails baladia-si
 ./cmds/build.images.sh --local
 ```
 
+### Docker Build Takes Time at "Unpacking" Step
+
+The "=> => unpacking to docker.io/library/..." message is **not a hang**—it's extracting a 823MB image layer to disk. This can take 1-2 minutes.
+
+**Do NOT press Ctrl+C during this step.** Wait for the build to complete. The image will finish successfully.
+
+```bash
+# Build and wait for completion (takes 3-5 minutes total)
+docker build -t baladia-api:feature-mails ./backend
+
+# For faster builds without the unpacking output, use:
+DOCKER_BUILDKIT=0 docker build -t baladia-api:feature-mails ./backend
+```
+
+**Expected final output:**
+```
+=> => naming to docker.io/library/baladia-api:feature-mails
+=> => unpacking to docker.io/library/baladia-api:feature-mails
+[✓] Successfully built baladia-api:feature-mails
+```
+
 ### View Application Logs
 
 ```bash
@@ -413,6 +436,33 @@ docker exec baladia-nginx tail -f /var/log/nginx/error.log
 
 # Database logs
 docker logs mysql_baladia
+```
+
+### Server Error / Missing CollisionServiceProvider
+
+**Symptom:** Backend API returns "Server Error" and logs show:
+```
+Class "NunoMaduro\Collision\Adapters\Laravel\CollisionServiceProvider" not found
+```
+
+**Cause:** The `nunomaduro/collision` package is a development dependency needed for proper Laravel error handling, but was being excluded during production builds using `--no-dev` flag in composer install.
+
+**Solution:** Backend Dockerfile updated (December 14, 2025):
+- Removed `--no-dev` flag from composer install command
+- Added `netcat-traditional` to runtime dependencies for health checks
+- Created proper entrypoint script for container initialization
+
+**To apply the fix:**
+```bash
+# Rebuild the backend image
+docker build -t baladia-api:feature-mails ./backend
+
+# Restart all services
+docker-compose down
+docker-compose up -d
+
+# Verify the API is running
+docker logs baladia_api
 ```
 
 ---
@@ -492,7 +542,7 @@ jobs:
 
 ---
 
-**Last Updated:** December 10, 2025
+**Last Updated:** December 14, 2025
 
 **Maintainer:** Yakoub Ouldbouchiba
 

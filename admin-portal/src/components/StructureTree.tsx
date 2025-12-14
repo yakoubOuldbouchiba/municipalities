@@ -223,7 +223,6 @@ export const StructureTree: React.FC = () => {
         <Button
           label={t('structures.newStructure')}
           icon="pi pi-plus"
-          className="p-button-success"
           onClick={openCreateDialog}
         />
       }

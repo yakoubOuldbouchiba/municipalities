@@ -3,13 +3,11 @@ import { useTranslation } from 'react-i18next';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { Button } from 'primereact/button';
-import { Dialog } from 'primereact/dialog';
-import { InputText } from 'primereact/inputtext';
 import { ConfirmDialog, confirmDialog } from 'primereact/confirmdialog';
 import { Toast } from 'primereact/toast';
-import { Dropdown } from 'primereact/dropdown';
-import axiosClient from '../../api/axiosClient';
+import axiosClient from '../../../api/axiosClient';
 import './RolesPage.css';
+import RoleDialog from './RoleDialog';
 
 type Role = {
   id: number;
@@ -35,17 +33,6 @@ const RolesPage: React.FC = () => {
   });
 
   const [editingRoleId, setEditingRoleId] = useState<number | null>(null);
-
-  const languageOptions = [
-    { code: 'en', name: 'English' },
-    { code: 'ar', name: 'العربية' },
-    { code: 'fr', name: 'Français' },
-    { code: 'es', name: 'Español' }
-  ];
-
-  const getLanguageName = (code: string): string => {
-    return languageOptions.find(l => l.code === code)?.name || code;
-  };
 
   // Fetch roles
   const fetchRoles = async () => {
@@ -258,7 +245,6 @@ const RolesPage: React.FC = () => {
         <Button
           icon="pi pi-plus"
           label={t('common.add', 'Add')}
-          className="p-button-success"
           onClick={() => openDialog()}
         />
       </div>
@@ -309,117 +295,16 @@ const RolesPage: React.FC = () => {
       </div>
 
       {/* Dialog */}
-      <Dialog
+      <RoleDialog
         visible={showDialog}
-        style={{ width: '50vw' }}
-        header={isEditing ? t('roles.editTitle', 'Edit Role') : t('roles.createTitle', 'Create Role')}
-        modal
+        isEditing={isEditing}
+        formData={formData}
+        selectedLang={selectedLang}
         onHide={closeDialog}
-        footer={
-          <div className="flex gap-2 justify-end">
-            <Button
-              label={t('common.cancel', 'Cancel')}
-              icon="pi pi-times"
-              onClick={closeDialog}
-              className="p-button-text"
-            />
-            <Button
-              label={t('common.save', 'Save')}
-              icon="pi pi-check"
-              onClick={handleSave}
-              className="p-button-success"
-            />
-          </div>
-        }
-      >
-        <div className="space-y-4">
-          {/* Code Field */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              {t('roles.fields.code', 'Code')} *
-            </label>
-            <InputText
-              value={formData.code}
-              onChange={(e) => setFormData({ ...formData, code: e.target.value })}
-              className="w-full"
-              placeholder={t('roles.placeholders.code', 'e.g., NAV:admin, MODULE:users, ACTION:create')}
-              disabled={isEditing}
-            />
-            <p className="text-xs text-gray-500 mt-1">
-              {t('roles.codeHint', 'Use format: NAV: (Navigation), MODULE: (Module), or ACTION: (Action)')}
-            </p>
-          </div>
-
-          {/* Multilingual Labels */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              {t('roles.fields.label', 'Label')} *
-            </label>
-
-            {/* Add Language */}
-            <div className="flex gap-2 mb-3">
-              <Dropdown
-                value={selectedLang}
-                options={languageOptions.filter(
-                  lang => !Object.keys(formData.label).includes(lang.code)
-                )}
-                onChange={(e) => setSelectedLang(e.value)}
-                optionLabel="name"
-                optionValue="code"
-                placeholder={t('roles.addLanguage', 'Select language to add')}
-                className="flex-1"
-              />
-              <Button
-                icon="pi pi-plus"
-                className="p-button-sm"
-                onClick={() => {
-                  if (selectedLang) {
-                    setFormData({
-                      ...formData,
-                      label: { ...formData.label, [selectedLang]: '' }
-                    });
-                    setSelectedLang(null);
-                  }
-                }}
-                disabled={!selectedLang}
-              />
-            </div>
-
-            {/* Language Fields */}
-            <div className="space-y-3">
-              {Object.entries(formData.label).map(([lang, value]) => (
-                <div key={lang} className="flex gap-2 items-end">
-                  <div className="flex-1">
-                    <label className="text-sm font-medium text-gray-600 block mb-1">
-                      {getLanguageName(lang)}
-                    </label>
-                    <InputText
-                      value={value}
-                      onChange={(e) =>
-                        setFormData({
-                          ...formData,
-                          label: { ...formData.label, [lang]: e.target.value }
-                        })
-                      }
-                      className="w-full"
-                      placeholder={`${t('roles.labelPlaceholder', 'Enter label')} (${getLanguageName(lang)})`}
-                    />
-                  </div>
-                  <Button
-                    icon="pi pi-trash"
-                    className="p-button-sm p-button-danger"
-                    onClick={() => {
-                      const newLabel = { ...formData.label };
-                      delete newLabel[lang];
-                      setFormData({ ...formData, label: newLabel });
-                    }}
-                  />
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </Dialog>
+        onSave={handleSave}
+        onFormDataChange={setFormData}
+        onSelectedLangChange={setSelectedLang}
+      />
     </div>
   );
 };

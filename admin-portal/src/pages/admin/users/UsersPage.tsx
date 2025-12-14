@@ -3,15 +3,12 @@ import { useTranslation } from 'react-i18next';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { Button } from 'primereact/button';
-import { Dialog } from 'primereact/dialog';
 import { InputText } from 'primereact/inputtext';
-import { Password } from 'primereact/password';
-import { MultiSelect } from 'primereact/multiselect';
 import { ConfirmDialog, confirmDialog } from 'primereact/confirmdialog';
 import { Toast } from 'primereact/toast';
-import axiosClient from '../../api/axiosClient';
+import axiosClient from '../../../api/axiosClient';
 import './UsersPage.css';
-import { Dropdown } from 'primereact/dropdown';
+import UserDialog from './UserDialog';
 
 type User = {
   id: number;
@@ -54,6 +51,26 @@ type Structure = {
   id_parent?: number | null;
 };
 
+interface UserFormData {
+  firstname: Record<string, string>;
+  lastname: Record<string, string>;
+  name: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
+  phone: string;
+  iphone: string;
+  birthdate: Date | null;
+  birthplace: Record<string, string>;
+  nin: string;
+  gender: string;
+  address: Record<string, { city: string; country: string }>;
+  active: boolean;
+  groups: number[];
+  roles: number[];
+  structures: number[];
+}
+
 const UsersPage: React.FC = () => {
   const { t, i18n } = useTranslation();
   const toastRef = React.useRef<Toast>(null);
@@ -66,7 +83,7 @@ const UsersPage: React.FC = () => {
   const [loading, setLoading] = useState(true);
 
   // Form state
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<UserFormData>({
     firstname: { en: '', fr: '', ar: '' },
     lastname: { en: '', fr: '', ar: '' },
     name: '',
@@ -75,17 +92,16 @@ const UsersPage: React.FC = () => {
     confirmPassword: '',
     phone: '',
     iphone: '',
-    birthdate: null as Date | null,
+    birthdate: null,
     birthplace: { en: '', fr: '', ar: '' },
     nin: '',
     gender: '',
     address: { en: { city: '', country: '' }, fr: { city: '', country: '' }, ar: { city: '', country: '' } },
     active: true,
-    groups: [] as number[],
-    roles: [] as number[],
-    structures: [] as number[]
+    groups: [],
+    roles: [],
+    structures: []
   });
-
 
   const [editingUserId, setEditingUserId] = useState<number | null>(null);
   const [searchValue, setSearchValue] = useState('');
@@ -290,7 +306,7 @@ const UsersPage: React.FC = () => {
         birthplace: formData.birthplace,
         nin: formData.nin.trim(),
         gender: formData.gender,
-        address: formData.address, // Send as object (will be JSON stringified by axios)
+        address: formData.address,
         active: formData.active,
         name: formData.name.trim(),
         email: formData.email.trim(),
@@ -429,7 +445,6 @@ const UsersPage: React.FC = () => {
           <span key={code} className="bg-green-100 text-green-800 text-xs px-2 py-1 rounded">
             {code}
           </span>
-
         ))}
         {remainingCount > 0 && (
           <span className="bg-gray-100 text-gray-800 text-xs px-2 py-1 rounded font-medium">
@@ -462,95 +477,12 @@ const UsersPage: React.FC = () => {
     );
   };
 
-
   const getLabel = (data: any, lang: string): string => {
     if (typeof data === 'string') return data;
     if (typeof data === 'object' && data[lang]) return data[lang];
     if (typeof data === 'object' && data['en']) return data['en'];
     return '';
   };
-
-  const rolesOptions = roles.map(role => ({
-    label: getLabel(role.label, i18n.language),
-    value: role.id
-  }));
-
-
-  // Helper function to get all substructure IDs recursively
-  const getAllSubstructureIds = (structureId: number, allStructures: Structure[]): number[] => {
-    const ids: number[] = [structureId];
-    const children = allStructures.filter(s => s.id_parent === structureId);
-    console.log(`Finding children for structure ${structureId}, found:`, children);
-    
-    children.forEach(child => {
-      ids.push(...getAllSubstructureIds(child.id, allStructures));
-    });
-    
-    return ids;
-  };
-
-  // Handle structure selection with automatic substructure selection
-  const handleStructureChange = (e: any) => {
-    const selectedIds = e.value || [];
-    const previousIds = formData.structures || [];
-    const uniqueIds = new Set<number>();
-
-    // Find newly added items (selected now but not before)
-    const newlyAdded = selectedIds.filter((id: number) => !previousIds.includes(id));
-    // Find removed items (were selected but not anymore)
-    const removed = previousIds.filter((id: number) => !selectedIds.includes(id));
-
-    // Start with newly added items
-    newlyAdded.forEach((structId: number) => {
-      const hasChildren = structures.some(s => s.id_parent === structId);
-      
-      if (hasChildren) {
-        // If it has children, select all its substructures
-        const substructureIds = getAllSubstructureIds(structId, structures);
-        substructureIds.forEach(id => uniqueIds.add(id));
-      } else {
-        // If it's a leaf node (no children), just add it
-        uniqueIds.add(structId);
-      }
-    });
-
-    // Add remaining selected items that weren't added
-    selectedIds.forEach((id: number) => {
-      if (!newlyAdded.includes(id)) {
-        uniqueIds.add(id);
-      }
-    });
-
-    // Remove the removed items and their children from selection
-    removed.forEach((removedId: number) => {
-      uniqueIds.delete(removedId);
-      // Also remove all children of removed parents
-      const childrenToRemove = getAllSubstructureIds(removedId, structures);
-      childrenToRemove.forEach(childId => uniqueIds.delete(childId));
-    });
-
-    console.log('Selected structures:', Array.from(uniqueIds));
-    setFormData({ ...formData, structures: Array.from(uniqueIds) });
-  };
-
-  const structuresOptions = structures.map(structure => ({
-    label: getLabel(structure.label, i18n.language),
-    value: structure.id
-  }));
-
-
-  const groupsOptions = groups.map(group => ({
-    label: typeof group.label === 'string' ? group.label : (group.label?.[i18n.language] || group.label?.['en'] || group.code),
-    value: group.id
-  }));
-
-  const languages = [{
-    code: 'en', label: 'English'
-  }, {
-    code: 'fr', label: 'Français'
-  }, {
-    code: 'ar', label: 'العربية'
-  }];
 
   return (
     <div className="p-4">
@@ -569,7 +501,8 @@ const UsersPage: React.FC = () => {
               icon="pi pi-plus"
               label={t('common.add', 'Add')}
               className="p-button-success"
-              onClick={() => openDialog()} />
+              onClick={() => openDialog()}
+            />
           </div>
           <div>
             <InputText
@@ -585,8 +518,6 @@ const UsersPage: React.FC = () => {
             />
           </div>
         </div>
-
-
       </div>
 
       {/* DataTable */}
@@ -660,299 +591,22 @@ const UsersPage: React.FC = () => {
             style={{ width: '15%' }}
             bodyClassName="text-center"
           />
-
         </DataTable>
       </div>
 
       {/* Dialog */}
-      <Dialog
+      <UserDialog
         visible={showDialog}
-        style={{ width: '50vw' }}
-        header={isEditing ? t('users.editTitle', 'Edit User') : t('users.createTitle', 'Create User')}
-        modal
+        isEditing={isEditing}
+        formData={formData}
         onHide={closeDialog}
-        footer={
-          <div className="flex gap-2 justify-end">
-            <Button
-              label={t('common.cancel', 'Cancel')}
-              icon="pi pi-times"
-              onClick={closeDialog}
-              className="p-button-text"
-            />
-            <Button
-              label={t('common.save', 'Save')}
-              icon="pi pi-check"
-              onClick={handleSave}
-              className="p-button-success"
-            />
-          </div>
-        }
-      >
-        <div className="space-y-4">
-
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <label className="block mb-1 font-medium">{t('users.fields.name', 'Name')}</label>
-              <InputText
-                value={formData.name || ''}
-                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                className="w-full"
-              />
-            </div>
-            <div>
-              <label className="block mb-1 font-medium">{t('users.fields.email', 'Email')}</label>
-              <InputText
-                value={formData.email || ''}
-                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                className="w-full"
-              />
-            </div>
-          </div>
-
-          {/* Multilingual First Name and Last Name */}
-          <div className="grid grid-cols-2 gap-4 mb-4">
-            {
-              languages.map(lang => (
-                <div key={lang.code}>
-                  <div>
-                    <label className="block mb-1 font-medium">
-                      {t('users.fields.firstName', 'First Name')} ({lang.label})
-                    </label>
-                    <InputText
-                      value={formData.firstname[lang.code as 'en' | 'fr' | 'ar'] || ''}
-                      onChange={(e) =>
-                        setFormData({
-                          ...formData,
-                          firstname: {
-                            ...formData.firstname,
-                            [lang.code]: e.target.value
-                          }
-                        })
-                      }
-                      className="w-full"
-                    />
-                  </div>
-                  <div className="mt-4">
-                    <label className="block mb-1 font-medium">
-                      {t('users.fields.lastName', 'Last Name')} ({lang.label})
-                    </label>
-                    <InputText
-                      value={formData.lastname[lang.code as 'en' | 'fr' | 'ar'] || ''}
-                      onChange={(e) =>
-                        setFormData({
-                          ...formData,
-                          lastname: {
-                            ...formData.lastname,
-                            [lang.code]: e.target.value
-                          }
-                        })
-                      }
-                      className="w-full"
-                    />
-                  </div>
-                </div>
-              ))
-            }
-
-          </div>
-
-          {/* Nin and Gender and birthday */}
-          <div className="grid grid-cols-3 gap-4 mb-4">
-            <div>
-              <label className="block mb-1 font-medium">{t('users.fields.nin', 'NIN')}</label>
-              <InputText
-                value={formData.nin || ''}
-                onChange={(e) => setFormData({ ...formData, nin: e.target.value })}
-                className="w-full"
-              />
-            </div>
-            <div>
-              <label className="block mb-1 font-medium">{t('users.fields.gender', 'Gender')}</label>
-              <Dropdown
-                value={formData.gender}
-                options={[
-                  { label: t('users.gender.male', 'Male'), value: 'male' },
-                  { label: t('users.gender.female', 'Female'), value: 'female' }
-                ]}
-                onChange={(e) => setFormData({ ...formData, gender: e.value })}
-                className="w-full"
-              />
-            </div>
-            <div>
-              <label className="block mb-1 font-medium">{t('users.fields.birthdate', 'Birthdate')}</label>
-              <InputText
-                type="date"
-                value={formData.birthdate ? formData.birthdate.toISOString().split('T')[0] : ''}
-                onChange={(e) => setFormData({ ...formData, birthdate: e.target.value ? new Date(e.target.value) : null })}
-                className="w-full"
-              />
-            </div>
-          </div>
-          {/** multilanguage birthplace */}
-          <div className="grid grid-cols-3 gap-4 mb-4">
-            {
-              languages.map(lang => (
-                <div key={lang.code}>
-                  <label className="block mb-1 font-medium">
-                    {t('users.fields.birthplace', 'Birthplace')} ({lang.label})
-                  </label>
-                  <InputText
-                    value={formData.birthplace[lang.code as 'en' | 'fr' | 'ar'] || ''}
-                    onChange={(e) =>
-                      setFormData({
-                        ...formData,
-                        birthplace: {
-                          ...formData.birthplace,
-                          [lang.code]: e.target.value
-                        }
-                      })
-                    }
-                    className="w-full"
-                  />
-                </div>
-              ))
-            }
-          </div>
-          {/** Mutli Address */}
-          {
-            languages.map(lang => {
-              const langCode = lang.code as 'en' | 'fr' | 'ar';
-              const addressData = formData.address[langCode] || { city: '', country: '' };
-              return (
-                <div key={lang.code} className="mb-4">
-                  <h3 className="text-lg font-semibold mb-2">
-                    {t('users.fields.address', 'Address')} ({lang.label})
-                  </h3>
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
-                      <label className="block mb-1 font-medium">{t('users.fields.city', 'City')}</label>
-                      <InputText
-                        value={addressData.city}
-                        onChange={(e) =>
-                          setFormData({
-                            ...formData,
-                            address: {
-                              ...formData.address,
-                              [lang.code]: {
-                                ...addressData,
-                                city: e.target.value
-                              }
-                            }
-                          })
-                        }
-                        className="w-full"
-                      />
-                    </div>
-                    <div>
-                      <label className="block mb-1 font-medium">{t('users.fields.country', 'Country')}</label>
-                      <InputText
-                        value={addressData.country}
-                        onChange={(e) =>
-                          setFormData({
-                            ...formData,
-                            address: {
-                              ...formData.address,
-                              [lang.code]: {
-                                ...addressData,
-                                country: e.target.value
-                              }
-                            }
-                          })
-                        }
-                        className="w-full"
-                      />
-                    </div>
-                  </div>
-                </div>
-              );
-            })
-          }
-
-          {/** password  and confirmation */}
-          <div className="grid grid-cols-2 gap-4 mt-4">
-            <div>
-              <label className="block mb-1 font-medium">{t('users.fields.password', 'Password')}</label>
-              <Password
-                value={formData.password || ''}
-                onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                feedback={false}
-                toggleMask
-                className="w-full"
-              />
-            </div>
-            <div>
-              <label className="block mb-1 font-medium">{t('users.fields.confirmPassword', 'Confirm Password')}</label>
-              <Password
-                value={formData.confirmPassword || ''}
-                onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
-                feedback={false}
-                toggleMask
-                className="w-full"
-              />
-            </div>
-          </div>
-
-
-
-          {/* phonee and iphone */}
-          <div className="grid grid-cols-2 gap-4 mt-4">
-            <div>
-              <label className="block mb-1 font-medium">{t('users.fields.phone', 'Phone')}</label>
-              <InputText
-                value={formData.phone || ''}
-                onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                className="w-full"
-              />
-            </div>
-            <div>
-              <label className="block mb-1 font-medium">{t('users.fields.iphone', 'iPhone')}</label>
-              <InputText
-                value={formData.iphone || ''}
-                onChange={(e) => setFormData({ ...formData, iphone: e.target.value })}
-                className="w-full"
-              />
-            </div>
-          </div>
-
-
-
-          {/* Additional form fields  roles, groups, etc. would go here */}
-          <div className="grid grid-cols-1 mt-4 gap-4">  
-            <div> 
-              <label className="block mb-1 font-medium">{t('users.fields.groups', 'Groups')}</label>
-              <MultiSelect
-                value={formData.groups || []}
-                options={groupsOptions}
-                onChange={(e) => setFormData({ ...formData, groups: e.value || [] })}
-                className="w-full"
-                placeholder={t('users.selectGroups', 'Select Groups')}
-              />
-            </div>
-            <div>
-              <label className="block mb-1 font-medium">{t('users.fields.roles', 'Roles')}</label>
-              <MultiSelect
-                value={formData.roles || []}
-                options={rolesOptions}
-                onChange={(e) => setFormData({ ...formData, roles: e.value || [] })}
-                className="w-full"
-                placeholder={t('users.selectRoles', 'Select Roles')}
-              />
-            </div>
-            <div>
-              <label className="block mb-1 font-medium">{t('users.fields.structures', 'Structures')}</label>
-              <MultiSelect
-                value={formData.structures || []}
-                options={structuresOptions}
-                onChange={handleStructureChange}
-                className="w-full"
-                placeholder={t('users.selectStructures', 'Select Structures')}
-              />
-            </div>
-          </div>
-
-
-        </div>
-      </Dialog>
+        onSave={handleSave}
+        onFormDataChange={setFormData}
+        groups={groups}
+        roles={roles}
+        structures={structures}
+        toastRef={toastRef}
+      />
     </div>
   );
 };
