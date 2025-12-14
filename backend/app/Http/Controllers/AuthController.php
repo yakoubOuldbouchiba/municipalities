@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Jobs\SendWelcomeEmail;
+use App\Events\UserCreated;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Event;
 use App\Models\User;
 
 class AuthController extends Controller
@@ -34,8 +36,8 @@ class AuthController extends Controller
             'address' => json_encode(['en' => '']),
         ]);
 
-        // Dispatch async email job with password
-        SendWelcomeEmail::dispatch($user, $plainPassword);
+        // Queue email job directly
+        SendWelcomeEmail::dispatch($user, $plainPassword)->onQueue('registered_users_mails');
 
         return response()->json(['message' => 'User registered successfully'], 201);
     }

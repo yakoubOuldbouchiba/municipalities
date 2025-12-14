@@ -39,7 +39,7 @@ class PasswordResetController extends Controller
         $resetUrl = env('FRONTEND_URL', 'http://localhost:3000') . '/reset-password?token=' . $token . '&email=' . urlencode($email);
 
         // Dispatch async job
-        SendPasswordResetEmail::dispatch($email, $token, $resetUrl);
+        SendPasswordResetEmail::dispatch($email, $token, $resetUrl)->onQueue('reset_password_mails');
 
         return response()->json(['message' => 'Reset link sent to your email']);
     }

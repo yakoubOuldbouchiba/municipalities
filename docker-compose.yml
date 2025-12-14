@@ -45,8 +45,8 @@ services:
     image: phpmyadmin:latest
     container_name: phpmyadmin_baladia
     restart: always
-    ports:
-      - "8080:80"
+    expose:
+      - "80"
     environment:
       PMA_HOST: baladia-web-db-service
       PMA_USER: root
@@ -55,6 +55,21 @@ services:
     depends_on:
       baladia-web-db-service:
         condition: service_healthy
+    networks:
+      - app-network
+
+  # Nginx reverse proxy for PhpMyAdmin with basic auth
+  phpmyadmin-proxy:
+    image: nginx:latest
+    container_name: phpmyadmin_proxy_baladia
+    restart: always
+    ports:
+      - "8080:80"
+    volumes:
+      - ./nginx/phpmyadmin.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/.htpasswd:/etc/nginx/.htpasswd:ro
+    depends_on:
+      - phpmyadmin
     networks:
       - app-network
 
@@ -67,6 +82,8 @@ services:
       - "8001:8081"
     environment:
       REDIS_HOSTS: local:redis:6379
+      HTTP_USER: admin
+      HTTP_PASSWORD: baladia_secure_password_123
     depends_on:
       redis:
         condition: service_healthy
@@ -86,6 +103,7 @@ services:
     command:
       - '--config.file=/etc/prometheus/prometheus.yml'
       - '--storage.tsdb.path=/prometheus'
+      - '--web.basic-auth.users=admin:baladia_secure_prometheus_123'
     networks:
       - monitoring
 
@@ -110,7 +128,7 @@ services:
 
   # Nginx Reverse Proxy
   baladia-nginx:
-    image: baladia-nginx:feature-mails
+    image: baladia-nginx:main
     container_name: baladia_nginx
     restart: always
     ports:
@@ -134,7 +152,7 @@ services:
 
   # Laravel Backend API (using pre-built Docker Hub image)
   baladia-api:
-    image: baladia-api:feature-mails
+    image: baladia-api:main
     container_name: baladia_api
     restart: always
     expose:
@@ -148,6 +166,7 @@ services:
       REDIS_HOST: redis
       REDIS_PORT: 6379
       MEMCACHED_HOST: memcached
+      QUEUE_CONNECTION: redis
     volumes:
       - ./backend/storage:/app/storage
       - ./backend/bootstrap/cache:/app/bootstrap/cache
@@ -165,9 +184,37 @@ services:
       retries: 3
       start_period: 40s
 
+  # Queue Worker for processing email jobs
+  baladia-queue-worker:
+    image: baladia-api:main
+    container_name: baladia_queue_worker
+    restart: unless-stopped
+    command: php artisan queue:work redis --queue=reset_password_mails,registered_users_mails --tries=3 --timeout=120
+    environment:
+      DB_HOST: baladia-web-db-service
+      DB_PORT: 3306
+      DB_DATABASE: baladia-web
+      DB_USERNAME: user
+      DB_PASSWORD: admin
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      QUEUE_CONNECTION: redis
+    volumes:
+      - ./backend/storage:/app/storage
+      - ./backend/bootstrap/cache:/app/bootstrap/cache
+    depends_on:
+      baladia-web-db-service:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      baladia-api:
+        condition: service_started
+    networks:
+      - app-network
+
   # Admin Portal (React) - using pre-built Docker Hub image
   baladia-admin:
-    image: baladia-admin:feature-mails
+    image: baladia-admin:main
     container_name: baladia_admin
     restart: always
     expose:
@@ -187,7 +234,7 @@ services:
 
   # Public Website (Vite) - using pre-built Docker Hub image
   baladia-site:
-    image: baladia-site:feature-mails
+    image: baladia-site:main
     container_name: baladia_site
     restart: always
     expose:

@@ -9,7 +9,7 @@ class SendWelcomeEmailListener
 {
     public function handle(UserCreated $event): void
     {
-        // Direct job dispatch now handled in AuthController
-        // This listener is kept for backward compatibility if needed
+        // Dispatch email job to Redis queue
+        SendWelcomeEmail::dispatch($event->user)->onQueue('mails');
     }
 }

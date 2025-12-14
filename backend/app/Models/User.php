@@ -4,11 +4,13 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Casts\DoubleEncodedJson;
+use App\Events\PasswordReset;
 use App\Events\UserCreated;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Mockery\Generator\StringManipulation\Pass\Pass;
 use OwenIt\Auditing\Contracts\Auditable;
 use OwenIt\Auditing\Auditable as AuditableTrait;
 
@@ -61,11 +63,14 @@ class User extends Authenticatable implements Auditable
         'firstname' => DoubleEncodedJson::class,
         'lastname' => DoubleEncodedJson::class,
         'birthplace' => DoubleEncodedJson::class,
+        'last_requested_password_reset_at' => 'datetime',
+        'last_password_reset_at' => 'datetime',
     ];
 
 
     protected $dispatchesEvents = [
         'created' => UserCreated::class,
+        'last_requested_password_reset_at' => PasswordReset::class,
     ];
 
 
