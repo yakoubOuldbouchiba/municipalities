@@ -690,5 +690,25 @@
     "dashboard": "Panel de Control del Administrador",
     "description": "Acceder a herramientas de monitoreo y gestión",
     "noTools": "Sin herramientas disponibles"
+  },
+  "claims": {
+    "referenceNumber": "Número de referencia",
+    "status": "Estado",
+    "pending": "Pendiente",
+    "answered": "Respondido",
+    "archived": "Archivado",
+    "created": "Creado",
+    "actions": "Acciones",
+    "viewDetails": "Ver detalles",
+    "answer": "Responder",
+    "delete": "Eliminar",
+    "answerClaim": "Responder a la reclamación",
+    "claimDetails": "Detalles de la reclamación",
+    "confirmDelete": "¿Estás seguro de que deseas eliminar esta reclamación?",
+    "deletedSuccessfully": "Reclamación eliminada exitosamente",
+    "answered_successfully": "Reclamación respondida exitosamente",
+    "response": "Respuesta",
+    "submit": "Enviar",
+    "loading": "Cargando reclamaciones..."
   }
 }

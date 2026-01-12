@@ -42,7 +42,7 @@ const Events: React.FC = () => {
 
       {!loading && events.length > 0 && (
         <div className="events-timeline">
-          {events.map((event, index) => (
+          {events.map((event) => (
             <div key={event.id} className="event-item">
               <div className="event-marker" style={{ backgroundColor: event.color }}>
                 <i className={event.icon}></i>

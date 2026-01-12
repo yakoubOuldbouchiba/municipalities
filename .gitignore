@@ -70,6 +70,7 @@ redis_data/
 grafana_data/
 prometheus_data/
 docker-compose.override.yml
+docker-compose.*.yaml
 
 # =====================================
 # System & Editor Files

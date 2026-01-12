@@ -1,6 +1,7 @@
 // src/App.tsx
 import React, { useEffect, useState, lazy, Suspense } from 'react';
 import { Routes, Route } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 import Footer from './components/footer/index.tsx';
 import Advertisements from './components/advertisements/index.tsx';
@@ -8,11 +9,13 @@ import News from './components/news/index.tsx';
 import ScrollTopButton from './components/scroll-top-button/ScrollTopButton.tsx';
 import Navbar from './components/navbar/index.tsx';
 import api from './lib/api'
+import './i18n/config';
 
 // Lazy load page components
 const Home = lazy(() => import('./pages/home/index.tsx'));
 const Blog = lazy(() => import('./pages/Blog.tsx'));
 const Contact = lazy(() => import('./pages/Contact.tsx'));
+const Claims = lazy(() => import('./pages/claims/index.tsx'));
 const Mayor = lazy(() => import('./pages/mayor/index.tsx'));
 const Potentials = lazy(() => import('./pages/potentials/index.tsx'));
 const SecretaryGeneral = lazy(() => import('./pages/secretary-general/index.tsx'));
@@ -41,7 +44,14 @@ const LoadingFallback = () => (
 );
 
 const App: React.FC = () => {
-   const [ads, setAds] = useState<Ad[]>([]);
+  const { i18n } = useTranslation();
+  const [ads, setAds] = useState<Ad[]>([]);
+
+  useEffect(() => {
+    // Set text direction based on language
+    document.documentElement.dir = i18n.language === 'ar' ? 'rtl' : 'ltr';
+    document.documentElement.lang = i18n.language;
+  }, [i18n.language]);
 
   useEffect(() => {
     api
@@ -63,6 +73,7 @@ const App: React.FC = () => {
             <Route path="/history" element={<History />} />
             <Route path="/blog" element={<Blog />} />
             <Route path="/contact" element={<Contact />} />
+            <Route path="/claims" element={<Claims />} />
             <Route path="/papers" element={<PapersPage />} />
             <Route path="/papers/:id" element={<PaperDetails />} />
             <Route path="/events" element={<Events />} />

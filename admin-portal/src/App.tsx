@@ -1,10 +1,12 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { lazy, Suspense } from 'react';
+import { lazy, Suspense, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import LoginPage from './pages/auth/LoginPage';
 import Layout from './components/layout/Layout';
 import RequireAuth from './components/RequireAuth';
 import { ModuleProvider } from './context/ModuleContext';
 import { PrimeReactProvider } from './context/PrimeReactProvider';
+import './i18n/config';
 
 // Lazy load page components
 const Dashboard = lazy(() => import('./pages/Dashboard'));
@@ -49,6 +51,14 @@ const LoadingFallback = () => (
 
 
 function App() {
+  const { i18n } = useTranslation();
+
+  useEffect(() => {
+    // Set text direction based on language
+    document.documentElement.dir = i18n.language === 'ar' ? 'rtl' : 'ltr';
+    document.documentElement.lang = i18n.language;
+  }, [i18n.language]);
+
   // Use REACT_APP_BASENAME from environment, defaults to empty string for local dev
   const basename = process.env.REACT_APP_BASENAME || '';
   

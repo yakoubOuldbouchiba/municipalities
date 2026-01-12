@@ -1,21 +1,23 @@
 // src/pages/Contact.tsx
 import React from 'react'
+import { useTranslation } from 'react-i18next'
 import { InputText } from 'primereact/inputtext'
 import { Button } from 'primereact/button'
 
 const Contact: React.FC = () => {
+  const { t } = useTranslation()
   return (
     <div style={{ maxWidth:700 }}>
-      <h2>اتصل بنا</h2>
+      <h2>{t('navigation.contact')}</h2>
       <div className="p-fluid">
-        <label>الاسم</label>
+        <label>{t('common.name')}</label>
         <InputText />
-        <label>البريد</label>
+        <label>{t('common.email')}</label>
         <InputText />
-        <label>الرسالة</label>
+        <label>{t('common.message')}</label>
         <textarea className="p-inputtext p-component" rows={5} />
         <div style={{ marginTop:12 }}>
-          <Button label="إرسال" />
+          <Button label={t('common.submit')} />
         </div>
       </div>
     </div>

@@ -797,9 +797,27 @@
     "noTools": "No tools available"
   },
   "common": {
-    "loading": "Loading...",
-    "error": "Error",
     "noData": "No data available"
+  },
+  "claims": {
+    "referenceNumber": "Reference Number",
+    "status": "Status",
+    "pending": "Pending",
+    "answered": "Answered",
+    "archived": "Archived",
+    "created": "Created",
+    "actions": "Actions",
+    "viewDetails": "View Details",
+    "answer": "Answer",
+    "delete": "Delete",
+    "answerClaim": "Answer Claim",
+    "claimDetails": "Claim Details",
+    "confirmDelete": "Are you sure you want to delete this claim?",
+    "deletedSuccessfully": "Claim deleted successfully",
+    "answered_successfully": "Claim answered successfully",
+    "response": "Response",
+    "submit": "Submit",
+    "loading": "Loading claims..."
   }
 }
 

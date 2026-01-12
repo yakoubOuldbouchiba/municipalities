@@ -17,13 +17,14 @@ class SendWelcomeEmail implements ShouldQueue
 
     public function __construct(
         public User $user,
-        public string $password
+        public string $password,
+        public string $language = 'en'
     )
     {
     }
 
     public function handle(): void
     {
-        Mail::send(new WelcomeNewUser($this->user, $this->password));
+        Mail::send(new WelcomeNewUser($this->user, $this->password, $this->language));
     }
 }

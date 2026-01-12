@@ -13,6 +13,9 @@ class PasswordResetController extends Controller
 {
     public function sendResetLink(Request $request)
     {
+        // Get language from X-React-I18n header, default to 'en'
+        $language = $request->header('X-React-I18n', 'en');
+
         $request->validate(['email' => 'required|email']);
 
         $email = $request->email;
@@ -38,8 +41,8 @@ class PasswordResetController extends Controller
         // Generate reset URL
         $resetUrl = env('FRONTEND_URL', 'http://localhost:3000') . '/reset-password?token=' . $token . '&email=' . urlencode($email);
 
-        // Dispatch async job
-        SendPasswordResetEmail::dispatch($email, $token, $resetUrl)->onQueue('reset_password_mails');
+        // Dispatch async job with language
+        SendPasswordResetEmail::dispatch($email, $token, $resetUrl, $language)->onQueue('reset_password_mails');
 
         return response()->json(['message' => 'Reset link sent to your email']);
     }
