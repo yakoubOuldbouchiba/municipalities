@@ -23,6 +23,7 @@ const Footer: React.FC = () => {
   const [loading, setLoading] = useState(true)
   const [isOnline, setIsOnline] = useState(navigator.onLine)
   const [mapError, setMapError] = useState(false)
+  const timeoutRef = React.useRef<ReturnType<typeof setTimeout> | null>(null)
 
   // Monitor online/offline status
   React.useEffect(() => {
@@ -39,13 +40,15 @@ const Footer: React.FC = () => {
   }, [])
 
   // Handle iframe load timeout
-  const handleMapTimeout = () => {
-    const timeout = setTimeout(() => {
+  useEffect(() => {
+    timeoutRef.current = setTimeout(() => {
       console.warn('Map iframe failed to load within timeout')
       setMapError(true)
-    }, 8000) // 8 second timeout
-    return () => clearTimeout(timeout)
-  }
+    }, 8000)
+    return () => {
+      if (timeoutRef.current) clearTimeout(timeoutRef.current)
+    }
+  }, [])
 
 useEffect(() => {
     const fetchFooterData = async () => {
@@ -93,7 +96,9 @@ useEffect(() => {
             allowFullScreen
             loading="lazy"
             onError={() => setMapError(true)}
-            onLoad={handleMapTimeout() as any}
+            onLoad={() => {
+              if (timeoutRef.current) clearTimeout(timeoutRef.current)
+            }}
             sandbox="allow-same-origin allow-scripts allow-popups allow-presentation"
           ></iframe>
         )}

@@ -14,13 +14,19 @@ const axiosClient = axios.create({
 });
 
 axiosClient.interceptors.request.use((config) => {
+  // Ensure headers object exists
+  if (!config.headers) config.headers = {} as any;
+
+  // Add Authorization token if available
   const token = localStorage.getItem('token');
   if (token) {
-    // Ensure headers object exists and set Authorization safely.
-    // Use `any` here to avoid mismatches with AxiosHeaders type across axios versions.
-    if (!config.headers) config.headers = {} as any;
     (config.headers as any).Authorization = `Bearer ${token}`;
   }
+
+  // Add language header globally
+  const language = localStorage.getItem('i18nextLng') || 'en';
+  (config.headers as any)['X-React-I18n'] = language;
+
   return config;
 });
 
@@ -32,5 +38,21 @@ export default axiosClient;
  * Returns the axios promise so callers can await it before making auth requests.
  */
 export function fetchCsrf() {
-  return axios.get(`${apiRoot}/sanctum/csrf-cookie`, { withCredentials: true });
+  // Get language for header
+  let language = 'en';
+  const possibleKeys = ['i18nextLng', 'language', 'lang', 'locale', 'i18n_language'];
+  for (const key of possibleKeys) {
+    const stored = localStorage.getItem(key);
+    if (stored) {
+      language = stored;
+      break;
+    }
+  }
+
+  return axios.get(`${apiRoot}/sanctum/csrf-cookie`, {
+    withCredentials: true,
+    headers: {
+      'X-React-I18n': language,
+    },
+  });
 }

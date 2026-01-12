@@ -12,7 +12,11 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule): void
     {
-        // $schedule->command('inspire')->hourly();
+        // Run claims cleanup daily at midnight
+        $schedule->command('claims:cleanup')->daily();
+
+        // Delete old claim files daily at 2 AM (30 days after answer)
+        $schedule->command('claims:delete-old-files', ['--days=30'])->dailyAt('02:00');
     }
 
     /**

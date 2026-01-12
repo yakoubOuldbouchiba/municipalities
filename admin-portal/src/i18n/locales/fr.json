@@ -724,5 +724,25 @@
     "dashboard": "Tableau de bord Super Admin",
     "description": "Accédez aux outils de surveillance et de gestion",
     "noTools": "Aucun outil disponible"
+  },
+  "claims": {
+    "referenceNumber": "Numéro de référence",
+    "status": "Statut",
+    "pending": "En attente",
+    "answered": "Répondu",
+    "archived": "Archivé",
+    "created": "Créé",
+    "actions": "Actions",
+    "viewDetails": "Afficher les détails",
+    "answer": "Répondre",
+    "delete": "Supprimer",
+    "answerClaim": "Répondre à la réclamation",
+    "claimDetails": "Détails de la réclamation",
+    "confirmDelete": "Êtes-vous sûr de vouloir supprimer cette réclamation?",
+    "deletedSuccessfully": "Réclamation supprimée avec succès",
+    "answered_successfully": "Réclamation répondue avec succès",
+    "response": "Réponse",
+    "submit": "Soumettre",
+    "loading": "Chargement des réclamations..."
   }
 }

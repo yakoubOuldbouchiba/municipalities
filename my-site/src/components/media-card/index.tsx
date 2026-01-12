@@ -74,7 +74,7 @@ const MediaCard: React.FC<MediaCardProps> = ({ title, fileUrl, description }) =>
             src={fileUrl}
             alt={title}
             className="media-card-image"
-            onError={(e) => {
+            onError={() => {
               setImageError(true)
             }}
           />

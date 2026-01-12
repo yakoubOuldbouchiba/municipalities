@@ -13,6 +13,9 @@ class AuthController extends Controller
 
     public function register(Request $request)
     {
+        // Get language from X-React-I18n header, default to 'en'
+        $language = $request->header('X-React-I18n', 'en');
+
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users',
@@ -34,8 +37,8 @@ class AuthController extends Controller
             'address' => json_encode(['en' => '']),
         ]);
 
-        // Queue email job directly
-        SendWelcomeEmail::dispatch($user, $plainPassword)->onQueue('registered_users_mails');
+        // Queue email job directly with language
+        SendWelcomeEmail::dispatch($user, $plainPassword, $language)->onQueue('registered_users_mails');
 
         return response()->json(['message' => 'User registered successfully'], 201);
     }
@@ -66,5 +69,26 @@ class AuthController extends Controller
     {
         $request->user()->currentAccessToken()->delete();
         return response()->json(['message' => 'Logged out']);
+    }
+
+    // Refresh token (generate new token, delete old one)
+    public function refreshToken(Request $request)
+    {
+        $user = $request->user();
+        
+        if (!$user) {
+            return response()->json(['message' => 'Unauthenticated'], 401);
+        }
+
+        // Delete current token
+        $request->user()->currentAccessToken()->delete();
+
+        // Create new token
+        $newToken = $user->createToken('token')->plainTextToken;
+
+        return response()->json([
+            'token' => $newToken,
+            'user' => $user
+        ]);
     }
 }

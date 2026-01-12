@@ -17,7 +17,8 @@ class SendPasswordResetEmail implements ShouldQueue
     public function __construct(
         public string $email,
         public string $resetToken,
-        public string $resetUrl
+        public string $resetUrl,
+        public string $language = 'en'
     ) {
     }
 
@@ -26,7 +27,8 @@ class SendPasswordResetEmail implements ShouldQueue
         Mail::send(new PasswordResetLink(
             $this->email,
             $this->resetToken,
-            $this->resetUrl
+            $this->resetUrl,
+            $this->language
         ));
     }
 }

@@ -95,6 +95,18 @@
       "icon": "pi pi-envelope",
       "path": "/contact",
       "enabled": false
+    },
+    {
+      "id": 9,
+      "label": {
+        "en": "Claims",
+        "ar": "الشكاوى",
+        "fr": "Réclamations",
+        "es": "Reclamaciones"
+      },
+      "icon": "pi pi-exclamation-triangle",
+      "path": "/claims",
+      "enabled": true
     }
   ]
 }

@@ -714,5 +714,25 @@
     "dashboard": "لوحة تحكم المسؤول الفائق",
     "description": "الوصول إلى أدوات المراقبة والإدارة",
     "noTools": "لا توجد أدوات متاحة"
+  },
+  "claims": {
+    "referenceNumber": "رقم مرجعي",
+    "status": "الحالة",
+    "pending": "قيد الانتظار",
+    "answered": "تمت الإجابة",
+    "archived": "مؤرشف",
+    "created": "تم الإنشاء",
+    "actions": "الإجراءات",
+    "viewDetails": "عرض التفاصيل",
+    "answer": "الإجابة",
+    "delete": "حذف",
+    "answerClaim": "الرد على المطالبة",
+    "claimDetails": "تفاصيل المطالبة",
+    "confirmDelete": "هل أنت متأكد من رغبتك في حذف هذه المطالبة؟",
+    "deletedSuccessfully": "تم حذف المطالبة بنجاح",
+    "answered_successfully": "تم الرد على المطالبة بنجاح",
+    "response": "الرد",
+    "submit": "إرسال",
+    "loading": "جاري تحميل المطالبات..."
   }
 }

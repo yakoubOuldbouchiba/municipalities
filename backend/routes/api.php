@@ -19,6 +19,10 @@ use App\Http\Controllers\StructureController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\SuperAdminController;
 use App\Http\Controllers\Api\ToolController;
+use App\Http\Controllers\CitizenClaimController;
+use App\Http\Controllers\CompanyClaimController;
+use App\Http\Controllers\OrganizationClaimController;
+use App\Http\Controllers\Admin\ClaimsAdminController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -58,12 +62,16 @@ Route::get('/quick-links/{id}', [QuickLinkController::class, 'show']);
 Route::get('/important-numbers', [ImportantNumberController::class, 'index']);
 Route::get('/important-numbers/{id}', [ImportantNumberController::class, 'show']);
 
+// PUBLIC CLAIMS ENDPOINTS - No authentication required
+Route::post('/claims/citizen', [CitizenClaimController::class, 'store']);
+Route::post('/claims/company', [CompanyClaimController::class, 'store']);
+Route::post('/claims/organization', [OrganizationClaimController::class, 'store']);
 
 
-// Auth endpoints
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 Route::middleware('auth:sanctum')->post('/logout', [AuthController::class, 'logout']);
+Route::middleware('auth:sanctum')->post('/refresh-token', [AuthController::class, 'refreshToken']);
 
 Route::post('/forgot-password', [PasswordResetController::class, 'sendResetLink']);
 Route::post('/reset-password', [PasswordResetController::class, 'resetPassword']);
@@ -177,7 +185,29 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('/users/{user}', [UserController::class, 'update']);
     Route::delete('/users/{user}', [UserController::class, 'destroy']);
 
-    // Super Admin - Database, Redis, System monitoring
+    // ADMIN CLAIMS ENDPOINTS
+    Route::prefix('admin/claims')->group(function () {
+        Route::get('/citizen', [ClaimsAdminController::class, 'citizenIndex']);
+        Route::get('/citizen/{id}', [ClaimsAdminController::class, 'citizenShow']);
+        Route::put('/citizen/{id}/answer', [ClaimsAdminController::class, 'answerCitizenClaim']);
+        Route::delete('/citizen/{id}', [ClaimsAdminController::class, 'destroyCitizenClaim']);
+
+        Route::get('/company', [ClaimsAdminController::class, 'companyIndex']);
+        Route::get('/company/{id}', [ClaimsAdminController::class, 'companyShow']);
+        Route::put('/company/{id}/answer', [ClaimsAdminController::class, 'answerCompanyClaim']);
+        Route::delete('/company/{id}', [ClaimsAdminController::class, 'destroyCompanyClaim']);
+
+        Route::get('/organization', [ClaimsAdminController::class, 'organizationIndex']);
+        Route::get('/organization/{id}', [ClaimsAdminController::class, 'organizationShow']);
+        Route::put('/organization/{id}/answer', [ClaimsAdminController::class, 'answerOrganizationClaim']);
+        Route::delete('/organization/{id}', [ClaimsAdminController::class, 'destroyOrganizationClaim']);
+
+        // Bulk operations
+        Route::post('/archive-old', [ClaimsAdminController::class, 'archiveOldClaims']);
+        Route::delete('/purge-old', [ClaimsAdminController::class, 'purgeOldClaims']);
+    });
+
+
     Route::prefix('superadmin')->group(function () {
         // Database endpoints
         Route::get('/databases', [SuperAdminController::class, 'getDatabases']);

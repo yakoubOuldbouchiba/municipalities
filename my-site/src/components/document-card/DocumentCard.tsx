@@ -62,7 +62,7 @@ const DocumentCard: React.FC<DocumentCardProps> = ({ title, fileUrl, type }) => 
           tooltip={t('share')}
           onClick={handleShare}
         />
-        <Button
+        {/* <Button
           icon="pi pi-eye"
           className="p-button-rounded p-button-text p-button-sm"
           tooltip={t('preview')}
@@ -70,7 +70,7 @@ const DocumentCard: React.FC<DocumentCardProps> = ({ title, fileUrl, type }) => 
             e.stopPropagation()
             setVisible(true)
           }}
-        />
+        /> */}
       </div>
     </div>
   )
