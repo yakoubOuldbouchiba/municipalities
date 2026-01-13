@@ -19,6 +19,7 @@ const ResetPasswordPage = lazy(() => import('./pages/auth/ResetPasswordPage'));
 // Website pages
 const AdsPage = lazy(() => import('./pages/website/AdsPage'));
 const NewsPage = lazy(() => import('./pages/website/NewsPage'));
+const SlidersPage = lazy(() => import('./pages/website/SlidersPage'));
 const QuickLinksPage = lazy(() => import('./pages/website/QuickLinksPage'));
 const EventsPage = lazy(() => import('./pages/website/EventsPage'));
 const ImportantNumbersPage = lazy(() => import('./pages/website/ImportantNumbersPage'));
@@ -206,6 +207,16 @@ function App() {
                   <Suspense fallback={<LoadingFallback />}>
                     <RequireAuth>
                       <NewsPage />
+                    </RequireAuth>
+                  </Suspense>
+                }
+              />
+              <Route
+                path="/sliders"
+                element={
+                  <Suspense fallback={<LoadingFallback />}>
+                    <RequireAuth>
+                      <SlidersPage />
                     </RequireAuth>
                   </Suspense>
                 }
