@@ -1,5 +1,4 @@
 import React from 'react'
-import { Dialog } from 'primereact/dialog'
 import './HistoryGeo.css'
 
 interface HistoryGeoProps {
@@ -8,17 +7,17 @@ interface HistoryGeoProps {
 }
 
 const HistoryGeo: React.FC<HistoryGeoProps> = ({ visible, onHide }) => {
+  if (!visible) return null
   return (
-    <Dialog
-      header="History & Geography of Zemmouri"
-      visible={visible}
-      onHide={onHide}
-      className="history-geo-dialog"
-      maximized
-      modal
-    >
-      <div className="history-geo">
-        <h3>📜 History</h3>
+    <div className="history-geo-modal-overlay" onClick={onHide}>
+      <div className="history-geo-modal-content" onClick={(e) => e.stopPropagation()}>
+        <div className="history-geo-modal-header">
+          <h1>History & Geography of Zemmouri</h1>
+          <button className="history-geo-close-btn" onClick={onHide}>✕</button>
+        </div>
+        <div className="history-geo-modal-body">
+      <div className="history-geo-content">
+        <h2>📜 History</h2>
         <p>
           Zemmouri, a beautiful coastal town in Boumerdès Province, has a rich
           history rooted in Amazigh and Andalusian culture. Historically known
@@ -33,8 +32,10 @@ const HistoryGeo: React.FC<HistoryGeoProps> = ({ visible, onHide }) => {
           north and lush hills to the south, making it one of the most charming
           towns in northern Algeria.
         </p>
+        </div>
+        </div>
       </div>
-    </Dialog>
+    </div>
   )
 }
 

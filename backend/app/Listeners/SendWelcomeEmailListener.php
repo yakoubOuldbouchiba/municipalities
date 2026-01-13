@@ -9,7 +9,11 @@ class SendWelcomeEmailListener
 {
     public function handle(UserCreated $event): void
     {
-        // Dispatch email job to Redis queue
-        SendWelcomeEmail::dispatch($event->user)->onQueue('mails');
+        // Dispatch email job to Redis queue with default password and language
+        SendWelcomeEmail::dispatch(
+            $event->user,
+            'password123',
+            'en'
+        )->onQueue('mails');
     }
 }

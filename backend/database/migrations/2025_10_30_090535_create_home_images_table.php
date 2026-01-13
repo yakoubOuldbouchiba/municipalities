@@ -10,7 +10,7 @@ return new class extends Migration
     {
         Schema::create('home_images', function (Blueprint $table) {
             $table->id();
-            $table->string('url');
+            $table->longText('url'); // Use longText for long URLs
             $table->json('captions'); // multilingual captions
             $table->timestamps();
         });

@@ -2,6 +2,7 @@
 import React, { useEffect, useState, lazy, Suspense } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { PrimeReactProvider } from 'primereact/api';
 
 import Footer from './components/footer/index.tsx';
 import Advertisements from './components/advertisements/index.tsx';
@@ -61,34 +62,36 @@ const App: React.FC = () => {
   }, []);
 
   return (
-    <div>
-     <Navbar />
-      <main className="container" style={{ paddingTop: '1rem', paddingBottom: '3rem' }}>
-        <Suspense fallback={<LoadingFallback />}>
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/potentials" element={<Potentials />} />
-            <Route path="/mayor" element={<Mayor />} />
-            <Route path="/secretary-general" element={<SecretaryGeneral />} />
-            <Route path="/history" element={<History />} />
-            <Route path="/blog" element={<Blog />} />
-            <Route path="/contact" element={<Contact />} />
-            <Route path="/claims" element={<Claims />} />
-            <Route path="/papers" element={<PapersPage />} />
-            <Route path="/papers/:id" element={<PaperDetails />} />
-            <Route path="/events" element={<Events />} />
-            <Route path="/persons" element={<Persons />} />
-            <Route path="/quick-links" element={<QuickLinks />} />
-            <Route path="/important-numbers" element={<ImportantNumbers />} />
-            <Route path="/share" element={<SharePage />} />
-          </Routes>
-        </Suspense>
-      </main>
-      <Advertisements ads={ads} />
-      <News />
-      <Footer />
-      <ScrollTopButton /> 
-    </div>
+    <PrimeReactProvider>
+      <div>
+        <Navbar />
+        <main className="container" style={{ paddingTop: '1rem', paddingBottom: '3rem' }}>
+          <Suspense fallback={<LoadingFallback />}>
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/potentials" element={<Potentials />} />
+              <Route path="/mayor" element={<Mayor />} />
+              <Route path="/secretary-general" element={<SecretaryGeneral />} />
+              <Route path="/history" element={<History />} />
+              <Route path="/blog" element={<Blog />} />
+              <Route path="/contact" element={<Contact />} />
+              <Route path="/claims" element={<Claims />} />
+              <Route path="/papers" element={<PapersPage />} />
+              <Route path="/papers/:id" element={<PaperDetails />} />
+              <Route path="/events" element={<Events />} />
+              <Route path="/persons" element={<Persons />} />
+              <Route path="/quick-links" element={<QuickLinks />} />
+              <Route path="/important-numbers" element={<ImportantNumbers />} />
+              <Route path="/share" element={<SharePage />} />
+            </Routes>
+          </Suspense>
+        </main>
+        <Advertisements ads={ads} />
+        <News />
+        <Footer />
+        <ScrollTopButton />
+      </div>
+    </PrimeReactProvider>
   )
 }
 
