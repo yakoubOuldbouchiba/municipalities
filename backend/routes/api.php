@@ -39,7 +39,9 @@ use Illuminate\Support\Facades\Route;
 Route::get('/home-images', [HomeImageController::class, 'index']);
 Route::get('/home-images/{image}', [HomeImageController::class, 'show']);
 Route::get('/papers', [PaperController::class, 'index']);
-Route::get('/papers/{slug}', [PaperController::class, 'show']);
+Route::get('/papers/{id}', [PaperController::class, 'showById']);
+Route::get('/papers/slug/{slug}', [PaperController::class, 'show']);
+
 Route::get('/potentials', [PotentialController::class, 'index']);
 Route::get('/potentials/{potential}', [PotentialController::class, 'show']);
 Route::get('/events', [EventController::class, 'index']);
@@ -141,7 +143,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('/events/{event}', [EventController::class, 'update']);
     Route::delete('/events/{event}', [EventController::class, 'destroy']);
 
-    // Personsx
+    // Persons
     Route::post('/persons', [PersonController::class, 'store']);
     Route::post('/persons/upload', [PersonController::class, 'upload']);
     Route::put('/persons/{person}', [PersonController::class, 'update']);
@@ -151,6 +153,17 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/papers', [PaperController::class, 'store']);
     Route::put('/papers/{paper}', [PaperController::class, 'update']);
     Route::delete('/papers/{paper}', [PaperController::class, 'destroy']);
+    Route::put('/papers/{paper}/toggle-hidden', [PaperController::class, 'toggleHidden']);
+
+    // Hidden toggle endpoints for all entities
+    Route::put('/events/{event}/toggle-hidden', [EventController::class, 'toggleHidden']);
+    Route::put('/home-images/{image}/toggle-hidden', [HomeImageController::class, 'toggleHidden']);
+    Route::put('/persons/{person}/toggle-hidden', [PersonController::class, 'toggleHidden']);
+    Route::put('/news/{news}/toggle-hidden', [NewsController::class, 'toggleHidden']);
+    Route::put('/potentials/{potential}/toggle-hidden', [PotentialController::class, 'toggleHidden']);
+    Route::put('/quick-links/{id}/toggle-hidden', [QuickLinkController::class, 'toggleHidden']);
+    Route::put('/important-numbers/{id}/toggle-hidden', [ImportantNumberController::class, 'toggleHidden']);
+    Route::put('/ads/{ad}/toggle-hidden', [AdController::class, 'toggleHidden']);
 
     // Modules CRUD - Write operations only
     // Private modules endpoints (needed for all pages including registration)

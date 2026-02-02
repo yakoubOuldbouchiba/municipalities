@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use OwenIt\Auditing\Contracts\Auditable;
@@ -18,6 +19,7 @@ class ImportantNumber extends Model implements Auditable
     protected $fillable = [
         'label',
         'value',
+        'hidden',
     ];
 
     /**
@@ -27,5 +29,37 @@ class ImportantNumber extends Model implements Auditable
      */
     protected $casts = [
         'label' => 'array',
+        'hidden' => 'boolean',
     ];
+
+    protected static function booted(): void
+    {
+        static::addGlobalScope('notHidden', function (Builder $builder) {
+            $builder->where('hidden', false);
+        });
+    }
+
+    /**
+     * Hide this number.
+     */
+    public function hide(): void
+    {
+        $this->update(['hidden' => true]);
+    }
+
+    /**
+     * Show this number.
+     */
+    public function show(): void
+    {
+        $this->update(['hidden' => false]);
+    }
+
+    /**
+     * Get all numbers including hidden ones.
+     */
+    public static function withHidden()
+    {
+        return static::withoutGlobalScope('notHidden');
+    }
 }

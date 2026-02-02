@@ -14,13 +14,16 @@ class PotentialController extends Controller
     public function index(Request $request): JsonResponse
     {
         $lang = $request->query('lang', 'en');
+        $includeHidden = $request->query('include_hidden', false);
 
-        $potentials = Potential::all()->map(function ($p) use ($lang) {
+        $query = $includeHidden ? Potential::withHidden() : Potential::query();
+        $potentials = $query->get()->map(function ($p) use ($lang) {
             return [
                 'id' => $p->id,
                 'slug' => $p->slug,
                 'title' => $p->title[$lang] ?? $p->title['en'] ?? '',
                 'description' => $p->description[$lang] ?? $p->description['en'] ?? '',
+                'hidden' => $p->hidden,
             ];
         });
 
@@ -30,13 +33,28 @@ class PotentialController extends Controller
     /**
      * Get a single potential by ID (returns full localized object for editing).
      */
-    public function show(Potential $potential): JsonResponse
+    public function show($id): JsonResponse
     {
+        $potential = Potential::withHidden()->findOrFail($id);
         return response()->json([
             'id' => $potential->id,
             'slug' => $potential->slug,
             'title' => $potential->title ?? [],
             'description' => $potential->description ?? [],
+            'hidden' => $potential->hidden,
+        ]);
+    }
+
+    /**
+     * Toggle potential hidden status.
+     */
+    public function toggleHidden($id): JsonResponse
+    {
+        $potential = Potential::withHidden()->findOrFail($id);
+        $potential->update(['hidden' => !$potential->hidden]);
+        return response()->json([
+            'message' => 'Potential ' . ($potential->hidden ? 'hidden' : 'shown') . ' successfully',
+            'hidden' => $potential->hidden
         ]);
     }
 
@@ -59,8 +77,9 @@ class PotentialController extends Controller
     /**
      * Update an existing potential.
      */
-    public function update(Request $request, Potential $potential): JsonResponse
+    public function update(Request $request, $id): JsonResponse
     {
+        $potential = Potential::withHidden()->findOrFail($id);
         $validated = $request->validate([
             'slug' => 'required|string|unique:potentials,slug,' . $potential->id,
             'title' => 'required|array|min:1',
@@ -75,10 +94,12 @@ class PotentialController extends Controller
     /**
      * Delete a potential.
      */
-    public function destroy(Potential $potential): JsonResponse
+    public function destroy($id): JsonResponse
     {
+        $potential = Potential::withHidden()->findOrFail($id);
         $potential->delete();
 
         return response()->json(['message' => 'Potential deleted successfully'], 200);
     }
+
 }

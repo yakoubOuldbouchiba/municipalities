@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { InputText } from 'primereact/inputtext';
 import { InputTextarea } from 'primereact/inputtextarea';
@@ -8,8 +8,12 @@ import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { InputSwitch } from 'primereact/inputswitch';
 import { ConfirmDialog, confirmDialog } from 'primereact/confirmdialog';
+import { Toast } from 'primereact/toast';
 import axiosClient from '../../api/axiosClient';
 import ArabicKeyboard from '../../components/ArabicKeyboard';
+
+const DEFAULT_LANGUAGES = ['en', 'ar', 'fr'];
+const LANGUAGE_NAMES: Record<string, string> = { en: 'English', fr: 'Français', ar: 'العربية' };
 
 type Person = {
   id: string;
@@ -20,10 +24,12 @@ type Person = {
   image_url: string;
   period: string;
   is_current: boolean;
+  hidden?: boolean;
 };
 
 const PersonsPage: React.FC = () => {
   const { t, i18n } = useTranslation();
+  const toast = useRef<any>(null);
   const [persons, setPersons] = useState<Person[]>([]);
   const [names, setNames] = useState<Record<string, string>>({});
   const [messages, setMessages] = useState<Record<string, string>>({});
@@ -45,7 +51,7 @@ const PersonsPage: React.FC = () => {
   // Fetch list from backend (localized)
   const fetchList = async () => {
     try {
-      const res = await axiosClient.get('/persons', { params: { lang: i18n.language || 'en' } });
+      const res = await axiosClient.get('/persons', { params: { lang: i18n.language || 'en', include_hidden: true } });
       setPersons(res.data || []);
     } catch (err) {
       console.error('Error fetching persons:', err);
@@ -58,11 +64,9 @@ const PersonsPage: React.FC = () => {
   }, [i18n.language]);
 
   const resetForm = () => {
-    const configuredLangs = Object.keys((i18n as any).options.resources || { en: {} });
-    const primaryLang = configuredLangs[0] || 'en';
-    setNames({ [primaryLang]: '' });
-    setMessages({ [primaryLang]: '' });
-    setAchievements({ [primaryLang]: '' });
+    setNames(Object.fromEntries(DEFAULT_LANGUAGES.map(lang => [lang, ''])));
+    setMessages(Object.fromEntries(DEFAULT_LANGUAGES.map(lang => [lang, ''])));
+    setAchievements(Object.fromEntries(DEFAULT_LANGUAGES.map(lang => [lang, ''])));
     setImageUrl('');
     setPeriod('');
     setType('mayor');
@@ -74,8 +78,7 @@ const PersonsPage: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const configuredLangs = Object.keys((i18n as any).options.resources || { en: {} });
-    const primary = configuredLangs[0] || 'en';
+    const primary = DEFAULT_LANGUAGES[0] || 'en';
 
     if (!((names[primary] || '').trim()) || !type) {
       return;
@@ -138,8 +141,20 @@ const PersonsPage: React.FC = () => {
     });
   };
 
+  const toggleHidden = async (id: string) => {
+    try {
+      await axiosClient.put(`/persons/${id}/toggle-hidden`);
+      await fetchList();
+      toast.current?.show({ severity: 'success', summary: t('persons.success', 'Success'), detail: t('persons.toggleSuccess', 'Person visibility updated'), life: 3000 });
+    } catch (err) {
+      console.error('Error toggling person hidden status:', err);
+      toast.current?.show({ severity: 'error', summary: t('persons.error', 'Error'), detail: t('persons.toggleError', 'Failed to update person visibility'), life: 3000 });
+    }
+  };
+
   const actionBodyTemplate = (rowData: Person) => (
     <div className="flex gap-2">
+      <Button icon={rowData.hidden ? "pi pi-eye" : "pi pi-eye-slash"} className="p-button-sm p-button-warning" onClick={() => toggleHidden(rowData.id)} aria-label={rowData.hidden ? "Show" : "Hide"} />
       <Button icon="pi pi-pencil" className="p-button-sm" onClick={() => handleEdit(rowData.id)} aria-label="Edit" />
       <Button icon="pi pi-trash" className="p-button-sm p-button-danger" onClick={() => confirmDelete(rowData.id)} aria-label="Delete" />
     </div>
@@ -165,39 +180,11 @@ const PersonsPage: React.FC = () => {
 
   return (
     <div className="p-4">
+      <Toast ref={toast} />
       <ConfirmDialog />
       <h1 className="text-2xl font-semibold mb-4">{t('persons.title', 'Persons')}</h1>
 
       <form onSubmit={handleSubmit} className="mb-6 space-y-2 max-w-2xl">
-        {/* Language add controls */}
-        <div className="flex gap-2 items-center">
-          {(() => {
-            const configuredLangs = Object.keys((i18n as any).options.resources || { en: {} });
-            const existing = Array.from(new Set([...(configuredLangs || []), ...Object.keys(names), ...Object.keys(messages), ...Object.keys(achievements)]));
-            const langNames: Record<string, string> = { en: 'English', fr: 'Français', ar: 'العربية', de: 'Deutsch', es: 'Español' };
-            const allCandidates = Object.entries(langNames).map(([code, name]) => ({ code, name }));
-            const options = allCandidates.filter((o) => !existing.includes(o.code));
-            return (
-              <>
-                <Dropdown value={selectedLang} options={options} onChange={(e) => setSelectedLang(e.value)} optionLabel="name" optionValue="code" placeholder={t('persons.addLangPlaceholder', 'Select language')} />
-                <Button icon="pi pi-plus" className="p-button-sm" onClick={() => {
-                  const code = (selectedLang || '').trim().toLowerCase();
-                  if (!code) return;
-                  const rendered = Array.from(new Set([...(configuredLangs || []), ...Object.keys(names), ...Object.keys(messages), ...Object.keys(achievements)]));
-                  if (rendered.includes(code)) {
-                    setSelectedLang(null);
-                    return;
-                  }
-                  setNames((prev) => ({ ...prev, [code]: '' }));
-                  setMessages((prev) => ({ ...prev, [code]: '' }));
-                  setAchievements((prev) => ({ ...prev, [code]: '' }));
-                  setSelectedLang(null);
-                }} aria-label="Add language" />
-              </>
-            );
-          })()}
-        </div>
-
         {/* Type field */}
         <div>
           <label className="block text-sm font-medium text-gray-700">{t('persons.fields.type', 'Type')}</label>
@@ -269,21 +256,18 @@ const PersonsPage: React.FC = () => {
 
         {/* Name field - multilingual */}
         {(() => {
-          const existingLangs = Object.keys(names);
-          const renderedLangs = Array.from(new Set([...existingLangs]));
-          const langNames: Record<string, string> = { en: 'English', fr: 'Français', ar: 'العربية', de: 'Deutsch', es: 'Español' };
-          return renderedLangs.length > 0 ? (
+          return (
             <div className="p-3 border border-gray-200 rounded">
               <h3 className="text-sm font-semibold mb-3">{t('persons.fields.name', 'Name')}</h3>
-              {renderedLangs.map((lng) => (
+              {DEFAULT_LANGUAGES.map((lng) => (
                 <div key={lng} className="mb-2">
-                  <label className="block text-xs font-medium text-gray-600 mb-1">{langNames[lng] ?? lng.toUpperCase()}</label>
+                  <label className="block text-xs font-medium text-gray-600 mb-1">{LANGUAGE_NAMES[lng] ?? lng.toUpperCase()}</label>
                   <InputText
                     value={names[lng] || ''}
                     onChange={(e) => setNames((prev) => ({ ...prev, [lng]: (e.target as HTMLInputElement).value }))}
                     onFocus={() => lng === 'ar' && setActiveKeyboardField(`name-${lng}`)}
                     className="w-full p-inputtext-sm"
-                    placeholder={t(`persons.placeholders.name_${lng}`, `Name (${lng})`)}
+                    placeholder={t(`persons.placeholders.name_${lng}`, `Name (${lng})`)} 
                     dir={lng === 'ar' ? 'rtl' : 'ltr'}
                   />
                   {lng === 'ar' && activeKeyboardField === `name-${lng}` && (
@@ -295,101 +279,71 @@ const PersonsPage: React.FC = () => {
                 </div>
               ))}
             </div>
-          ) : null;
+          );
         })()}
 
         {/* Message field - multilingual */}
         {(() => {
-          const configuredLangs = Object.keys((i18n as any).options.resources || { en: {} });
-          const existingLangs = Object.keys(messages);
-          const renderedLangs = Array.from(new Set([...existingLangs]));
-          const langNames: Record<string, string> = { en: 'English', fr: 'Français', ar: 'العربية', de: 'Deutsch', es: 'Español' };
-          return renderedLangs.map((lng) => (
-            <div key={lng} className="p-3 border border-gray-200 rounded">
-              <div className="flex items-center justify-between mb-2">
-                <h3 className="text-sm font-semibold">{t('persons.fields.message', 'Message')} - {langNames[lng] ?? lng.toUpperCase()}</h3>
-                {!configuredLangs.includes(lng) && (
-                  <Button
-                    type="button"
-                    icon="pi pi-times"
-                    className="p-button-text p-button-danger p-button-sm"
-                    onClick={() => {
-                      setMessages((prev) => {
-                        const next = { ...prev };
-                        delete next[lng];
-                        return next;
-                      });
-                    }}
-                    aria-label={`Remove ${lng}`}
-                  />
-                )}
-              </div>
+          return (
+            <>
+              {DEFAULT_LANGUAGES.map((lng) => (
+                <div key={lng} className="p-3 border border-gray-200 rounded">
+                  <div className="flex items-center justify-between mb-2">
+                    <h3 className="text-sm font-semibold">{t('persons.fields.message', 'Message')} - {LANGUAGE_NAMES[lng] ?? lng.toUpperCase()}</h3>
+                  </div>
 
-              <label className="block text-xs font-medium text-gray-600 mb-1">{t(`persons.fields.message_${lng}`, `Message (${lng})`)}</label>
-              <InputTextarea
-                value={messages[lng] || ''}
-                onChange={(e) => setMessages((prev) => ({ ...prev, [lng]: (e.target as HTMLTextAreaElement).value }))}
-                onFocus={() => lng === 'ar' && setActiveKeyboardField(`message-${lng}`)}
-                className="w-full p-inputtextarea-sm"
-                placeholder={t(`persons.placeholders.message_${lng}`, `Message (${lng})`)}
-                rows={3}
-                dir={lng === 'ar' ? 'rtl' : 'ltr'}
-              />
-              {lng === 'ar' && activeKeyboardField === `message-${lng}` && (
-                <ArabicKeyboard
-                  onInput={(char: string) => setMessages((prev) => ({ ...prev, [lng]: (prev[lng] || '') + char }))}
-                  onBackspace={() => setMessages((prev) => ({ ...prev, [lng]: (prev[lng] || '').slice(0, -1) }))}
-                />
-              )}
-            </div>
-          ));
+                  <label className="block text-xs font-medium text-gray-600 mb-1">{t(`persons.fields.message_${lng}`, `Message (${lng})`)}</label>
+                  <InputTextarea
+                    value={messages[lng] || ''}
+                    onChange={(e) => setMessages((prev) => ({ ...prev, [lng]: (e.target as HTMLTextAreaElement).value }))}
+                    onFocus={() => lng === 'ar' && setActiveKeyboardField(`message-${lng}`)}
+                    className="w-full p-inputtextarea-sm"
+                    placeholder={t(`persons.placeholders.message_${lng}`, `Message (${lng})`)}
+                    rows={3}
+                    dir={lng === 'ar' ? 'rtl' : 'ltr'}
+                  />
+                  {lng === 'ar' && activeKeyboardField === `message-${lng}` && (
+                    <ArabicKeyboard
+                      onInput={(char: string) => setMessages((prev) => ({ ...prev, [lng]: (prev[lng] || '') + char }))}
+                      onBackspace={() => setMessages((prev) => ({ ...prev, [lng]: (prev[lng] || '').slice(0, -1) }))}
+                    />
+                  )}
+                </div>
+              ))}
+            </>
+          );
         })()}
 
         {/* Achievements field - multilingual */}
         {(() => {
-          const configuredLangs = Object.keys((i18n as any).options.resources || { en: {} });
-          const existingLangs = Object.keys(achievements);
-          const renderedLangs = Array.from(new Set([...existingLangs]));
-          const langNames: Record<string, string> = { en: 'English', fr: 'Français', ar: 'العربية', de: 'Deutsch', es: 'Español' };
-          return renderedLangs.map((lng) => (
-            <div key={lng} className="p-3 border border-gray-200 rounded">
-              <div className="flex items-center justify-between mb-2">
-                <h3 className="text-sm font-semibold">{t('persons.fields.achievements', 'Achievements')} - {langNames[lng] ?? lng.toUpperCase()}</h3>
-                {!configuredLangs.includes(lng) && (
-                  <Button
-                    type="button"
-                    icon="pi pi-times"
-                    className="p-button-text p-button-danger p-button-sm"
-                    onClick={() => {
-                      setAchievements((prev) => {
-                        const next = { ...prev };
-                        delete next[lng];
-                        return next;
-                      });
-                    }}
-                    aria-label={`Remove ${lng}`}
-                  />
-                )}
-              </div>
+          return (
+            <>
+              {DEFAULT_LANGUAGES.map((lng) => (
+                <div key={lng} className="p-3 border border-gray-200 rounded">
+                  <div className="flex items-center justify-between mb-2">
+                    <h3 className="text-sm font-semibold">{t('persons.fields.achievements', 'Achievements')} - {LANGUAGE_NAMES[lng] ?? lng.toUpperCase()}</h3>
+                  </div>
 
-              <label className="block text-xs font-medium text-gray-600 mb-1">{t(`persons.fields.achievements_${lng}`, `Achievements (${lng})`)}</label>
-              <InputTextarea
-                value={achievements[lng] || ''}
-                onChange={(e) => setAchievements((prev) => ({ ...prev, [lng]: (e.target as HTMLTextAreaElement).value }))}
-                onFocus={() => lng === 'ar' && setActiveKeyboardField(`achievements-${lng}`)}
-                className="w-full p-inputtextarea-sm"
-                placeholder={t(`persons.placeholders.achievements_${lng}`, `Achievements (${lng})`)}
-                rows={3}
-                dir={lng === 'ar' ? 'rtl' : 'ltr'}
-              />
-              {lng === 'ar' && activeKeyboardField === `achievements-${lng}` && (
-                <ArabicKeyboard
-                  onInput={(char: string) => setAchievements((prev) => ({ ...prev, [lng]: (prev[lng] || '') + char }))}
-                  onBackspace={() => setAchievements((prev) => ({ ...prev, [lng]: (prev[lng] || '').slice(0, -1) }))}
-                />
-              )}
-            </div>
-          ));
+                  <label className="block text-xs font-medium text-gray-600 mb-1">{t(`persons.fields.achievements_${lng}`, `Achievements (${lng})`)}</label>
+                  <InputTextarea
+                    value={achievements[lng] || ''}
+                    onChange={(e) => setAchievements((prev) => ({ ...prev, [lng]: (e.target as HTMLTextAreaElement).value }))}
+                    onFocus={() => lng === 'ar' && setActiveKeyboardField(`achievements-${lng}`)}
+                    className="w-full p-inputtextarea-sm"
+                    placeholder={t(`persons.placeholders.achievements_${lng}`, `Achievements (${lng})`)}
+                    rows={3}
+                    dir={lng === 'ar' ? 'rtl' : 'ltr'}
+                  />
+                  {lng === 'ar' && activeKeyboardField === `achievements-${lng}` && (
+                    <ArabicKeyboard
+                      onInput={(char: string) => setAchievements((prev) => ({ ...prev, [lng]: (prev[lng] || '') + char }))}
+                      onBackspace={() => setAchievements((prev) => ({ ...prev, [lng]: (prev[lng] || '').slice(0, -1) }))}
+                    />
+                  )}
+                </div>
+              ))}
+            </>
+          );
         })()}
 
         <div className="flex items-center gap-2">
@@ -408,7 +362,8 @@ const PersonsPage: React.FC = () => {
             <Column field="period" header={t('persons.table.period', 'Period')} />
             <Column header={t('persons.table.image', 'Image')} body={imageBodyTemplate} style={{ width: '120px' }} />
             <Column header={t('persons.table.isCurrent', 'Current')} body={currentBodyTemplate} style={{ width: '80px' }} />
-            <Column header={t('persons.table.actions', 'Actions')} body={actionBodyTemplate} style={{ width: '150px' }} />
+            <Column header={t('persons.table.hidden', 'Status')} body={(rowData: Person) => (rowData.hidden ? <span className="text-red-600 font-semibold">{t('common.hidden', 'Hidden')}</span> : <span className="text-green-600 font-semibold">{t('common.visible', 'Visible')}</span>)} style={{ width: '100px' }} />
+            <Column header={t('persons.table.actions', 'Actions')} body={actionBodyTemplate} style={{ width: '200px' }} />
           </DataTable>
         )}
       </div>

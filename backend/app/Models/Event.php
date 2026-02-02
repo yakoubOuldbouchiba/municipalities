@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use OwenIt\Auditing\Contracts\Auditable;
@@ -16,13 +17,22 @@ class Event extends Model implements Auditable
         'date',
         'description',
         'icon',
-        'color'
+        'color',
+        'hidden'
     ];
 
     protected $casts = [
         'status' => 'json',
         'description' => 'json',
+        'hidden' => 'boolean',
     ];
+
+    protected static function booted(): void
+    {
+        static::addGlobalScope('notHidden', function (Builder $builder) {
+            $builder->where('hidden', false);
+        });
+    }
 
     /**
      * Get a localized status.
@@ -46,5 +56,29 @@ class Event extends Model implements Auditable
     {
         $lang = $lang ?? app()->getLocale();
         return $this->description[$lang] ?? $this->description['en'] ?? null;
+    }
+
+    /**
+     * Hide this event.
+     */
+    public function hide(): void
+    {
+        $this->update(['hidden' => true]);
+    }
+
+    /**
+     * Show this event.
+     */
+    public function show(): void
+    {
+        $this->update(['hidden' => false]);
+    }
+
+    /**
+     * Get all events including hidden ones.
+     */
+    public static function withHidden()
+    {
+        return static::withoutGlobalScope('notHidden');
     }
 }

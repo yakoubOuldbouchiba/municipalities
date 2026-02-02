@@ -11,23 +11,42 @@ class HomeImageController extends Controller
     public function index(Request $request)
     {
         $lang = $request->get('lang', 'en');
-        $images = HomeImage::all()->map(function ($image) use ($lang) {
+        $includeHidden = $request->query('include_hidden', false);
+        
+        $query = $includeHidden ? HomeImage::withHidden() : HomeImage::query();
+        $images = $query->get()->map(function ($image) use ($lang) {
             return [
                 'id' => $image->id,
                 'url' => $image->url,
                 'caption' => $image->captions[$lang] ?? $image->captions['en'],
+                'hidden' => $image->hidden,
             ];
         });
 
         return response()->json($images);
 
     }
-    public function show(HomeImage $image): JsonResponse
+    public function show($id): JsonResponse
     {
+        $image = HomeImage::withHidden()->findOrFail($id);
         return response()->json([
             'id' => $image->id,
             'url' => $image->url,
             'caption' => $image->captions ?? [],
+            'hidden' => $image->hidden,
+        ]);
+    }
+
+    /**
+     * Toggle image hidden status.
+     */
+    public function toggleHidden($id): JsonResponse
+    {
+        $image = HomeImage::withHidden()->findOrFail($id);
+        $image->update(['hidden' => !$image->hidden]);
+        return response()->json([
+            'message' => 'Image ' . ($image->hidden ? 'hidden' : 'shown') . ' successfully',
+            'hidden' => $image->hidden
         ]);
     }
     public function store(Request $request): JsonResponse
@@ -41,8 +60,9 @@ class HomeImageController extends Controller
 
         return response()->json($image, 201);
     }
-    public function update(Request $request, HomeImage $image): JsonResponse
+    public function update(Request $request, $id): JsonResponse
     {
+        $image = HomeImage::withHidden()->findOrFail($id);
         $validated = $request->validate([
             'url' => 'sometimes|required|string',
             'captions' => 'sometimes|required|array|min:1',
@@ -52,8 +72,9 @@ class HomeImageController extends Controller
 
         return response()->json($image);
     }
-    public function destroy(HomeImage $image): JsonResponse
+    public function destroy($id): JsonResponse
     {
+        $image = HomeImage::withHidden()->findOrFail($id);
         $image->delete();
 
         return response()->json(null, 204);

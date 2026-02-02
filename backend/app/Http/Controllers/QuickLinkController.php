@@ -11,9 +11,11 @@ class QuickLinkController extends Controller
     {
         // Get selected language (default: English)
         $lang = $request->get('lang', 'en');
+        $includeHidden = $request->query('include_hidden', false);
 
         // Fetch and map links with translated labels
-        $quickLinks = QuickLink::all()->map(function ($link) use ($lang) {
+        $query = $includeHidden ? QuickLink::withHidden() : QuickLink::query();
+        $quickLinks = $query->get()->map(function ($link) use ($lang) {
             // `label` may be stored as JSON string or already cast to array by the model.
             if (is_string($link->label)) {
                 $labels = json_decode($link->label, true) ?? [];
@@ -27,6 +29,7 @@ class QuickLinkController extends Controller
                 'id' => $link->id,
                 'label' => $labels[$lang] ?? $labels['en'] ?? '',
                 'url' => $link->url,
+                'hidden' => $link->hidden,
             ];
         });
 
@@ -47,13 +50,26 @@ class QuickLinkController extends Controller
 
     public function show($id)
     {
-        $link = QuickLink::findOrFail($id);
+        $link = QuickLink::withHidden()->findOrFail($id);
         return response()->json($link);
+    }
+
+    /**
+     * Toggle link hidden status.
+     */
+    public function toggleHidden($id)
+    {
+        $link = QuickLink::withHidden()->findOrFail($id);
+        $link->update(['hidden' => !$link->hidden]);
+        return response()->json([
+            'message' => 'Link ' . ($link->hidden ? 'hidden' : 'shown') . ' successfully',
+            'hidden' => $link->hidden
+        ]);
     }
 
     public function update(Request $request, $id)
     {
-        $link = QuickLink::findOrFail($id);
+        $link = QuickLink::withHidden()->findOrFail($id);
 
         $data = $request->validate([
             'label' => 'sometimes|array',
@@ -66,7 +82,8 @@ class QuickLinkController extends Controller
 
     public function destroy($id)
     {
-        QuickLink::destroy($id);
+        $link = QuickLink::withHidden()->findOrFail($id);
+        $link->delete();
         return response()->json(['message' => 'Deleted successfully']);
     }
 }

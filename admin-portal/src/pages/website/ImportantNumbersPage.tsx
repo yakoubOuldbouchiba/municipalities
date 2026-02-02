@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
@@ -6,17 +6,21 @@ import { Dropdown } from 'primereact/dropdown';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { ConfirmDialog, confirmDialog } from 'primereact/confirmdialog';
+import { Toast } from 'primereact/toast';
 import axiosClient from '../../api/axiosClient';
 import ArabicKeyboard from '../../components/ArabicKeyboard';
+import { json } from 'stream/consumers';
 
 type ImportantNumber = {
   id: string;
   label: string; // localized label when listing
   value: string;
+  hidden?: boolean;
 };
 
 const ImportantNumbersPage: React.FC = () => {
   const { t, i18n } = useTranslation();
+  const toast = useRef<any>(null);
   const [items, setItems] = useState<ImportantNumber[]>([]);
   const [labels, setLabels] = useState<Record<string, string>>({});
   const [value, setValue] = useState('');
@@ -27,7 +31,7 @@ const ImportantNumbersPage: React.FC = () => {
   // Fetch list from backend (localized)
   const fetchList = async () => {
     try {
-      const res = await axiosClient.get('/important-numbers', { params: { lang: i18n.language || 'en' } });
+      const res = await axiosClient.get('/important-numbers', { params: { lang: i18n.language || 'en', include_hidden: true } });
       setItems(res.data || []);
     } catch (err) {
       console.error('Error fetching important numbers:', err);
@@ -46,16 +50,9 @@ const ImportantNumbersPage: React.FC = () => {
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    const configuredLangs = Object.keys((i18n as any).options.resources || { en: {} });
-    const primary = configuredLangs[0] || 'en';
-
-    if (!((labels[primary] || '').trim()) || !value.trim()) {
-      return;
-    }
-
+    e.preventDefault(); 
     const payload = {
-      label: Object.fromEntries(Object.entries(labels).map(([k, v]) => [k, v.trim()])),
+      label: labels,
       value: value.trim(),
     };
 
@@ -102,8 +99,20 @@ const ImportantNumbersPage: React.FC = () => {
     });
   };
 
+  const toggleHidden = async (id: string) => {
+    try {
+      await axiosClient.put(`/important-numbers/${id}/toggle-hidden`);
+      await fetchList();
+      toast.current?.show({ severity: 'success', summary: t('importantNumbers.success', 'Success'), detail: t('importantNumbers.toggleSuccess', 'Important number visibility updated'), life: 3000 });
+    } catch (err) {
+      console.error('Error toggling hidden status:', err);
+      toast.current?.show({ severity: 'error', summary: t('importantNumbers.error', 'Error'), detail: t('importantNumbers.toggleError', 'Failed to update important number visibility'), life: 3000 });
+    }
+  };
+
   const actionBodyTemplate = (rowData: ImportantNumber) => (
     <div className="flex gap-2">
+      <Button icon={rowData.hidden ? "pi pi-eye" : "pi pi-eye-slash"} className="p-button-sm p-button-warning" onClick={() => toggleHidden(rowData.id)} aria-label={rowData.hidden ? "Show" : "Hide"} />
       <Button icon="pi pi-pencil" className="p-button-sm" onClick={() => handleEdit(rowData.id)} aria-label="Edit" />
       <Button icon="pi pi-trash" className="p-button-sm p-button-danger" onClick={() => confirmDelete(rowData.id)} aria-label="Delete" />
     </div>
@@ -118,6 +127,7 @@ const ImportantNumbersPage: React.FC = () => {
 
   return (
     <div className="p-4">
+      <Toast ref={toast} />
       <ConfirmDialog />
       <h1 className="text-2xl font-semibold mb-4">{t('importantNumbers.title', 'Important Numbers')}</h1>
 
@@ -205,7 +215,8 @@ const ImportantNumbersPage: React.FC = () => {
           <DataTable value={items} responsiveLayout="scroll">
             <Column field="label" header={t('importantNumbers.table.label', 'Label')} body={(rowData) => getLabel(rowData.label, i18n.language)} />
             <Column field="value" header={t('importantNumbers.table.value', 'Value')} />
-            <Column header={t('importantNumbers.table.actions', 'Actions')} body={actionBodyTemplate} style={{ width: '150px' }} />
+            <Column header={t('importantNumbers.table.hidden', 'Status')} body={(rowData) => (rowData.hidden ? <span className="text-red-600 font-semibold">Hidden</span> : <span className="text-green-600 font-semibold">Visible</span>)} style={{ width: '100px' }} />
+            <Column header={t('importantNumbers.table.actions', 'Actions')} body={actionBodyTemplate} style={{ width: '200px' }} />
           </DataTable>
         )}
       </div>

@@ -23,7 +23,7 @@ const PaperDetails: React.FC = () => {
   useEffect(() => {
     if (!id) return
     api
-      .get(`/papers/${id}`)
+      .get(`/papers/slug/${id}`)
       .then((res) => setPaper(res.data))
       .catch(() => setPaper(null))
       .finally(() => setLoading(false))

@@ -11,8 +11,10 @@ class ImportantNumberController extends Controller
     {
         // Get the language from query param, default to 'en'
         $lang = $request->get('lang', 'en');
+        $includeHidden = $request->query('include_hidden', false);
 
-        $importantNumbers = ImportantNumber::all()->map(function ($num) use ($lang) {
+        $query = $includeHidden ? ImportantNumber::withHidden() : ImportantNumber::query();
+        $importantNumbers = $query->get()->map(function ($num) use ($lang) {
             // label may be stored as JSON string (from DB seeder) or already cast to array by Eloquent
             if (is_string($num->label)) {
                 $labels = json_decode($num->label, true) ?? [];
@@ -26,6 +28,7 @@ class ImportantNumberController extends Controller
                 'id' => $num->id,
                 'label' => $labels[$lang] ?? $labels['en'] ?? '',
                 'value' => $num->value,
+                'hidden' => $num->hidden,
             ];
         });
 
@@ -36,7 +39,6 @@ class ImportantNumberController extends Controller
     {
         $data = $request->validate([
             'label' => 'required|array',
-            'label.en' => 'required|string',
             'value' => 'required|string',
         ]);
 
@@ -46,13 +48,26 @@ class ImportantNumberController extends Controller
 
     public function show($id)
     {
-        $number = ImportantNumber::findOrFail($id);
+        $number = ImportantNumber::withHidden()->findOrFail($id);
         return response()->json($number);
+    }
+
+    /**
+     * Toggle number hidden status.
+     */
+    public function toggleHidden($id)
+    {
+        $number = ImportantNumber::withHidden()->findOrFail($id);
+        $number->update(['hidden' => !$number->hidden]);
+        return response()->json([
+            'message' => 'Number ' . ($number->hidden ? 'hidden' : 'shown') . ' successfully',
+            'hidden' => $number->hidden
+        ]);
     }
 
     public function update(Request $request, $id)
     {
-        $number = ImportantNumber::findOrFail($id);
+        $number = ImportantNumber::withHidden()->findOrFail($id);
 
         $data = $request->validate([
             'label' => 'sometimes|array',
@@ -65,7 +80,8 @@ class ImportantNumberController extends Controller
 
     public function destroy($id)
     {
-        ImportantNumber::destroy($id);
+        $number = ImportantNumber::withHidden()->findOrFail($id);
+        $number->delete();
         return response()->json(['message' => 'Deleted successfully']);
     }
 }

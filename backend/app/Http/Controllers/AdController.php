@@ -14,14 +14,17 @@ class AdController extends Controller
     public function index(Request $request): JsonResponse
     {
         $lang = $request->query('lang', 'en');
+        $includeHidden = $request->query('include_hidden', false);
 
-        $ads = Ad::all()->map(function ($ad) use ($lang) {
+        $query = $includeHidden ? Ad::withHidden() : Ad::query();
+        $ads = $query->get()->map(function ($ad) use ($lang) {
             return [
                 'id' => $ad->id,
                 'title' => $ad->title[$lang] ?? $ad->title['en'] ?? '',
                 'description' => $ad->description[$lang] ?? $ad->description['en'] ?? '',
                 'link' => $ad->link,
                 'file_type' => $ad->file_type,
+                'hidden' => $ad->hidden,
             ];
         });
 
@@ -31,14 +34,29 @@ class AdController extends Controller
     /**
      * Get a single ad (returns full localized object for editing).
      */
-    public function show(Ad $ad): JsonResponse
+    public function show($id): JsonResponse
     {
+        $ad = Ad::withHidden()->findOrFail($id);
         return response()->json([
             'id' => $ad->id,
             'title' => $ad->title ?? [],
             'description' => $ad->description ?? [],
             'link' => $ad->link,
             'file_type' => $ad->file_type,
+            'hidden' => $ad->hidden,
+        ]);
+    }
+
+    /**
+     * Toggle ad hidden status.
+     */
+    public function toggleHidden($id): JsonResponse
+    {
+        $ad = Ad::withHidden()->findOrFail($id);
+        $ad->update(['hidden' => !$ad->hidden]);
+        return response()->json([
+            'message' => 'Ad ' . ($ad->hidden ? 'hidden' : 'shown') . ' successfully',
+            'hidden' => $ad->hidden
         ]);
     }
 
@@ -61,8 +79,9 @@ class AdController extends Controller
     /**
      * Update an existing ad.
      */
-    public function update(Request $request, Ad $ad): JsonResponse
+    public function update(Request $request, $id): JsonResponse
     {
+        $ad = Ad::withHidden()->findOrFail($id);
         $validated = $request->validate([
             'title' => 'sometimes|array|min:1',
             'description' => 'nullable|array',
@@ -77,8 +96,9 @@ class AdController extends Controller
     /**
      * Delete an ad.
      */
-    public function destroy(Ad $ad): JsonResponse
+    public function destroy($id): JsonResponse
     {
+        $ad = Ad::withHidden()->findOrFail($id);
         $ad->delete();
         return response()->json(['message' => 'Ad deleted successfully'], 200);
     }

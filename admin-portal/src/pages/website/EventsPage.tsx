@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { InputText } from 'primereact/inputtext';
 import { InputTextarea } from 'primereact/inputtextarea';
@@ -7,6 +7,7 @@ import { Dropdown } from 'primereact/dropdown';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { ConfirmDialog, confirmDialog } from 'primereact/confirmdialog';
+import { Toast } from 'primereact/toast';
 import axiosClient from '../../api/axiosClient';
 import { getIconOptions, getColorOptions } from '../../lib/eventOptions';
 import ArabicKeyboard from '../../components/ArabicKeyboard';
@@ -18,10 +19,12 @@ type Event = {
   description: string;
   icon: string;
   color: string;
+  hidden?: boolean;
 };
 
 const EventsPage: React.FC = () => {
   const { t, i18n } = useTranslation();
+  const toast = useRef<any>(null);
   const [events, setEvents] = useState<Event[]>([]);
   const [statuses, setStatuses] = useState<Record<string, string>>({});
   const [descriptions, setDescriptions] = useState<Record<string, string>>({});
@@ -35,7 +38,7 @@ const EventsPage: React.FC = () => {
   // Fetch list from backend (localized)
   const fetchList = async () => {
     try {
-      const res = await axiosClient.get('/events', { params: { lang: i18n.language || 'en' } });
+      const res = await axiosClient.get('/events', { params: { lang: i18n.language || 'en', include_hidden: true } });
       setEvents(res.data || []);
     } catch (err) {
       console.error('Error fetching events:', err);
@@ -124,8 +127,20 @@ const EventsPage: React.FC = () => {
     });
   };
 
+  const toggleHidden = async (id: string) => {
+    try {
+      await axiosClient.put(`/events/${id}/toggle-hidden`);
+      await fetchList();
+      toast.current?.show({ severity: 'success', summary: t('events.success', 'Success'), detail: t('events.toggleSuccess', 'Event visibility updated'), life: 3000 });
+    } catch (err) {
+      console.error('Error toggling event hidden status:', err);
+      toast.current?.show({ severity: 'error', summary: t('events.error', 'Error'), detail: t('events.toggleError', 'Failed to update event visibility'), life: 3000 });
+    }
+  };
+
   const actionBodyTemplate = (rowData: Event) => (
     <div className="flex gap-2">
+      <Button icon={rowData.hidden ? "pi pi-eye" : "pi pi-eye-slash"} className="p-button-sm p-button-warning" onClick={() => toggleHidden(rowData.id)} aria-label={rowData.hidden ? "Show" : "Hide"} />
       <Button icon="pi pi-pencil" className="p-button-sm" onClick={() => handleEdit(rowData.id)} aria-label="Edit" />
       <Button icon="pi pi-trash" className="p-button-sm p-button-danger" onClick={() => confirmDelete(rowData.id)} aria-label="Delete" />
     </div>
@@ -169,6 +184,7 @@ const EventsPage: React.FC = () => {
 
   return (
     <div className="p-4">
+      <Toast ref={toast} />
       <ConfirmDialog />
       <h1 className="text-2xl font-semibold mb-4">{t('events.title', 'Events')}</h1>
 
@@ -343,7 +359,8 @@ const EventsPage: React.FC = () => {
             <Column field="description" header={t('events.table.description', 'Description')} />
             <Column header={t('events.table.icon', 'Icon')} body={iconBodyTemplate} style={{ width: '150px' }} />
             <Column header={t('events.table.color', 'Color')} body={colorBodyTemplate} style={{ width: '150px' }} />
-            <Column header={t('events.table.actions', 'Actions')} body={actionBodyTemplate} style={{ width: '150px' }} />
+            <Column header={t('events.table.hidden', 'Status')} body={(rowData: Event) => (rowData.hidden ? <span className="text-red-600 font-semibold">{t('common.hidden', 'Hidden')}</span> : <span className="text-green-600 font-semibold">{t('common.visible', 'Visible')}</span>)} style={{ width: '100px' }} />
+            <Column header={t('events.table.actions', 'Actions')} body={actionBodyTemplate} style={{ width: '200px' }} />
           </DataTable>
         )}
       </div>
