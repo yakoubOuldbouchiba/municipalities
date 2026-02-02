@@ -14,8 +14,10 @@ class EventController extends Controller
     public function index(Request $request): JsonResponse
     {
         $lang = $request->query('lang', 'en');
+        $includeHidden = $request->query('include_hidden', false);
         
-        $events = Event::all()->map(function ($event) use ($lang) {
+        $query = $includeHidden ? Event::withHidden() : Event::query();
+        $events = $query->get()->map(function ($event) use ($lang) {
             return [
                 'id' => $event->id,
                 'status' => $event->status[$lang] ?? $event->status['en'] ?? '',
@@ -23,6 +25,7 @@ class EventController extends Controller
                 'description' => $event->description[$lang] ?? $event->description['en'] ?? '',
                 'icon' => $event->icon,
                 'color' => $event->color,
+                'hidden' => $event->hidden,
             ];
         });
 
@@ -32,8 +35,9 @@ class EventController extends Controller
     /**
      * Get a single event (returns full localized object for editing).
      */
-    public function show(Event $event): JsonResponse
+    public function show($id): JsonResponse
     {
+        $event = Event::withHidden()->findOrFail($id);
         return response()->json([
             'id' => $event->id,
             'status' => $event->status ?? [],
@@ -41,6 +45,20 @@ class EventController extends Controller
             'description' => $event->description ?? [],
             'icon' => $event->icon,
             'color' => $event->color,
+            'hidden' => $event->hidden,
+        ]);
+    }
+
+    /**
+     * Toggle event hidden status.
+     */
+    public function toggleHidden($id): JsonResponse
+    {
+        $event = Event::withHidden()->findOrFail($id);
+        $event->update(['hidden' => !$event->hidden]);
+        return response()->json([
+            'message' => 'Event ' . ($event->hidden ? 'hidden' : 'shown') . ' successfully',
+            'hidden' => $event->hidden
         ]);
     }
 
@@ -64,8 +82,9 @@ class EventController extends Controller
     /**
      * Update an existing event.
      */
-    public function update(Request $request, Event $event): JsonResponse
+    public function update(Request $request, $id): JsonResponse
     {
+        $event = Event::withHidden()->findOrFail($id);
         $validated = $request->validate([
             'status' => 'required|array|min:1',
             'date' => 'required|string',
@@ -81,8 +100,9 @@ class EventController extends Controller
     /**
      * Delete an event.
      */
-    public function destroy(Event $event): JsonResponse
+    public function destroy($id): JsonResponse
     {
+        $event = Event::withHidden()->findOrFail($id);
         $event->delete();
         return response()->json(['message' => 'Event deleted successfully'], 200);
     }

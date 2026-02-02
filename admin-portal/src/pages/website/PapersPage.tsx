@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { InputText } from 'primereact/inputtext';
 import { InputTextarea } from 'primereact/inputtextarea';
@@ -7,6 +7,7 @@ import { Dropdown } from 'primereact/dropdown';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { ConfirmDialog, confirmDialog } from 'primereact/confirmdialog';
+import { Toast } from 'primereact/toast';
 import axiosClient from '../../api/axiosClient';
 import ArabicKeyboard from '../../components/ArabicKeyboard';
 
@@ -15,10 +16,12 @@ type Paper = {
   slug: string;
   title: string; // localized title when listing
   description: string; // localized description
+  hidden?: boolean;
 };
 
 const PapersPage: React.FC = () => {
   const { t, i18n } = useTranslation();
+  const toast = useRef<any>(null);
   const [papers, setPapers] = useState<Paper[]>([]);
   const [titles, setTitles] = useState<Record<string, string>>({});
   const [descriptions, setDescriptions] = useState<Record<string, string>>({});
@@ -30,7 +33,7 @@ const PapersPage: React.FC = () => {
   // Fetch list from backend (localized)
   const fetchList = async () => {
     try {
-      const res = await axiosClient.get('/papers', { params: { lang: i18n.language || 'en' } });
+      const res = await axiosClient.get('/papers', { params: { lang: i18n.language || 'en', include_hidden: true } });
       setPapers(res.data || []);
     } catch (err) {
       console.error('Error fetching papers:', err);
@@ -111,8 +114,20 @@ const PapersPage: React.FC = () => {
     });
   };
 
+  const toggleHidden = async (id: string) => {
+    try {
+      await axiosClient.put(`/papers/${id}/toggle-hidden`);
+      await fetchList();
+      toast.current?.show({ severity: 'success', summary: t('papers.success', 'Success'), detail: t('papers.toggleSuccess', 'Paper visibility updated'), life: 3000 });
+    } catch (err) {
+      console.error('Error toggling hidden status:', err);
+      toast.current?.show({ severity: 'error', summary: t('papers.error', 'Error'), detail: t('papers.toggleError', 'Failed to update paper visibility'), life: 3000 });
+    }
+  };
+
   const actionBodyTemplate = (rowData: Paper) => (
     <div className="flex gap-2">
+      <Button icon={rowData.hidden ? "pi pi-eye" : "pi pi-eye-slash"} className="p-button-sm p-button-warning" onClick={() => toggleHidden(rowData.id)} aria-label={rowData.hidden ? "Show" : "Hide"} />
       <Button icon="pi pi-pencil" className="p-button-sm" onClick={() => handleEdit(rowData.id)} aria-label="Edit" />
       <Button icon="pi pi-trash" className="p-button-sm p-button-danger" onClick={() => confirmDelete(rowData.id)} aria-label="Delete" />
     </div>
@@ -120,6 +135,7 @@ const PapersPage: React.FC = () => {
 
   return (
     <div className="p-4">
+      <Toast ref={toast} />
       <ConfirmDialog />
       <h1 className="text-2xl font-semibold mb-4">{t('papers.title', 'Papers')}</h1>
 
@@ -246,7 +262,8 @@ const PapersPage: React.FC = () => {
             <Column field="slug" header={t('papers.table.slug', 'Slug')} />
             <Column field="title" header={t('papers.table.title', 'Title')} />
             <Column field="description" header={t('papers.table.description', 'Description')} />
-            <Column header={t('papers.table.actions', 'Actions')} body={actionBodyTemplate} style={{ width: '150px' }} />
+            <Column header={t('papers.table.hidden', 'Status')} body={(rowData) => (rowData.hidden ? <span className="text-red-600 font-semibold">Hidden</span> : <span className="text-green-600 font-semibold">Visible</span>)} style={{ width: '100px' }} />
+            <Column header={t('papers.table.actions', 'Actions')} body={actionBodyTemplate} style={{ width: '200px' }} />
           </DataTable>
         )}
       </div>

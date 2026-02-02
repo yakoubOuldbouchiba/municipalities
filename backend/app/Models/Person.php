@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use OwenIt\Auditing\Contracts\Auditable;
@@ -21,6 +22,7 @@ class Person extends Model implements Auditable
         'image_url',
         'period',
         'is_current',
+        'hidden',
     ];
 
     protected $casts = [
@@ -28,5 +30,37 @@ class Person extends Model implements Auditable
         'messages' => 'array',
         'achievements' => 'array',
         'is_current' => 'boolean',
+        'hidden' => 'boolean',
     ];
+
+    protected static function booted(): void
+    {
+        static::addGlobalScope('notHidden', function (Builder $builder) {
+            $builder->where('hidden', false);
+        });
+    }
+
+    /**
+     * Hide this person.
+     */
+    public function hide(): void
+    {
+        $this->update(['hidden' => true]);
+    }
+
+    /**
+     * Show this person.
+     */
+    public function show(): void
+    {
+        $this->update(['hidden' => false]);
+    }
+
+    /**
+     * Get all persons including hidden ones.
+     */
+    public static function withHidden()
+    {
+        return static::withoutGlobalScope('notHidden');
+    }
 }

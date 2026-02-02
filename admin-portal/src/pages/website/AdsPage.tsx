@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { InputText } from 'primereact/inputtext';
 import { InputTextarea } from 'primereact/inputtextarea';
@@ -7,6 +7,7 @@ import { Dropdown } from 'primereact/dropdown';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { ConfirmDialog, confirmDialog } from 'primereact/confirmdialog';
+import { Toast } from 'primereact/toast';
 import axiosClient from '../../api/axiosClient';
 import ArabicKeyboard from '../../components/ArabicKeyboard';
 
@@ -16,10 +17,12 @@ type Ad = {
   description: string; // localized description
   link: string;
   file_type: string;
+  hidden?: boolean;
 };
 
 const AdsPage: React.FC = () => {
   const { t, i18n } = useTranslation();
+  const toast = useRef<any>(null);
   const [ads, setAds] = useState<Ad[]>([]);
   const [titles, setTitles] = useState<Record<string, string>>({});
   const [descriptions, setDescriptions] = useState<Record<string, string>>({});
@@ -37,7 +40,7 @@ const AdsPage: React.FC = () => {
   // Fetch list from backend (localized)
   const fetchList = async () => {
     try {
-      const res = await axiosClient.get('/ads', { params: { lang: i18n.language || 'en' } });
+      const res = await axiosClient.get('/ads', { params: { lang: i18n.language || 'en', include_hidden: true } });
       setAds(res.data || []);
     } catch (err) {
       console.error('Error fetching ads:', err);
@@ -121,8 +124,20 @@ const AdsPage: React.FC = () => {
     });
   };
 
+  const toggleHidden = async (id: string) => {
+    try {
+      await axiosClient.put(`/ads/${id}/toggle-hidden`);
+      await fetchList();
+      toast.current?.show({ severity: 'success', summary: t('ads.success', 'Success'), detail: t('ads.toggleSuccess', 'Ad visibility updated'), life: 3000 });
+    } catch (err) {
+      console.error('Error toggling hidden status:', err);
+      toast.current?.show({ severity: 'error', summary: t('ads.error', 'Error'), detail: t('ads.toggleError', 'Failed to update ad visibility'), life: 3000 });
+    }
+  };
+
   const actionBodyTemplate = (rowData: Ad) => (
     <div className="flex gap-2">
+      <Button icon={rowData.hidden ? "pi pi-eye" : "pi pi-eye-slash"} className="p-button-sm p-button-warning" onClick={() => toggleHidden(rowData.id)} aria-label={rowData.hidden ? "Show" : "Hide"} />
       <Button icon="pi pi-pencil" className="p-button-sm" onClick={() => handleEdit(rowData.id)} aria-label="Edit" />
       <Button icon="pi pi-trash" className="p-button-sm p-button-danger" onClick={() => confirmDelete(rowData.id)} aria-label="Delete" />
     </div>
@@ -139,8 +154,7 @@ const AdsPage: React.FC = () => {
   );
 
   return (
-    <div className="p-4">
-      <ConfirmDialog />
+    <div className="p-4">      <Toast ref={toast} />      <ConfirmDialog />
       <h1 className="text-2xl font-semibold mb-4">{t('ads.title', 'Advertisements')}</h1>
 
       <form onSubmit={handleSubmit} className="mb-6 space-y-2 max-w-2xl">
@@ -316,7 +330,8 @@ const AdsPage: React.FC = () => {
             <Column field="description" header={t('ads.table.description', 'Description')} />
             <Column header={t('ads.table.link', 'Link')} body={linkBodyTemplate} style={{ width: '200px' }} />
             <Column header={t('ads.table.fileType', 'Type')} body={fileTypeBodyTemplate} style={{ width: '100px' }} />
-            <Column header={t('ads.table.actions', 'Actions')} body={actionBodyTemplate} style={{ width: '150px' }} />
+            <Column header={t('ads.table.hidden', 'Status')} body={(rowData) => (rowData.hidden ? <span className="text-red-600 font-semibold">Hidden</span> : <span className="text-green-600 font-semibold">Visible</span>)} style={{ width: '100px' }} />
+            <Column header={t('ads.table.actions', 'Actions')} body={actionBodyTemplate} style={{ width: '200px' }} />
           </DataTable>
         )}
       </div>

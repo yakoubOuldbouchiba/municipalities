@@ -7,6 +7,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Models\Person;
 use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Validation\Rule;
 
 class PersonController extends Controller
@@ -39,8 +40,9 @@ class PersonController extends Controller
     {
         $type = $request->query('type'); // mayor / secretary_general / null => all
         $lang = $request->query('lang', 'en');
+        $includeHidden = $request->query('include_hidden', false);
 
-        $query = Person::query();
+        $query = $includeHidden ? Person::withHidden() : Person::query();
         if ($type) $query->where('type', $type);
 
         $persons = $query->orderBy('is_current', 'desc')->get()->map(function ($p) use ($lang) {
@@ -53,6 +55,7 @@ class PersonController extends Controller
                 'image_url' => $p->image_url,
                 'period' => $p->period,
                 'is_current' => (bool) $p->is_current,
+                'hidden' => (bool) $p->hidden,
             ];
         });
 
@@ -124,7 +127,6 @@ class PersonController extends Controller
         $data = $request->validate([
             'type' => ['required', Rule::in(['mayor','secretary_general'])],
             'names' => 'required|array',
-            'names.en' => 'required|string',
             'image_url' => 'nullable|url',
             'period' => 'nullable|string',
             'messages' => 'nullable|array',
@@ -167,6 +169,19 @@ class PersonController extends Controller
     {
         $person->delete();
         return response()->json(['message' => 'Deleted'], 200);
+    }
+
+    /**
+     * Toggle person hidden status.
+     */
+    public function toggleHidden($id): JsonResponse
+    {
+        $person = Person::withHidden()->findOrFail($id);
+        $person->update(['hidden' => !$person->hidden]);
+        return response()->json([
+            'message' => 'Person ' . ($person->hidden ? 'hidden' : 'shown') . ' successfully',
+            'hidden' => $person->hidden
+        ]);
     }
 
     // upload person image

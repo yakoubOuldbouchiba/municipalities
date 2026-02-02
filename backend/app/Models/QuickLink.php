@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use OwenIt\Auditing\Contracts\Auditable;
@@ -19,6 +20,7 @@ class QuickLink extends Model implements Auditable
     protected $fillable = [
         'label',
         'url',
+        'hidden',
     ];
 
     /**
@@ -28,5 +30,37 @@ class QuickLink extends Model implements Auditable
      */
     protected $casts = [
         'label' => 'array',
+        'hidden' => 'boolean',
     ];
+
+    protected static function booted(): void
+    {
+        static::addGlobalScope('notHidden', function (Builder $builder) {
+            $builder->where('hidden', false);
+        });
+    }
+
+    /**
+     * Hide this link.
+     */
+    public function hide(): void
+    {
+        $this->update(['hidden' => true]);
+    }
+
+    /**
+     * Show this link.
+     */
+    public function show(): void
+    {
+        $this->update(['hidden' => false]);
+    }
+
+    /**
+     * Get all links including hidden ones.
+     */
+    public static function withHidden()
+    {
+        return static::withoutGlobalScope('notHidden');
+    }
 }

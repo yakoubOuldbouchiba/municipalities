@@ -37,13 +37,16 @@ class PaperController extends Controller
     public function index(Request $request): JsonResponse
     {
         $lang = $request->get('lang', 'en');
+        $includeHidden = $request->query('include_hidden', false);
 
-        $papers = Paper::all()->map(function ($paper) use ($lang) {
+        $query = $includeHidden ? Paper::withHidden() : Paper::query();
+        $papers = $query->get()->map(function ($paper) use ($lang) {
             return [
                 'id' => $paper->id,
                 'slug' => $paper->slug,
                 'title' => $this->getLocalizedValue($paper->titles, $lang, ''),
                 'description' => $this->getLocalizedValue($paper->descriptions, $lang, ''),
+                'hidden' => $paper->hidden,
             ];
         });
 
@@ -140,5 +143,18 @@ class PaperController extends Controller
     {
         $paper->delete();
         return response()->json(['message' => 'Paper deleted successfully'], 200);
+    }
+
+    /**
+     * Toggle paper hidden status.
+     */
+    public function toggleHidden($id): JsonResponse
+    {
+        $paper = Paper::withHidden()->findOrFail($id);
+        $paper->update(['hidden' => !$paper->hidden]);
+        return response()->json([
+            'message' => 'Paper ' . ($paper->hidden ? 'hidden' : 'shown') . ' successfully',
+            'hidden' => $paper->hidden
+        ]);
     }
 }
