@@ -54,6 +54,9 @@
     "fileError": "يُسمح بحد أقصى 3 ملفات",
     "submitted": "تم إرسال شكويتك بنجاح. رقم مرجعك هو: {refNumber}"
   },
+  "homePage": {
+    "welcome": "أهلا وسهلا"
+  },
   "navigation": {
     "home": "الرئيسية",
     "about": "عن البلدية",
@@ -61,7 +64,15 @@
     "news": "الأخبار",
     "events": "الفعاليات",
     "contact": "اتصل بنا",
-    "claims": "المطالبات"
+    "claims": "المطالبات",
+    "mayor": "العمدة",
+    "potentials": "الإمكانيات",
+    "secretary": "الأمين العام",
+    "history": "التاريخ",
+    "papers": "الأوراق",
+    "persons": "الأشخاص",
+    "quickLinks": "روابط سريعة",
+    "importantNumbers": "أرقام هامة"
   },
   "messages": {
     "welcome": "أهلا وسهلا في بلديتنا",

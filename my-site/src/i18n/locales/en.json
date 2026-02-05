@@ -54,6 +54,9 @@
     "fileError": "Maximum 3 files allowed",
     "submitted": "Your claim has been submitted successfully. Your reference number is: {refNumber}"
   },
+  "homePage": {
+    "welcome": "Welcome"
+  },
   "navigation": {
     "home": "Home",
     "about": "About Us",
@@ -61,7 +64,15 @@
     "news": "News",
     "events": "Events",
     "contact": "Contact Us",
-    "claims": "Claims"
+    "claims": "Claims",
+    "mayor": "Mayor",
+    "potentials": "Potentials",
+    "secretary": "Secretary General",
+    "history": "History",
+    "papers": "Papers",
+    "persons": "Persons",
+    "quickLinks": "Quick Links",
+    "importantNumbers": "Important Numbers"
   },
   "messages": {
     "welcome": "Welcome to our Municipality",

@@ -208,7 +208,7 @@ const CompanyClaimForm: React.FC = () => {
               <h4>{t('claims.files')}</h4>
               <ul>
                 {files.map((file, index) => (
-                  <li key={index} style={{ marginBottom: '0.5rem' }}>
+                  <li key={`${file.name}-${file.lastModified}-${index}`} style={{ marginBottom: '0.5rem' }}>
                     {file.name}
                     <Button
                       type="button"

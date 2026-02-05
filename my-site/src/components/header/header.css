@@ -1,0 +1,159 @@
+/* === Admin Header === */
+.admin-header {
+  background: linear-gradient(135deg, #1a7f37 0%, #159033 100%);
+  color: white;
+  padding: 2rem 1rem;
+  margin: 0 1rem 1rem 1rem;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(26, 127, 55, 0.25);
+  position: relative;
+  overflow: hidden;
+}
+
+.admin-header.rtl {
+  direction: rtl;
+}
+
+.admin-header.ltr {
+  direction: ltr;
+}
+
+.header-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  position: relative;
+  z-index: 2;
+}
+
+.header-title-section {
+  width: 100%;
+}
+
+.page-title {
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0 0 0.5rem 0;
+  letter-spacing: -0.5px;
+  font-family: 'Poppins', 'Inter', sans-serif;
+  color: white;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.page-subtitle {
+  font-size: 1rem;
+  font-weight: 400;
+  margin: 0;
+  color: rgba(255, 255, 255, 0.9);
+  letter-spacing: 0.3px;
+}
+
+.header-accent {
+  position: absolute;
+  bottom: -10px;
+  right: -50px;
+  width: 300px;
+  height: 300px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+/* === Breadcrumb === */
+.breadcrumb {
+  max-width: 1200px;
+  margin: 0 auto 2rem auto;
+  padding: 0 1rem;
+  font-size: 0.95rem;
+}
+
+.breadcrumb ol {
+  list-style: none;
+  display: flex;
+  margin: 0;
+  padding: 0;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.breadcrumb li {
+  display: flex;
+  align-items: center;
+}
+
+.breadcrumb li:not(:last-child)::after {
+  content: '›';
+  margin-left: 0.5rem;
+  color: #1a7f37;
+  font-weight: 600;
+}
+
+.breadcrumb a {
+  color: #1a7f37;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s ease;
+  padding: 0.25rem 0;
+}
+
+.breadcrumb a:hover {
+  color: #159033;
+  text-decoration: underline;
+}
+
+.breadcrumb span {
+  color: #64748b;
+  font-weight: 500;
+}
+
+/* === Responsive === */
+@media (max-width: 768px) {
+  .admin-header {
+    padding: 2rem 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .page-title {
+    font-size: 1.8rem;
+  }
+
+  .page-subtitle {
+    font-size: 0.9rem;
+  }
+
+  .header-accent {
+    width: 200px;
+    height: 200px;
+    right: -30px;
+  }
+}
+
+@media (max-width: 576px) {
+  .admin-header {
+    padding: 1.5rem 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .page-title {
+    font-size: 1.4rem;
+  }
+
+  .page-subtitle {
+    font-size: 0.85rem;
+  }
+
+  .breadcrumb {
+    padding: 0;
+    margin: 1rem 0 2rem 0;
+  }
+
+  .breadcrumb ol {
+    gap: 0.25rem;
+  }
+
+  .breadcrumb li:not(:last-child)::after {
+    margin-left: 0.25rem;
+  }
+}

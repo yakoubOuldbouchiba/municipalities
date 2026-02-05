@@ -4,6 +4,8 @@ import { Dialog } from 'primereact/dialog'
 import { Button } from 'primereact/button'
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
+import { motion } from 'framer-motion'
+import './document-card.css'
 
 interface DocumentCardProps {
   id?: string
@@ -53,24 +55,29 @@ const DocumentCard: React.FC<DocumentCardProps> = ({ title, fileUrl, type }) => 
   }
 
   const header = (
-    <div className="flex justify-between items-center">
-      <span className="font-semibold">{title}</span>
-      <div className="flex gap-2">
+    <div className="document-card-header">
+      <div className="document-card-type-badge">
+        {isPDF ? (
+          <>
+            <i className="pi pi-file-pdf" style={{ marginRight: '0.25rem' }}></i>
+            PDF
+          </>
+        ) : (
+          <>
+            <i className="pi pi-image" style={{ marginRight: '0.25rem' }}></i>
+            Image
+          </>
+        )}
+      </div>
+      <span className="document-card-title">{title}</span>
+      <div className="document-card-actions">
         <Button
           icon="pi pi-share-alt"
-          className="p-button-rounded p-button-success p-button-sm"
+          className="p-button-rounded p-button-sm document-card-share-btn"
           tooltip={t('share')}
           onClick={handleShare}
+          outlined
         />
-        {/* <Button
-          icon="pi pi-eye"
-          className="p-button-rounded p-button-text p-button-sm"
-          tooltip={t('preview')}
-          onClick={(e) => {
-            e.stopPropagation()
-            setVisible(true)
-          }}
-        /> */}
       </div>
     </div>
   )
@@ -81,22 +88,28 @@ const DocumentCard: React.FC<DocumentCardProps> = ({ title, fileUrl, type }) => 
   // ✅ Fallback placeholder component
   const FallbackPlaceholder = ({ icon, message }: { icon: string; message: string }) => (
     <div className="flex flex-col items-center justify-center h-40 bg-gradient-to-br from-gray-100 to-gray-200 text-gray-600 gap-2 rounded-lg">
-      <div className="text-3xl">{icon}</div>
+      <i className={`${icon} text-3xl`}></i>
       <p className="text-sm font-medium">{message}</p>
     </div>
   )
 
   return (
     <>
-      <Card
-        title={header}
-        className="shadow-md hover:shadow-lg transition-all w-full cursor-pointer"
-        onClick={() => setVisible(true)}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        whileHover={{ y: -4 }}
       >
+        <Card
+          title={header}
+          className="document-card"
+          onClick={() => setVisible(true)}
+        >
         {isPDF ? (
           !isOnline || pdfError ? (
             <FallbackPlaceholder
-              icon="📄"
+              icon="pi pi-file-pdf"
               message={!isOnline ? t('common.offline', 'You are offline') : t('common.loadError', 'Failed to load PDF')}
             />
           ) : (
@@ -112,7 +125,7 @@ const DocumentCard: React.FC<DocumentCardProps> = ({ title, fileUrl, type }) => 
           )
         ) : imageError ? (
           <FallbackPlaceholder
-            icon="🖼️"
+            icon="pi pi-image"
             message={t('common.imageLoadError', 'Failed to load image')}
           />
         ) : (
@@ -124,6 +137,7 @@ const DocumentCard: React.FC<DocumentCardProps> = ({ title, fileUrl, type }) => 
           />
         )}
       </Card>
+      </motion.div>
 
       <Dialog
         header={title}
@@ -136,7 +150,7 @@ const DocumentCard: React.FC<DocumentCardProps> = ({ title, fileUrl, type }) => 
         {isPDF ? (
           !isOnline || pdfError ? (
             <FallbackPlaceholder
-              icon="📄"
+              icon="pi pi-file-pdf"
               message={!isOnline ? t('common.offline', 'You are offline') : t('common.loadError', 'Failed to load PDF')}
             />
           ) : (
@@ -152,7 +166,7 @@ const DocumentCard: React.FC<DocumentCardProps> = ({ title, fileUrl, type }) => 
           )
         ) : imageError ? (
           <FallbackPlaceholder
-            icon="🖼️"
+            icon="pi pi-image"
             message={t('common.imageLoadError', 'Failed to load image')}
           />
         ) : (

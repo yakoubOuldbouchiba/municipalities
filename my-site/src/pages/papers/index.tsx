@@ -4,6 +4,7 @@ import { Button } from 'primereact/button'
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import api from '../../lib/api'
+import PageLayout from '../../components/layout/PageLayout'
 import './papers-page.css'
 
 interface Paper {
@@ -27,26 +28,30 @@ const PapersPage: React.FC = () => {
   }, [i18n.language])
 
   return (
-    <div
-      className="papers-page p-6"
-      style={{ direction: isRtl ? 'rtl' : 'ltr', textAlign: isRtl ? 'right' : 'left' }}
-    >
-      <h2 className="papers-title">{t('papers.title')}</h2>
-      <div className="papers-grid">
-        {papers.map(section => (
-          <Card key={section.id} className="papers-card shadow-3">
-            <h3>{section.title}</h3>
-            <p>{section.description}</p>
-            <Button
-              label={t('papers.viewDetails')}
-              icon={isRtl ? 'pi pi-arrow-left' : 'pi pi-arrow-right'}
-              className="p-button-success"
-              onClick={() => navigate(`/papers/${section.slug}`)}
-            />
-          </Card>
-        ))}
+    <PageLayout>
+      <div
+        className="papers-page"
+        style={{ direction: isRtl ? 'rtl' : 'ltr' }}
+      >
+        <div className="papers-grid">
+          {papers.map(section => (
+            <Card key={section.id} className="papers-card">
+              <div style={{ display: 'flex', alignItems: 'center', marginBottom: '1rem' }}>
+                <i className="pi pi-file-pdf" style={{ fontSize: '1.5rem', color: '#dc2626', marginRight: '0.75rem' }}></i>
+                <h3 style={{ margin: 0, color: '#1f2937' }}>{section.title}</h3>
+              </div>
+              <p style={{ color: '#64748b', marginBottom: '1.5rem', lineHeight: '1.6' }}>{section.description}</p>
+              <Button
+                label={t('papers.viewDetails')}
+                icon={isRtl ? 'pi pi-arrow-left' : 'pi pi-arrow-right'}
+                onClick={() => navigate(`/papers/${section.slug}`)}
+                style={{ width: '100%' }}
+              />
+            </Card>
+          ))}
+        </div>
       </div>
-    </div>
+    </PageLayout>
   )
 }
 

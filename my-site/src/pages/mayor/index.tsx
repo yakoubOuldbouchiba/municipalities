@@ -3,6 +3,7 @@ import api from '../../lib/api'
 import { useTranslation } from 'react-i18next'
 import PersonWord from '../../components/person-word/PersonWord'
 import PersonHistory from '../../components/person-history/PersonHistory'
+import PageLayout from '../../components/layout/PageLayout'
 import './mayor.css'
 
 interface Person {
@@ -38,32 +39,34 @@ const Mayor: React.FC = () => {
   }, [i18n.language])
 
   return (
-    <div className="mayor-page" dir={isRtl ? 'rtl' : 'ltr'}>
-      {currentMayor && (
-        <div className="mayor-section">
-          <PersonWord
-            name={currentMayor.name}
-            image={currentMayor.image_url}
-            message={currentMayor.message || ''}
-            title={t('mayorPage.wordTitle')}
-          />
-        </div>
-      )}
+    <PageLayout>
+      <div className="mayor-page" dir={isRtl ? 'rtl' : 'ltr'}>
+        {currentMayor && (
+          <div className="mayor-section">
+            <PersonWord
+              name={currentMayor.name}
+              image={currentMayor.image_url}
+              message={currentMayor.message || ''}
+              title={t('mayorPage.wordTitle')}
+            />
+          </div>
+        )}
 
-      {mayorHistory.length > 0 && (
-        <div className="mayor-section">
-          <PersonHistory
-            title={t('mayorPage.historyTitle')}
-            history={mayorHistory.map((m) => ({
-              name: m.name,
-              image: m.image_url,
-              period: m.period,
-              achievements: m.achievements,
-            }))}
-          />
-        </div>
-      )}
-    </div>
+        {mayorHistory.length > 0 && (
+          <div className="mayor-section">
+            <PersonHistory
+              title={t('mayorPage.historyTitle')}
+              history={mayorHistory.map((m) => ({
+                name: m.name,
+                image: m.image_url,
+                period: m.period,
+                achievements: m.achievements,
+              }))}
+            />
+          </div>
+        )}
+      </div>
+    </PageLayout>
   )
 }
 

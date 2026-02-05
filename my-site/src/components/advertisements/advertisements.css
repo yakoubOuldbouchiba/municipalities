@@ -1,84 +1,250 @@
-/* === Ads Section Root === */
 .ads {
-  padding: 2rem 1rem;
-  background-color: #f8f9fa;
-  direction: ltr; /* default */
+  padding: 40px 20px;
+  background: linear-gradient(135deg, #f9fafb 0%, #ffffff 100%);
+  border-top: 1px solid #e2e8f0;
+  direction: ltr;
 }
 
 .ads[dir='rtl'] {
   direction: rtl;
 }
 
-/* === Title === */
+/* Header section */
+.ads-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 32px;
+  position: relative;
+  gap: 16px;
+}
+
 .ads-title {
-  text-align: center;
-  font-size: 1.8rem;
-  margin-bottom: 1.5rem;
-  font-weight: 600;
-  color: #333;
+  font-size: 24px;
+  font-weight: 700;
+  margin: 0;
+  background: linear-gradient(135deg, #1a7f37 0%, #159033 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  letter-spacing: -0.5px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.ads-title::before {
+  content: '📢';
+  font-size: 28px;
+  -webkit-text-fill-color: unset;
+  background: unset;
 }
 
 .ads-title i {
-  margin-right: 0.5rem;
+  font-size: 26px;
+  margin: 0;
+  -webkit-text-fill-color: #1a7f37;
 }
 
-.ads[dir='rtl'] .ads-title i {
-  margin-left: 0.5rem;
+[dir="rtl"] .ads-title i {
+  margin-left: 0;
   margin-right: 0;
 }
 
-/* === Carousel === */
+.ads-line {
+  flex: 1;
+  height: 2px;
+  background: linear-gradient(90deg, transparent 0%, #1a7f37 50%, transparent 100%);
+  max-width: 150px;
+}
+
+/* Carousel styling */
+.ads-carousel {
+  padding: 20px 0;
+}
+
 .ads-carousel .p-carousel-item {
   display: flex;
   justify-content: center;
-  margin: 0.2rem;
+  padding: 0 12px;
 }
 
-.p-carousel-content {
-  gap: 1rem;
+.ads-carousel .p-carousel-content {
+  gap: 16px;
 }
 
-/* === RTL Carousel Fixes === */
-.ads-carousel.rtl .p-carousel-container {
-  direction: rtl !important;
+/* Navigation buttons */
+.ads-carousel .p-carousel-prev,
+.ads-carousel .p-carousel-next {
+  background: linear-gradient(135deg, #1a7f37 0%, #159033 100%) !important;
+  border: none !important;
+  color: white !important;
+  width: 44px !important;
+  height: 44px !important;
+  border-radius: 50% !important;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  box-shadow: 0 4px 12px rgba(26, 127, 55, 0.2) !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
 }
 
-.ads-carousel.rtl .p-carousel-items-content {
-  display: flex;
-  flex-direction: row-reverse;
+.ads-carousel .p-carousel-prev:hover,
+.ads-carousel .p-carousel-next:hover {
+  transform: translateY(-50%) scale(1.1) !important;
+  box-shadow: 0 8px 20px rgba(26, 127, 55, 0.3) !important;
 }
 
-.ads-carousel.rtl .p-carousel-prev {
-  right: 0 !important;
+.ads-carousel .p-carousel-prev:active,
+.ads-carousel .p-carousel-next:active {
+  transform: translateY(-50%) scale(0.95) !important;
+}
+
+/* Indicators */
+.ads-carousel .p-carousel-indicators {
+  bottom: -20px !important;
+  padding: 16px 0 0 0 !important;
+  gap: 8px !important;
+}
+
+.ads-carousel .p-carousel-indicators .p-carousel-indicator {
+  background: rgba(26, 127, 55, 0.3) !important;
+  border: 1px solid rgba(26, 127, 55, 0.5) !important;
+  width: 10px !important;
+  height: 10px !important;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  margin: 0 4px !important;
+}
+
+.ads-carousel .p-carousel-indicators .p-carousel-indicator.p-highlight {
+  background: linear-gradient(135deg, #1a7f37 0%, #159033 100%) !important;
+  border-color: #1a7f37 !important;
+  width: 24px !important;
+  border-radius: 5px !important;
+}
+
+/* RTL adjustments */
+[dir="rtl"] .ads-carousel .p-carousel-prev {
   left: auto !important;
+  right: 10px !important;
 }
 
-.ads-carousel.rtl .p-carousel-next {
-  left: 0 !important;
+[dir="rtl"] .ads-carousel .p-carousel-next {
+  left: 10px !important;
   right: auto !important;
 }
 
-/* === Optional: Carousel Item Size === */
-.ads-carousel .p-carousel-item {
-  min-width: 200px;
-  display: flex;
-  justify-content: center;
+[dir="rtl"] .ads-carousel.rtl {
+  direction: rtl;
 }
 
-.ads-carousel .p-carousel-items-content {
-  min-height: 250px;
-  min-width: 600px;
+[dir="rtl"] .ads-carousel.rtl .p-carousel-container {
+  direction: rtl !important;
 }
 
-/* === Responsive tweaks === */
-@media (max-width: 992px) {
+[dir="rtl"] .ads-header {
+  flex-direction: row-reverse;
+}
+
+/* Responsive styles */
+@media (max-width: 1024px) {
+  .ads {
+    padding: 32px 16px;
+  }
+
+  .ads-header {
+    margin-bottom: 24px;
+    gap: 12px;
+  }
+
   .ads-title {
-    font-size: 1.6rem;
+    font-size: 22px;
+  }
+
+  .ads-title::before {
+    font-size: 26px;
+  }
+
+  .ads-line {
+    max-width: 120px;
+  }
+}
+
+@media (max-width: 768px) {
+  .ads {
+    padding: 24px 12px;
+  }
+
+  .ads-header {
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 20px;
+  }
+
+  .ads-title {
+    font-size: 20px;
+    gap: 8px;
+  }
+
+  .ads-title::before {
+    font-size: 24px;
+  }
+
+  .ads-line {
+    width: 100%;
+    max-width: none;
+    max-height: 1px;
+  }
+
+  .ads-carousel .p-carousel-prev,
+  .ads-carousel .p-carousel-next {
+    width: 40px !important;
+    height: 40px !important;
+  }
+
+  .ads-carousel .p-carousel-indicators {
+    bottom: -16px !important;
   }
 }
 
 @media (max-width: 576px) {
+  .ads {
+    padding: 16px 8px;
+  }
+
+  .ads-header {
+    margin-bottom: 16px;
+  }
+
   .ads-title {
-    font-size: 1.4rem;
+    font-size: 18px;
+    gap: 6px;
+  }
+
+  .ads-title::before {
+    font-size: 22px;
+  }
+
+  .ads-carousel .p-carousel-item {
+    padding: 0 8px;
+  }
+
+  .ads-carousel .p-carousel-prev,
+  .ads-carousel .p-carousel-next {
+    width: 36px !important;
+    height: 36px !important;
+    font-size: 14px !important;
+  }
+
+  .ads-carousel .p-carousel-indicators .p-carousel-indicator {
+    width: 8px !important;
+    height: 8px !important;
+    margin: 0 3px !important;
+  }
+
+  .ads-carousel .p-carousel-indicators .p-carousel-indicator.p-highlight {
+    width: 20px !important;
+  }
+
+  .ads-carousel .p-carousel-indicators {
+    bottom: -14px !important;
   }
 }

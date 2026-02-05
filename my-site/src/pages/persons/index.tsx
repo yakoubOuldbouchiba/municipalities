@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Card } from 'primereact/card'
+import { ProgressSpinner } from 'primereact/progressspinner'
 import './persons.css'
 import api from '../../lib/api'
+import PageLayout from '../../components/layout/PageLayout'
 
 interface Person {
   id: number
@@ -45,42 +47,58 @@ const Persons: React.FC = () => {
     return acc
   }, {} as Record<string, Person[]>)
 
-  return (
-    <div className="persons-page" dir={isRtl ? 'rtl' : 'ltr'}>
-      <h1 className="page-title">{t('personsPage.title', 'Leadership')}</h1>
-
-      {loading && <div className="text-center py-8">{t('common.loading', 'Loading...')}</div>}
-
-      {!loading && persons.length === 0 && (
-        <div className="text-center py-8 text-gray-500">{t('personsPage.empty', 'No persons found')}</div>
-      )}
-
-      {!loading && persons.length > 0 && (
-        <div className="persons-sections">
-          {Object.entries(groupedPersons).map(([type, typePersons]) => (
-            <div key={type} className="persons-section">
-              <h2 className="section-title">{getTypeLabel(type)}</h2>
-              <div className="persons-grid">
-                {typePersons.map((person) => (
-                  <Card key={person.id} className="person-card shadow-3">
-                    {person.image_url && (
-                      <div className="person-image-wrapper">
-                        <img src={person.image_url} alt={person.name} className="person-image" />
-                      </div>
-                    )}
-                    <h3 className="person-name">{person.name}</h3>
-                    {person.period && <div className="person-period">{person.period}</div>}
-                    {person.is_current && <div className="current-badge">{t('personsPage.current', 'Current')}</div>}
-                    {person.message && <p className="person-message">{person.message}</p>}
-                    {person.achievements && <p className="person-achievements">{person.achievements}</p>}
-                  </Card>
-                ))}
-              </div>
-            </div>
-          ))}
+  if (loading) {
+    return (
+      <PageLayout>
+        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '2rem' }}>
+          <ProgressSpinner />
         </div>
-      )}
-    </div>
+      </PageLayout>
+    )
+  }
+
+  return (
+    <PageLayout>
+      <div className="persons-page" dir={isRtl ? 'rtl' : 'ltr'}>
+        {persons.length === 0 && (
+          <div style={{ textAlign: 'center', padding: '2rem', color: '#64748b' }}>
+            {t('personsPage.empty', 'No persons found')}
+          </div>
+        )}
+
+        {persons.length > 0 && (
+          <div className="persons-sections">
+            {Object.entries(groupedPersons).map(([type, typePersons]) => (
+              <div key={type} className="persons-section">
+                <h2 className="section-title" style={{ marginBottom: '1.5rem', color: '#1f2937' }}>
+                  {getTypeLabel(type)}
+                </h2>
+                <div className="persons-grid">
+                  {typePersons.map((person) => (
+                    <Card key={person.id} className="person-card">
+                      {person.image_url && (
+                        <div className="person-image-wrapper">
+                          <img src={person.image_url} alt={person.name} className="person-image" />
+                        </div>
+                      )}
+                      <h3 className="person-name">{person.name}</h3>
+                      {person.period && <div className="person-period">{person.period}</div>}
+                      {person.is_current && (
+                        <div className="current-badge" style={{ display: 'inline-block', backgroundColor: '#1a7f37', color: 'white', padding: '0.25rem 0.75rem', borderRadius: '20px', fontSize: '0.85rem', marginBottom: '0.5rem' }}>
+                          {t('personsPage.current', 'Current')}
+                        </div>
+                      )}
+                      {person.message && <p className="person-message" style={{ color: '#64748b', marginBottom: '0.5rem' }}>{person.message}</p>}
+                      {person.achievements && <p className="person-achievements" style={{ color: '#64748b', fontSize: '0.9rem' }}>{person.achievements}</p>}
+                    </Card>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+    </PageLayout>
   )
 }
 

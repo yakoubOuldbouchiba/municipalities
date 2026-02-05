@@ -2,8 +2,10 @@ import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { DataTable } from 'primereact/datatable'
 import { Column } from 'primereact/column'
+import { ProgressSpinner } from 'primereact/progressspinner'
 import './important-numbers.css'
 import api from '../../lib/api'
+import PageLayout from '../../components/layout/PageLayout'
 
 interface ImportantNumber {
   id: number
@@ -30,32 +32,45 @@ const ImportantNumbers: React.FC = () => {
   }, [i18n.language])
 
   const valueBodyTemplate = (rowData: ImportantNumber) => (
-    <a href={`tel:${rowData.value}`} className="text-blue-600 hover:underline font-semibold">
+    <a 
+      href={`tel:${rowData.value}`} 
+      style={{ color: '#1a7f37', fontWeight: '600', textDecoration: 'none' }}
+      onMouseEnter={(e) => (e.currentTarget.style.textDecoration = 'underline')}
+      onMouseLeave={(e) => (e.currentTarget.style.textDecoration = 'none')}
+    >
       {rowData.value}
     </a>
   )
 
+  if (loading) {
+    return (
+      <PageLayout>
+        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '2rem' }}>
+          <ProgressSpinner />
+        </div>
+      </PageLayout>
+    )
+  }
+
   return (
-    <div className="important-numbers-page" dir={isRtl ? 'rtl' : 'ltr'}>
-      <h1 className="page-title">{t('importantNumbersPage.title', 'Important Numbers')}</h1>
+    <PageLayout>
+      <div className="important-numbers-page" dir={isRtl ? 'rtl' : 'ltr'}>
+        {numbers.length === 0 && (
+          <div style={{ textAlign: 'center', padding: '2rem', color: '#64748b' }}>
+            {t('importantNumbersPage.empty', 'No important numbers found')}
+          </div>
+        )}
 
-      {loading && <div className="text-center py-8">{t('common.loading', 'Loading...')}</div>}
-
-      {!loading && numbers.length === 0 && (
-        <div className="text-center py-8 text-gray-500">
-          {t('importantNumbersPage.empty', 'No important numbers found')}
-        </div>
-      )}
-
-      {!loading && numbers.length > 0 && (
-        <div className="table-container">
-          <DataTable value={numbers} responsiveLayout="scroll" stripedRows>
-            <Column field="label" header={t('importantNumbers.table.label', 'Label')} />
-            <Column header={t('importantNumbers.table.value', 'Number')} body={valueBodyTemplate} />
-          </DataTable>
-        </div>
-      )}
-    </div>
+        {numbers.length > 0 && (
+          <div className="table-container">
+            <DataTable value={numbers} responsiveLayout="scroll" stripedRows>
+              <Column field="label" header={t('importantNumbers.table.label', 'Label')} />
+              <Column header={t('importantNumbers.table.value', 'Number')} body={valueBodyTemplate} />
+            </DataTable>
+          </div>
+        )}
+      </div>
+    </PageLayout>
   )
 }
 

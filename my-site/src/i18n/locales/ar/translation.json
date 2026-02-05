@@ -24,6 +24,23 @@
   "common": {
     "loading": "جاري التحميل..."
   },
+  "navigation": {
+    "home": "الرئيسية",
+    "about": "عن البلدية",
+    "services": "الخدمات",
+    "news": "الأخبار",
+    "events": "الفعاليات",
+    "contact": "اتصل بنا",
+    "claims": "المطالبات",
+    "mayor": "العمدة",
+    "potentials": "الإمكانيات",
+    "secretary": "الأمين العام",
+    "history": "التاريخ",
+    "papers": "الأوراق",
+    "persons": "الأشخاص",
+    "quickLinks": "روابط سريعة",
+    "importantNumbers": "أرقام هامة"
+  },
   "footer": {
     "cityTitle": "زموري (بومرداس)",
     "quickLinks": "روابط سريعة",

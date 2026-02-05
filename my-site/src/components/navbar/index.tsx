@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Menubar } from 'primereact/menubar'
 import { Dropdown } from 'primereact/dropdown'
+import { Button } from 'primereact/button'
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import './navbar.css'
@@ -24,6 +25,7 @@ const Navbar: React.FC = () => {
   const [lang, setLang] = useState(i18n.language || 'en')
   const [navItems, setNavItems] = useState<NavItem[]>([])
   const [loading, setLoading] = useState(true)
+  const [menuOpen, setMenuOpen] = useState(false)
   const isRtl = lang === 'ar'
 
   const languages = [
@@ -55,6 +57,7 @@ const Navbar: React.FC = () => {
   const handleNavigation = (path: string) => {
     window.scrollTo(0, 0)
     navigate(path)
+    setMenuOpen(false)
   }
 
   const changeLanguage = (lng: string) => {
@@ -93,18 +96,42 @@ const Navbar: React.FC = () => {
       className={`navbar-container ${isRtl ? 'rtl' : ''}`}
       style={{ direction: isRtl ? 'rtl' : 'ltr', textAlign: isRtl ? 'right' : 'left' }}
     >
-      <div
-        className={`navbar-start ${isRtl ? 'navbar-start-rtl' : ''}`}
-        onClick={() => handleNavigation('/')}
-      >
-        <img src={logo} alt="logo" className="navbar-logo" />
-        <div className="navbar-titles">
-          <h1 className="navbar-title">{t('country_full_name')}</h1>
-          <h1 className="navbar-title">{t('department')}</h1>
-          <h1 className="navbar-title">{t('municipality')}</h1>
+      {/* Logo and Title Row */}
+      <div className="navbar-header-row">
+        <div
+          className={`navbar-start ${isRtl ? 'navbar-start-rtl' : ''}`}
+          onClick={() => handleNavigation('/')}
+        >
+          <img src={logo} alt="logo" className="navbar-logo" />
+          <div className="navbar-titles">
+            <h1 className="navbar-title">{t('country_full_name')}</h1>
+            <h1 className="navbar-title">{t('department')}</h1>
+            <h1 className="navbar-title">{t('municipality')}</h1>
+          </div>
         </div>
+        
+        {/* Hamburger Menu Button */}
+        <Button
+          icon={menuOpen ? 'pi pi-times' : 'pi pi-bars'}
+          className="navbar-hamburger"
+          onClick={() => setMenuOpen(!menuOpen)}
+          aria-label="Toggle menu"
+        />
       </div>
-      {!loading && <Menubar model={items} className={`navbar-menu ${isRtl ? 'rtl-menu' : ''}`} end={langSwitcher} />}
+
+      {/* Navigation Menu Row */}
+      {!loading && (
+        <>
+          <div className={`navbar-menu-row ${menuOpen ? 'menu-open' : ''}`}>
+            <Menubar model={items} className={`navbar-menu ${isRtl ? 'rtl-menu' : ''}`} />
+          </div>
+
+          {/* Language Switcher Row */}
+          <div className="navbar-lang-row">
+            {langSwitcher}
+          </div>
+        </>
+      )}
     </header>
   )
 }

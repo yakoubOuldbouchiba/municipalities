@@ -2,8 +2,10 @@ import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Card } from 'primereact/card'
 import { Button } from 'primereact/button'
+import { ProgressSpinner } from 'primereact/progressspinner'
 import './quick-links.css'
 import api from '../../lib/api'
+import PageLayout from '../../components/layout/PageLayout'
 
 interface QuickLink {
   id: number
@@ -29,35 +31,43 @@ const QuickLinks: React.FC = () => {
       .finally(() => setLoading(false))
   }, [i18n.language])
 
+  if (loading) {
+    return (
+      <PageLayout>
+        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '2rem' }}>
+          <ProgressSpinner />
+        </div>
+      </PageLayout>
+    )
+  }
+
   return (
-    <div className="quick-links-page" dir={isRtl ? 'rtl' : 'ltr'}>
-      <h1 className="page-title">{t('quickLinksPage.title', 'Quick Links')}</h1>
+    <PageLayout>
+      <div className="quick-links-page" dir={isRtl ? 'rtl' : 'ltr'}>
+        {links.length === 0 && (
+          <div style={{ textAlign: 'center', padding: '2rem', color: '#64748b' }}>
+            {t('quickLinksPage.empty', 'No quick links found')}
+          </div>
+        )}
 
-      {loading && <div className="text-center py-8">{t('common.loading', 'Loading...')}</div>}
-
-      {!loading && links.length === 0 && (
-        <div className="text-center py-8 text-gray-500">
-          {t('quickLinksPage.empty', 'No quick links found')}
-        </div>
-      )}
-
-      {!loading && links.length > 0 && (
-        <div className="quick-links-grid">
-          {links.map((link) => (
-            <Card key={link.id} className="quick-link-card shadow-2">
-              <h3 className="link-label">{link.label}</h3>
-              <p className="link-url">{link.url}</p>
-              <Button
-                label={t('quickLinksPage.visit', 'Visit')}
-                icon={isRtl ? 'pi pi-arrow-left' : 'pi pi-arrow-right'}
-                className="p-button-primary w-full mt-3"
-                onClick={() => window.open(link.url, '_blank')}
-              />
-            </Card>
-          ))}
-        </div>
-      )}
-    </div>
+        {links.length > 0 && (
+          <div className="quick-links-grid">
+            {links.map((link) => (
+              <Card key={link.id} className="quick-link-card">
+                <h3 className="link-label">{link.label}</h3>
+                <p className="link-url">{link.url}</p>
+                <Button
+                  label={t('quickLinksPage.visit', 'Visit')}
+                  icon={isRtl ? 'pi pi-arrow-left' : 'pi pi-arrow-right'}
+                  onClick={() => window.open(link.url, '_blank')}
+                  style={{ width: '100%' }}
+                />
+              </Card>
+            ))}
+          </div>
+        )}
+      </div>
+    </PageLayout>
   )
 }
 

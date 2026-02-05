@@ -5,6 +5,7 @@ import { Card } from 'primereact/card'
 import { Dialog } from 'primereact/dialog'
 import QRCode from 'react-qr-code'
 import { useTranslation } from 'react-i18next'
+import PageLayout from '../../components/layout/PageLayout'
 
 const SharePage: React.FC = () => {
   const [params] = useSearchParams()
@@ -49,62 +50,62 @@ const SharePage: React.FC = () => {
   }
 
   return (
-    <div
-      className="flex flex-col items-center p-6 gap-4 bg-gray-50 min-h-screen"
-      style={{ direction: isRtl ? 'rtl' : 'ltr', textAlign: isRtl ? 'right' : 'left' }}
-    >
-      <Card title={title} className="w-full md:w-2/3 shadow-lg">
-        {type === 'pdf' ? (
-          !isOnline || iframeError ? (
-            <div className="flex flex-col items-center justify-center h-96 bg-gradient-to-br from-gray-100 to-gray-200 text-gray-600 gap-3 rounded-lg">
-              <div className="text-5xl">📄</div>
-              <p className="font-medium">{!isOnline ? t('common.offline', 'You are offline') : t('common.loadError', 'Failed to load PDF')}</p>
-            </div>
-          ) : (
-            <iframe
-              src={fileUrl}
-              title={title}
-              className="w-full"
-              style={{ height: '70vh', border: 'none' }}
-              onError={() => setIframeError(true)}
-              onLoad={handleIframeTimeout() as any}
-              sandbox="allow-same-origin"
-            />
-          )
-        ) : (
-          <img src={fileUrl} alt={title} className="w-full object-contain rounded-lg" />
-        )}
-
-        <div className="flex flex-wrap justify-center gap-3 mt-4">
-          <Button
-            icon="pi pi-copy"
-            label={t('sharePage.copyLink')}
-            onClick={handleCopy}
-            className="p-button-success"
-          />
-          <Button
-            icon="pi pi-qrcode"
-            label={t('sharePage.qrCode')}
-            className="p-button-info"
-            onClick={() => setQrVisible(true)}
-          />
-        </div>
-      </Card>
-
-      {/* QR Code Dialog */}
-      <Dialog
-        header={t('sharePage.qrHeader')}
-        visible={qrVisible}
-        style={{ width: '400px' }}
-        modal
-        onHide={() => setQrVisible(false)}
+    <PageLayout>
+      <div
+        style={{ direction: isRtl ? 'rtl' : 'ltr', textAlign: isRtl ? 'right' : 'left' }}
       >
-        <div className="flex flex-col items-center gap-4">
-          <QRCode value={shareUrl} size={200} />
-          <p className="text-gray-700 text-center">{t('sharePage.scanText')}</p>
-        </div>
-      </Dialog>
-    </div>
+        <Card title={title} className="share-card">
+          {type === 'pdf' ? (
+            !isOnline || iframeError ? (
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '400px', backgroundColor: '#f3f4f6', color: '#64748b', gap: '1rem', borderRadius: '8px' }}>
+                <i className="pi pi-file-pdf" style={{ fontSize: '3rem', color: '#dc2626' }}></i>
+                <p style={{ fontWeight: '500' }}>{!isOnline ? t('common.offline', 'You are offline') : t('common.loadError', 'Failed to load PDF')}</p>
+              </div>
+            ) : (
+              <iframe
+                src={fileUrl}
+                title={title}
+                style={{ width: '100%', height: '600px', border: 'none', borderRadius: '8px' }}
+                onError={() => setIframeError(true)}
+                onLoad={handleIframeTimeout() as any}
+                sandbox="allow-same-origin"
+              />
+            )
+          ) : (
+            <img src={fileUrl} alt={title} style={{ width: '100%', maxHeight: '600px', objectFit: 'contain', borderRadius: '8px' }} />
+          )}
+
+          <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '1rem', marginTop: '2rem' }}>
+            <Button
+              icon="pi pi-copy"
+              label={t('sharePage.copyLink')}
+              onClick={handleCopy}
+              style={{ width: '100%', maxWidth: '200px' }}
+            />
+            <Button
+              icon="pi pi-qrcode"
+              label={t('sharePage.qrCode')}
+              onClick={() => setQrVisible(true)}
+              style={{ width: '100%', maxWidth: '200px' }}
+            />
+          </div>
+        </Card>
+
+        {/* QR Code Dialog */}
+        <Dialog
+          header={t('sharePage.qrHeader')}
+          visible={qrVisible}
+          style={{ width: '400px' }}
+          modal
+          onHide={() => setQrVisible(false)}
+        >
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1.5rem' }}>
+            <QRCode value={shareUrl} size={200} />
+            <p style={{ color: '#64748b', textAlign: 'center' }}>{t('sharePage.scanText')}</p>
+          </div>
+        </Dialog>
+      </div>
+    </PageLayout>
   )
 }
 

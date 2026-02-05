@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import './potentials.css'
 import { useTranslation } from 'react-i18next'
 import api from '../../lib/api'
+import PageLayout from '../../components/layout/PageLayout'
 
 interface Section {
   id: number
@@ -22,17 +23,18 @@ const Potentials: React.FC = () => {
   }, [i18n.language])
 
   return (
-    <div className="potentials-page">
-      <h1 className="page-title">{t('potentialsPage.title')}</h1>
-      <div className="sections-container">
-        {sections.map((section) => (
-          <div key={section.id} className="potential-section">
-            <h2 className="section-title">{section.title}</h2>
-            <p className="section-desc">{section.description}</p>
-          </div>
-        ))}
+    <PageLayout>
+      <div className="potentials-page">
+        <div className="sections-container">
+          {sections.map((section) => (
+            <div key={section.id} className="potential-section">
+              <h2 className="section-title">{section.title}</h2>
+              <p className="section-desc">{section.description}</p>
+            </div>
+          ))}
+        </div>
       </div>
-    </div>
+    </PageLayout>
   )
 }
 

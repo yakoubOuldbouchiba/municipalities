@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Button } from 'primereact/button'
 import { motion } from 'framer-motion'
+import './scroll-top-button.css'
 
 const ScrollTopButton: React.FC = () => {
   const [visible, setVisible] = useState(false)
@@ -19,26 +20,17 @@ const ScrollTopButton: React.FC = () => {
 
   return (
     <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: visible ? 1 : 0 }}
+      initial={{ opacity: 0, scale: 0.8 }}
+      animate={{ opacity: visible ? 1 : 0, scale: visible ? 1 : 0.8 }}
       transition={{ duration: 0.3 }}
-      style={{
-        position: 'fixed',
-        bottom: '2rem',
-        right: '2rem',
-        zIndex: 1000,
-      }}
+      className="scroll-top-button-container"
     >
       <Button
         icon="pi pi-arrow-up"
-        className="p-button-rounded p-button-success shadow-3"
-        style={{
-          backgroundColor: '#16a34a',
-          borderColor: '#16a34a',
-          width: '3rem',
-          height: '3rem',
-        }}
+        className="scroll-top-button"
         onClick={scrollToTop}
+        tooltip="Back to top"
+        tooltipPosition="left"
       />
     </motion.div>
   )

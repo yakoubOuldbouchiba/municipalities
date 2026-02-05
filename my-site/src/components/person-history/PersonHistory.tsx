@@ -24,18 +24,32 @@ const PersonHistory: React.FC<PersonHistoryProps> = ({ title, history }) => {
   const { t } = useTranslation()
 
   const imageTemplate = (rowData: HistoryItem) => (
-    <Image
-      src={rowData.image}
-      alt={rowData.name}
-      width="60"
-      height="60"
-      preview
-      className="person-history-image"
-    />
+    <div className="person-history-image-container">
+      <Image
+        src={rowData.image}
+        alt={rowData.name}
+        width="60"
+        height="60"
+        preview
+        className="person-history-image"
+      />
+    </div>
   )
 
   // ✅ Format missing values for cleaner display
   const textTemplate = (text?: string) => text || '—'
+
+  const nameTemplate = (rowData: HistoryItem) => (
+    <span className="person-history-name">{rowData.name}</span>
+  )
+
+  const periodTemplate = (rowData: HistoryItem) => (
+    <span className="person-history-period">{textTemplate(rowData.period)}</span>
+  )
+
+  const achievementsTemplate = (rowData: HistoryItem) => (
+    <span className="person-history-achievements">{textTemplate(rowData.achievements)}</span>
+  )
 
   return (
     <motion.div
@@ -57,16 +71,16 @@ const PersonHistory: React.FC<PersonHistoryProps> = ({ title, history }) => {
           className="person-history-table"
         >
           <Column header={t('mayors.photo')} body={imageTemplate}></Column>
-          <Column field="name" header={t('mayors.name')}></Column>
+          <Column field="name" header={t('mayors.name')} body={nameTemplate}></Column>
           <Column
             field="period"
             header={t('mayors.period')}
-            body={(rowData) => textTemplate(rowData.period)}
+            body={periodTemplate}
           ></Column>
           <Column
             field="achievements"
             header={t('mayors.achievements')}
-            body={(rowData) => textTemplate(rowData.achievements)}
+            body={achievementsTemplate}
           ></Column>
         </DataTable>
       </Card>
@@ -75,3 +89,4 @@ const PersonHistory: React.FC<PersonHistoryProps> = ({ title, history }) => {
 }
 
 export default PersonHistory
+

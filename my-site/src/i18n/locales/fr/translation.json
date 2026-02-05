@@ -24,6 +24,23 @@
   "common": {
     "loading": "Chargement..."
   },
+  "navigation": {
+    "home": "Accueil",
+    "about": "À propos de nous",
+    "services": "Services",
+    "news": "Actualités",
+    "events": "Événements",
+    "contact": "Nous contacter",
+    "claims": "Réclamations",
+    "mayor": "Maire",
+    "potentials": "Potentiels",
+    "secretary": "Secrétaire Général",
+    "history": "Histoire",
+    "papers": "Documents",
+    "persons": "Personnes",
+    "quickLinks": "Liens Rapides",
+    "importantNumbers": "Numéros Importants"
+  },
   "footer": {
     "cityTitle": "Zemmouri (Boumerdès)",
     "quickLinks": "Liens rapides",

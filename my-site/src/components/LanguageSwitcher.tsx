@@ -1,15 +1,16 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Dropdown } from 'primereact/dropdown';
+import './language-switcher.css';
 
 const LanguageSwitcher: React.FC = () => {
   const { i18n } = useTranslation();
 
   const languages = [
-    { label: 'English', value: 'en' },
-    { label: 'العربية', value: 'ar' },
-    { label: 'Français', value: 'fr' },
-    { label: 'Español', value: 'es' },
+    { label: '🇬🇧 English', value: 'en' },
+    { label: '🇩🇿 العربية', value: 'ar' },
+    { label: '🇫🇷 Français', value: 'fr' },
+    { label: '🇪🇸 Español', value: 'es' },
   ];
 
   const handleLanguageChange = (newLang: string) => {
@@ -25,8 +26,12 @@ const LanguageSwitcher: React.FC = () => {
       options={languages}
       optionLabel="label"
       optionValue="value"
-      style={{ width: '120px' }}
       className="language-switcher"
+      style={{
+        width: '130px',
+        borderRadius: '8px',
+        fontWeight: '500',
+      }}
     />
   );
 };

@@ -1,0 +1,187 @@
+/* === Page Layout === */
+.page-layout {
+  min-height: calc(100vh - 200px);
+  width: 100%;
+}
+
+.page-layout.rtl {
+  direction: rtl;
+}
+
+.page-layout.ltr {
+  direction: ltr;
+}
+
+.page-wrapper {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.page-content {
+  background: white;
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  border: 1px solid #e2e8f0;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+/* === Form Styling === */
+.page-content .p-fluid {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.page-content label {
+  font-weight: 600;
+  color: #0f172a;
+  font-size: 0.95rem;
+  margin-bottom: 0.5rem;
+  display: block;
+  letter-spacing: 0.3px;
+}
+
+.page-content .p-inputtext,
+.page-content textarea {
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+}
+
+.page-content .p-inputtext:focus,
+.page-content textarea:focus {
+  border-color: #1a7f37;
+  box-shadow: 0 0 0 3px rgba(26, 127, 55, 0.1);
+  outline: none;
+}
+
+.page-content .p-button {
+  background: linear-gradient(135deg, #1a7f37 0%, #159033 100%);
+  border: none;
+  padding: 0.75rem 2rem;
+  font-weight: 600;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  letter-spacing: 0.5px;
+}
+
+.page-content .p-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(26, 127, 55, 0.3);
+}
+
+.page-content .p-button:active {
+  transform: translateY(0);
+}
+
+/* === Grid Layout === */
+.page-content .p-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.page-content .p-card {
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  transition: all 0.3s ease;
+}
+
+.page-content .p-card:hover {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  transform: translateY(-4px);
+}
+
+/* === Typography === */
+.page-content h1 {
+  font-size: 2rem;
+  color: #0f172a;
+  margin-bottom: 1rem;
+}
+
+.page-content h2 {
+  font-size: 1.5rem;
+  color: #1f2937;
+  margin: 2rem 0 1rem 0;
+  padding-bottom: 0.75rem;
+  border-bottom: 2px solid #e2e8f0;
+}
+
+.page-content h3 {
+  font-size: 1.25rem;
+  color: #1f2937;
+  margin: 1.5rem 0 0.75rem 0;
+}
+
+.page-content p {
+  color: #64748b;
+  line-height: 1.6;
+  margin: 1rem 0;
+}
+
+/* === Animation === */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* === Responsive === */
+@media (max-width: 768px) {
+  .page-wrapper {
+    padding: 0 0.75rem;
+  }
+
+  .page-content {
+    padding: 1.5rem;
+  }
+
+  .page-content h1 {
+    font-size: 1.5rem;
+  }
+
+  .page-content h2 {
+    font-size: 1.25rem;
+  }
+
+  .page-content h3 {
+    font-size: 1.1rem;
+  }
+
+  .page-content .p-grid {
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .page-content {
+    padding: 1rem;
+  }
+
+  .page-content h1 {
+    font-size: 1.3rem;
+  }
+
+  .page-content h2 {
+    font-size: 1.1rem;
+  }
+
+  .page-content .p-grid {
+    grid-template-columns: 1fr;
+  }
+}

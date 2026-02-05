@@ -29,20 +29,22 @@ const PersonWord: React.FC<PersonWordProps> = ({ name, image, message, title }) 
       >
         <div className="person-word-bg" />
         <h2 className="person-word-title">
-          {title || t('wordTitle')}
+          ✨ {title || t('wordTitle')}
         </h2>
         <div className="person-word-content">
-          <Image
-            src={image}
-            alt={name}
-            width="150"
-            height="150"
-            className="person-word-image"
-          />
+          <div className="person-word-image-container">
+            <Image
+              src={image}
+              alt={name}
+              width="150"
+              height="150"
+              className="person-word-image"
+            />
+          </div>
           <div className="person-word-text">
             <h3 className="person-word-name">{name}</h3>
             <Divider className="person-word-divider" />
-            <p className="person-word-message">{message}</p>
+            <blockquote className="person-word-message">"{message}"</blockquote>
           </div>
         </div>
       </Card>

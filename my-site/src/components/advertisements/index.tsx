@@ -65,8 +65,7 @@ const Advertisements: React.FC<AdsProps> = ({ ads }) => {
         responsiveOptions={responsiveOptions}
         itemTemplate={adsTemplate}
         showIndicators
-        className="ads-carousel"
-        dir="ltr" // ✅ Keep PrimeReact carousel LTR
+        className={`ads-carousel ${isRtl ? 'rtl' : 'ltr'}`}
         key={i18n.language + (isRtl ? '-rtl' : '-ltr')}
       />
     </section>

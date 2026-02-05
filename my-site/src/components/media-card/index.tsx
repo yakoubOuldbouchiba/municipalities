@@ -3,6 +3,7 @@ import { Card } from 'primereact/card'
 import { Dialog } from 'primereact/dialog'
 import { Button } from 'primereact/button'
 import { useTranslation } from 'react-i18next'
+import { motion } from 'framer-motion'
 import './media-card.css'
 
 interface MediaCardProps {
@@ -66,7 +67,7 @@ const MediaCard: React.FC<MediaCardProps> = ({ title, fileUrl, description }) =>
       case 'image':
         return imageError ? (
           <div className="media-offline-placeholder">
-            <div className="offline-icon">🖼️</div>
+            <div className="offline-icon"><i className="pi pi-image"></i></div>
             <p>{t('common.imageLoadError', 'Failed to load image')}</p>
           </div>
         ) : (
@@ -82,7 +83,7 @@ const MediaCard: React.FC<MediaCardProps> = ({ title, fileUrl, description }) =>
       case 'pdf':
         return iframeError ? (
           <div className="media-offline-placeholder">
-            <div className="offline-icon">📄</div>
+            <div className="offline-icon"><i className="pi pi-file-pdf"></i></div>
             <p>{t('common.loadError', 'Failed to load PDF')}</p>
           </div>
         ) : (
@@ -102,7 +103,7 @@ const MediaCard: React.FC<MediaCardProps> = ({ title, fileUrl, description }) =>
           : fileUrl.replace('watch?v=', 'embed/')
         return iframeError ? (
           <div className="media-offline-placeholder">
-            <div className="offline-icon">▶️</div>
+            <div className="offline-icon"><i className="pi pi-play"></i></div>
             <p>{t('common.loadError', 'Failed to load video')}</p>
           </div>
         ) : (
@@ -124,27 +125,39 @@ const MediaCard: React.FC<MediaCardProps> = ({ title, fileUrl, description }) =>
 
   return (
     <>
-      <Card
-        className="media-card shadow-2 hover:shadow-4 transition-all cursor-pointer"
-        onClick={() => setVisible(true)}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        whileHover={{ y: -4 }}
       >
-        <div className="media-card-content">
-          <div className="media-card-left">{renderMedia()}</div>
-          <div className="media-card-text">
-            <h3>{title}</h3>
-            {description && <p>{description}</p>}
-            <Button
-              icon="pi pi-eye"
-              label={t('preview')}
-              className="p-button-text p-button-sm mt-2"
-              onClick={(e) => {
-                e.stopPropagation()
-                setVisible(true)
-              }}
-            />
+        <Card
+          className="media-card"
+          onClick={() => setVisible(true)}
+        >
+          <div className="media-card-type-badge">
+            {fileType === 'image' && <><i className="pi pi-image" style={{ marginRight: '0.25rem' }}></i>Image</>}
+            {fileType === 'pdf' && <><i className="pi pi-file-pdf" style={{ marginRight: '0.25rem' }}></i>PDF</>}
+            {fileType === 'youtube' && <><i className="pi pi-play" style={{ marginRight: '0.25rem' }}></i>Video</>}
           </div>
-        </div>
-      </Card>
+          <div className="media-card-content">
+            <div className="media-card-left">{renderMedia()}</div>
+            <div className="media-card-text">
+              <h3 className="media-card-title">{title}</h3>
+              {description && <p className="media-card-description">{description}</p>}
+              <Button
+                icon="pi pi-eye"
+                label={t('preview')}
+                className="media-card-preview-btn p-button-sm"
+                onClick={(e) => {
+                  e.stopPropagation()
+                  setVisible(true)
+                }}
+              />
+            </div>
+          </div>
+        </Card>
+      </motion.div>
 
       <Dialog
         header={title}

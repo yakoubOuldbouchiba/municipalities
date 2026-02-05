@@ -1,0 +1,26 @@
+/* === Language Switcher === */
+.language-switcher {
+  border: 1px solid #e2e8f0 !important;
+  background: white !important;
+  color: #0f172a !important;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.language-switcher:hover {
+  border-color: #1a7f37 !important;
+  box-shadow: 0 0 0 3px rgba(26, 127, 55, 0.1);
+}
+
+.language-switcher:focus {
+  border-color: #1a7f37 !important;
+  box-shadow: 0 0 0 3px rgba(26, 127, 55, 0.15);
+}
+
+.language-switcher .p-dropdown-trigger {
+  color: #1a7f37;
+}
+
+.language-switcher .p-dropdown-item.p-highlight {
+  background: linear-gradient(135deg, #1a7f37 0%, #159033 100%);
+}

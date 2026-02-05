@@ -54,6 +54,9 @@
     "fileError": "Se permiten máximo 3 archivos",
     "submitted": "Tu reclamación ha sido enviada exitosamente. Tu número de referencia es: {refNumber}"
   },
+  "homePage": {
+    "welcome": "Bienvenido"
+  },
   "navigation": {
     "home": "Inicio",
     "about": "Acerca de nosotros",
@@ -61,7 +64,15 @@
     "news": "Noticias",
     "events": "Eventos",
     "contact": "Contáctenos",
-    "claims": "Reclamaciones"
+    "claims": "Reclamaciones",
+    "mayor": "Alcalde",
+    "potentials": "Potenciales",
+    "secretary": "Secretario General",
+    "history": "Historia",
+    "papers": "Documentos",
+    "persons": "Personas",
+    "quickLinks": "Enlaces Rápidos",
+    "importantNumbers": "Números Importantes"
   },
   "messages": {
     "welcome": "Bienvenido a nuestro municipio",
