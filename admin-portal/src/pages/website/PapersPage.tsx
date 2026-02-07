@@ -8,6 +8,7 @@ import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { ConfirmDialog, confirmDialog } from 'primereact/confirmdialog';
 import { Toast } from 'primereact/toast';
+import { Dialog } from 'primereact/dialog';
 import axiosClient from '../../api/axiosClient';
 import ArabicKeyboard from '../../components/ArabicKeyboard';
 
@@ -29,6 +30,7 @@ const PapersPage: React.FC = () => {
   const [selectedLang, setSelectedLang] = useState<string | null>(null);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [activeKeyboardField, setActiveKeyboardField] = useState<string | null>(null);
+  const [dialogVisible, setDialogVisible] = useState(false);
 
   // Fetch list from backend (localized)
   const fetchList = async () => {
@@ -50,6 +52,7 @@ const PapersPage: React.FC = () => {
     setDescriptions({});
     setSlug('');
     setEditingId(null);
+    setDialogVisible(false);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -92,6 +95,7 @@ const PapersPage: React.FC = () => {
       setDescriptions(data.description || {});
       setSlug(data.slug || '');
       setEditingId(id);
+      setDialogVisible(true);
     } catch (err) {
       console.error('Error loading paper:', err);
     }
@@ -137,9 +141,28 @@ const PapersPage: React.FC = () => {
     <div className="p-4">
       <Toast ref={toast} />
       <ConfirmDialog />
-      <h1 className="text-2xl font-semibold mb-4">{t('papers.title', 'Papers')}</h1>
+      
+      <div className="flex items-center justify-between mb-4">
+        <h1 className="text-2xl font-semibold">{t('papers.title', 'Papers')}</h1>
+        <Button 
+          label={t('papers.actions.addNew', 'Add Paper')} 
+          icon="pi pi-plus" 
+          onClick={() => {
+            resetForm();
+            setDialogVisible(true);
+          }} 
+        />
+      </div>
 
-      <form onSubmit={handleSubmit} className="mb-6 space-y-2 max-w-2xl">
+      <Dialog
+        header={editingId ? t('papers.dialog.editTitle', 'Edit Paper') : t('papers.dialog.addTitle', 'Add Paper')}
+        visible={dialogVisible}
+        style={{ width: '50vw' }}
+        breakpoints={{ '960px': '75vw', '641px': '90vw' }}
+        onHide={() => setDialogVisible(false)}
+        modal
+      >
+        <form onSubmit={handleSubmit} className="space-y-2">
         {/* Language add controls */}
         <div className="flex gap-2 items-center">
           {(() => {
@@ -248,11 +271,12 @@ const PapersPage: React.FC = () => {
           ));
         })()}
 
-        <div className="flex items-center gap-2">
-          <Button type="submit" label={editingId ? t('papers.actions.update', 'Update') : t('papers.actions.add', 'Add')} icon="pi pi-check" />
-          <Button type="button" label={t('papers.actions.clear', 'Clear')} className="p-button-outlined" onClick={resetForm} />
-        </div>
-      </form>
+          <div className="flex items-center gap-2">
+            <Button type="submit" label={editingId ? t('papers.actions.update', 'Update') : t('papers.actions.add', 'Add')} icon="pi pi-check" />
+            <Button type="button" label={t('papers.actions.cancel', 'Cancel')} className="p-button-outlined" onClick={() => setDialogVisible(false)} />
+          </div>
+        </form>
+      </Dialog>
 
       <div>
         {papers.length === 0 ? (

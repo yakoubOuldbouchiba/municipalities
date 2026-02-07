@@ -7,9 +7,9 @@ import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { ConfirmDialog, confirmDialog } from 'primereact/confirmdialog';
 import { Toast } from 'primereact/toast';
+import { Dialog } from 'primereact/dialog';
 import axiosClient from '../../api/axiosClient';
 import ArabicKeyboard from '../../components/ArabicKeyboard';
-import { json } from 'stream/consumers';
 
 type ImportantNumber = {
   id: string;
@@ -27,6 +27,7 @@ const ImportantNumbersPage: React.FC = () => {
   const [selectedLang, setSelectedLang] = useState<string | null>(null);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [activeKeyboardField, setActiveKeyboardField] = useState<string | null>(null);
+  const [dialogVisible, setDialogVisible] = useState(false);
 
   // Fetch list from backend (localized)
   const fetchList = async () => {
@@ -47,6 +48,7 @@ const ImportantNumbersPage: React.FC = () => {
     setLabels({});
     setValue('');
     setEditingId(null);
+    setDialogVisible(false);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -77,6 +79,7 @@ const ImportantNumbersPage: React.FC = () => {
       setLabels(labelsObj);
       setValue(data.value || '');
       setEditingId(id);
+      setDialogVisible(true);
     } catch (err) {
       console.error('Error loading important number:', err);
     }
@@ -129,9 +132,28 @@ const ImportantNumbersPage: React.FC = () => {
     <div className="p-4">
       <Toast ref={toast} />
       <ConfirmDialog />
-      <h1 className="text-2xl font-semibold mb-4">{t('importantNumbers.title', 'Important Numbers')}</h1>
+      
+      <div className="flex items-center justify-between mb-4">
+        <h1 className="text-2xl font-semibold">{t('importantNumbers.title', 'Important Numbers')}</h1>
+        <Button 
+          label={t('importantNumbers.actions.addNew', 'Add Number')} 
+          icon="pi pi-plus" 
+          onClick={() => {
+            resetForm();
+            setDialogVisible(true);
+          }} 
+        />
+      </div>
 
-      <form onSubmit={handleSubmit} className="mb-6 space-y-2 max-w-lg">
+      <Dialog
+        header={editingId ? t('importantNumbers.dialog.editTitle', 'Edit Important Number') : t('importantNumbers.dialog.addTitle', 'Add Important Number')}
+        visible={dialogVisible}
+        style={{ width: '50vw' }}
+        breakpoints={{ '960px': '75vw', '641px': '90vw' }}
+        onHide={() => setDialogVisible(false)}
+        modal
+      >
+        <form onSubmit={handleSubmit} className="space-y-2">
         {/* Language add controls */}
         <div className="flex gap-2 items-center">
           {(() => {
@@ -204,9 +226,10 @@ const ImportantNumbersPage: React.FC = () => {
 
         <div className="flex items-center gap-2">
           <Button type="submit" label={editingId ? t('importantNumbers.actions.update', 'Update') : t('importantNumbers.actions.add', 'Add')} icon="pi pi-check" />
-          <Button type="button" label={t('importantNumbers.actions.clear', 'Clear')} className="p-button-outlined" onClick={resetForm} />
+          <Button type="button" label={t('importantNumbers.actions.cancel', 'Cancel')} className="p-button-outlined" onClick={() => setDialogVisible(false)} />
         </div>
       </form>
+      </Dialog>
 
       <div>
         {items.length === 0 ? (

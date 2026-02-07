@@ -9,6 +9,7 @@ import { Column } from 'primereact/column';
 import { InputSwitch } from 'primereact/inputswitch';
 import { ConfirmDialog, confirmDialog } from 'primereact/confirmdialog';
 import { Toast } from 'primereact/toast';
+import { Dialog } from 'primereact/dialog';
 import axiosClient from '../../api/axiosClient';
 import ArabicKeyboard from '../../components/ArabicKeyboard';
 
@@ -38,9 +39,9 @@ const PersonsPage: React.FC = () => {
   const [period, setPeriod] = useState('');
   const [type, setType] = useState<string | null>('mayor');
   const [isCurrent, setIsCurrent] = useState(false);
-  const [selectedLang, setSelectedLang] = useState<string | null>(null);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [activeKeyboardField, setActiveKeyboardField] = useState<string | null>(null);
+  const [dialogVisible, setDialogVisible] = useState(false);
 
   // Type options - defined inside component to react to language changes
   const typeOptions = [
@@ -71,9 +72,9 @@ const PersonsPage: React.FC = () => {
     setPeriod('');
     setType('mayor');
     setIsCurrent(false);
-    setSelectedLang(null);
     setEditingId(null);
     setActiveKeyboardField(null);
+    setDialogVisible(false);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -119,6 +120,7 @@ const PersonsPage: React.FC = () => {
       setType(data.type || 'mayor');
       setIsCurrent(data.is_current || false);
       setEditingId(id);
+      setDialogVisible(true);
     } catch (err) {
       console.error('Error loading person:', err);
     }
@@ -182,9 +184,28 @@ const PersonsPage: React.FC = () => {
     <div className="p-4">
       <Toast ref={toast} />
       <ConfirmDialog />
-      <h1 className="text-2xl font-semibold mb-4">{t('persons.title', 'Persons')}</h1>
+      
+      <div className="flex items-center justify-between mb-4">
+        <h1 className="text-2xl font-semibold">{t('persons.title', 'Persons')}</h1>
+        <Button 
+          label={t('persons.actions.addNew', 'Add Person')} 
+          icon="pi pi-plus" 
+          onClick={() => {
+            resetForm();
+            setDialogVisible(true);
+          }} 
+        />
+      </div>
 
-      <form onSubmit={handleSubmit} className="mb-6 space-y-2 max-w-2xl">
+      <Dialog
+        header={editingId ? t('persons.dialog.editTitle', 'Edit Person') : t('persons.dialog.addTitle', 'Add Person')}
+        visible={dialogVisible}
+        style={{ width: '50vw' }}
+        breakpoints={{ '960px': '75vw', '641px': '90vw' }}
+        onHide={() => setDialogVisible(false)}
+        modal
+      >
+        <form onSubmit={handleSubmit} className="space-y-2">
         {/* Type field */}
         <div>
           <label className="block text-sm font-medium text-gray-700">{t('persons.fields.type', 'Type')}</label>
@@ -348,9 +369,10 @@ const PersonsPage: React.FC = () => {
 
         <div className="flex items-center gap-2">
           <Button type="submit" label={editingId ? t('persons.actions.update', 'Update') : t('persons.actions.add', 'Add')} icon="pi pi-check" />
-          <Button type="button" label={t('persons.actions.clear', 'Clear')} className="p-button-outlined" onClick={resetForm} />
+          <Button type="button" label={t('persons.actions.cancel', 'Cancel')} className="p-button-outlined" onClick={() => setDialogVisible(false)} />
         </div>
       </form>
+      </Dialog>
 
       <div>
         {persons.length === 0 ? (

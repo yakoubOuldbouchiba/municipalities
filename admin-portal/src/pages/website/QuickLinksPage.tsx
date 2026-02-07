@@ -7,6 +7,7 @@ import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { ConfirmDialog, confirmDialog } from 'primereact/confirmdialog';
 import { Toast } from 'primereact/toast';
+import { Dialog } from 'primereact/dialog';
 import axiosClient from '../../api/axiosClient';
 import ArabicKeyboard from '../../components/ArabicKeyboard';
 
@@ -26,6 +27,7 @@ const QuickLinksPage: React.FC = () => {
   const [selectedLang, setSelectedLang] = useState<string | null>(null);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [activeKeyboardField, setActiveKeyboardField] = useState<string | null>(null);
+  const [dialogVisible, setDialogVisible] = useState(false);
 
   // Fetch list from backend (localized)
   const fetchList = async () => {
@@ -46,6 +48,7 @@ const QuickLinksPage: React.FC = () => {
     setLabels({});
     setUrl('');
     setEditingId(null);
+    setDialogVisible(false);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -81,6 +84,7 @@ const QuickLinksPage: React.FC = () => {
       setLabels(labelsObj);
       setUrl(data.url || '');
       setEditingId(id);
+      setDialogVisible(true);
     } catch (err) {
       // ignore
     }
@@ -139,9 +143,28 @@ const QuickLinksPage: React.FC = () => {
     <div className="p-4">
       <Toast ref={toast} />
       <ConfirmDialog />
-      <h1 className="text-2xl font-semibold mb-4">{t('quickLinks.title', 'Quick Links')}</h1>
+      
+      <div className="flex items-center justify-between mb-4">
+        <h1 className="text-2xl font-semibold">{t('quickLinks.title', 'Quick Links')}</h1>
+        <Button 
+          label={t('quickLinks.actions.addNew', 'Add Quick Link')} 
+          icon="pi pi-plus" 
+          onClick={() => {
+            resetForm();
+            setDialogVisible(true);
+          }} 
+        />
+      </div>
 
-      <form onSubmit={handleSubmit} className="mb-6 space-y-2 max-w-lg">
+      <Dialog
+        header={editingId ? t('quickLinks.dialog.editTitle', 'Edit Quick Link') : t('quickLinks.dialog.addTitle', 'Add Quick Link')}
+        visible={dialogVisible}
+        style={{ width: '50vw' }}
+        breakpoints={{ '960px': '75vw', '641px': '90vw' }}
+        onHide={() => setDialogVisible(false)}
+        modal
+      >
+        <form onSubmit={handleSubmit} className="space-y-2">
         {/* Language add controls */}
         <div className="flex gap-2 items-center">
           {(() => {
@@ -212,11 +235,12 @@ const QuickLinksPage: React.FC = () => {
           <InputText value={url} onChange={(e) => setUrl((e.target as HTMLInputElement).value)} className="w-full p-inputtext-sm" placeholder={t('quickLinks.placeholders.url', 'https://example.com')} />
         </div>
 
-        <div className="flex items-center gap-2">
-          <Button type="submit" label={editingId ? t('quickLinks.actions.update', 'Update') : t('quickLinks.actions.add', 'Add')} icon="pi pi-check" />
-          <Button type="button" label={t('quickLinks.actions.clear', 'Clear')} className="p-button-outlined" onClick={resetForm} />
-        </div>
-      </form>
+          <div className="flex items-center gap-2">
+            <Button type="submit" label={editingId ? t('quickLinks.actions.update', 'Update') : t('quickLinks.actions.add', 'Add')} icon="pi pi-check" />
+            <Button type="button" label={t('quickLinks.actions.cancel', 'Cancel')} className="p-button-outlined" onClick={() => setDialogVisible(false)} />
+          </div>
+        </form>
+      </Dialog>
 
       <div>
         {links.length === 0 ? (

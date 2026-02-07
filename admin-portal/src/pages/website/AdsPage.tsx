@@ -8,6 +8,7 @@ import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { ConfirmDialog, confirmDialog } from 'primereact/confirmdialog';
 import { Toast } from 'primereact/toast';
+import { Dialog } from 'primereact/dialog';
 import axiosClient from '../../api/axiosClient';
 import ArabicKeyboard from '../../components/ArabicKeyboard';
 
@@ -31,6 +32,7 @@ const AdsPage: React.FC = () => {
   const [selectedLang, setSelectedLang] = useState<string | null>(null);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [activeKeyboardField, setActiveKeyboardField] = useState<string | null>(null);
+  const [dialogVisible, setDialogVisible] = useState(false);
 
   const fileTypeOptions = [
     { label: t('ads.fileTypes.image', 'Image'), value: 'image' },
@@ -58,6 +60,7 @@ const AdsPage: React.FC = () => {
     setLink('');
     setFileType('image');
     setEditingId(null);
+    setDialogVisible(false);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -102,6 +105,7 @@ const AdsPage: React.FC = () => {
       setLink(data.link || '');
       setFileType(data.file_type || 'image');
       setEditingId(id);
+      setDialogVisible(true);
     } catch (err) {
       console.error('Error loading ad:', err);
     }
@@ -154,10 +158,31 @@ const AdsPage: React.FC = () => {
   );
 
   return (
-    <div className="p-4">      <Toast ref={toast} />      <ConfirmDialog />
-      <h1 className="text-2xl font-semibold mb-4">{t('ads.title', 'Advertisements')}</h1>
+    <div className="p-4">
+      <Toast ref={toast} />
+      <ConfirmDialog />
+      
+      <div className="flex items-center justify-between mb-4">
+        <h1 className="text-2xl font-semibold">{t('ads.title', 'Advertisements')}</h1>
+        <Button 
+          label={t('ads.actions.addNew', 'Add New Ad')} 
+          icon="pi pi-plus" 
+          onClick={() => {
+            resetForm();
+            setDialogVisible(true);
+          }} 
+        />
+      </div>
 
-      <form onSubmit={handleSubmit} className="mb-6 space-y-2 max-w-2xl">
+      <Dialog
+        header={editingId ? t('ads.dialog.editTitle', 'Edit Advertisement') : t('ads.dialog.addTitle', 'Add Advertisement')}
+        visible={dialogVisible}
+        style={{ width: '50vw' }}
+        breakpoints={{ '960px': '75vw', '641px': '90vw' }}
+        onHide={() => setDialogVisible(false)}
+        modal
+      >
+        <form onSubmit={handleSubmit} className="space-y-2">
         {/* Language add controls */}
         <div className="flex gap-2 items-center">
           {(() => {
@@ -315,11 +340,12 @@ const AdsPage: React.FC = () => {
           ));
         })()}
 
-        <div className="flex items-center gap-2">
-          <Button type="submit" label={editingId ? t('ads.actions.update', 'Update') : t('ads.actions.add', 'Add')} icon="pi pi-check" />
-          <Button type="button" label={t('ads.actions.clear', 'Clear')} className="p-button-outlined" onClick={resetForm} />
-        </div>
-      </form>
+          <div className="flex items-center gap-2">
+            <Button type="submit" label={editingId ? t('ads.actions.update', 'Update') : t('ads.actions.add', 'Add')} icon="pi pi-check" />
+            <Button type="button" label={t('ads.actions.cancel', 'Cancel')} className="p-button-outlined" onClick={() => setDialogVisible(false)} />
+          </div>
+        </form>
+      </Dialog>
 
       <div>
         {ads.length === 0 ? (

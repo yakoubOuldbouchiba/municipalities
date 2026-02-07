@@ -8,6 +8,7 @@ import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { ConfirmDialog, confirmDialog } from 'primereact/confirmdialog';
 import { Toast } from 'primereact/toast';
+import { Dialog } from 'primereact/dialog';
 import axiosClient from '../../api/axiosClient';
 import { getIconOptions, getColorOptions } from '../../lib/eventOptions';
 import ArabicKeyboard from '../../components/ArabicKeyboard';
@@ -34,6 +35,7 @@ const EventsPage: React.FC = () => {
   const [selectedLang, setSelectedLang] = useState<string | null>(null);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [activeKeyboardField, setActiveKeyboardField] = useState<string | null>(null);
+  const [dialogVisible, setDialogVisible] = useState(false);
 
   // Fetch list from backend (localized)
   const fetchList = async () => {
@@ -57,6 +59,7 @@ const EventsPage: React.FC = () => {
     setIcon(null);
     setColor(null);
     setEditingId(null);
+    setDialogVisible(false);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -105,6 +108,7 @@ const EventsPage: React.FC = () => {
       setIcon(data.icon || null);
       setColor(data.color || null);
       setEditingId(id);
+      setDialogVisible(true);
     } catch (err) {
       console.error('Error loading event:', err);
     }
@@ -186,9 +190,28 @@ const EventsPage: React.FC = () => {
     <div className="p-4">
       <Toast ref={toast} />
       <ConfirmDialog />
-      <h1 className="text-2xl font-semibold mb-4">{t('events.title', 'Events')}</h1>
+      
+      <div className="flex items-center justify-between mb-4">
+        <h1 className="text-2xl font-semibold">{t('events.title', 'Events')}</h1>
+        <Button 
+          label={t('events.actions.addNew', 'Add Event')} 
+          icon="pi pi-plus" 
+          onClick={() => {
+            resetForm();
+            setDialogVisible(true);
+          }} 
+        />
+      </div>
 
-      <form onSubmit={handleSubmit} className="mb-6 space-y-2 max-w-2xl">
+      <Dialog
+        header={editingId ? t('events.dialog.editTitle', 'Edit Event') : t('events.dialog.addTitle', 'Add Event')}
+        visible={dialogVisible}
+        style={{ width: '50vw' }}
+        breakpoints={{ '960px': '75vw', '641px': '90vw' }}
+        onHide={() => setDialogVisible(false)}
+        modal
+      >
+        <form onSubmit={handleSubmit} className="space-y-2">
         {/* Language add controls */}
         <div className="flex gap-2 items-center">
           {(() => {
@@ -343,11 +366,12 @@ const EventsPage: React.FC = () => {
           ));
         })()}
 
-        <div className="flex items-center gap-2">
-          <Button type="submit" label={editingId ? t('events.actions.update', 'Update') : t('events.actions.add', 'Add')} icon="pi pi-check" />
-          <Button type="button" label={t('events.actions.clear', 'Clear')} className="p-button-outlined" onClick={resetForm} />
-        </div>
-      </form>
+          <div className="flex items-center gap-2">
+            <Button type="submit" label={editingId ? t('events.actions.update', 'Update') : t('events.actions.add', 'Add')} icon="pi pi-check" />
+            <Button type="button" label={t('events.actions.cancel', 'Cancel')} className="p-button-outlined" onClick={() => setDialogVisible(false)} />
+          </div>
+        </form>
+      </Dialog>
 
       <div>
         {events.length === 0 ? (

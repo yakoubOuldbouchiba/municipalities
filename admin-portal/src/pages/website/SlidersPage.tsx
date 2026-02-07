@@ -7,6 +7,7 @@ import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { ConfirmDialog, confirmDialog } from 'primereact/confirmdialog';
 import { Toast } from 'primereact/toast';
+import { Dialog } from 'primereact/dialog';
 import axiosClient from '../../api/axiosClient';
 import ArabicKeyboard from '../../components/ArabicKeyboard';
 
@@ -26,6 +27,7 @@ const SlidersPage: React.FC = () => {
   const [selectedLang, setSelectedLang] = useState<string | null>(null);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [activeKeyboardField, setActiveKeyboardField] = useState<string | null>(null);
+  const [dialogVisible, setDialogVisible] = useState(false);
 
   // Fetch list from backend (localized)
   const fetchList = async () => {
@@ -46,6 +48,7 @@ const SlidersPage: React.FC = () => {
     setCaptions({});
     setImageUrl('');
     setEditingId(null);
+    setDialogVisible(false);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -85,6 +88,7 @@ const SlidersPage: React.FC = () => {
       setCaptions(data.caption || {});
       setImageUrl(data.url || '');
       setEditingId(id);
+      setDialogVisible(true);
     } catch (err) {
       console.error('Error loading slider:', err);
     }
@@ -143,9 +147,28 @@ const SlidersPage: React.FC = () => {
     <div className="p-4">
       <Toast ref={toast} />
       <ConfirmDialog />
-      <h1 className="text-2xl font-semibold mb-4">{t('sliders.title', 'Sliders')}</h1>
+      
+      <div className="flex items-center justify-between mb-4">
+        <h1 className="text-2xl font-semibold">{t('sliders.title', 'Sliders')}</h1>
+        <Button 
+          label={t('sliders.actions.addNew', 'Add Slider')} 
+          icon="pi pi-plus" 
+          onClick={() => {
+            resetForm();
+            setDialogVisible(true);
+          }} 
+        />
+      </div>
 
-      <form onSubmit={handleSubmit} className="mb-6 space-y-2 max-w-2xl">
+      <Dialog
+        header={editingId ? t('sliders.dialog.editTitle', 'Edit Slider') : t('sliders.dialog.addTitle', 'Add Slider')}
+        visible={dialogVisible}
+        style={{ width: '50vw' }}
+        breakpoints={{ '960px': '75vw', '641px': '90vw' }}
+        onHide={() => setDialogVisible(false)}
+        modal
+      >
+        <form onSubmit={handleSubmit} className="space-y-2">
         {/* Language add controls */}
         <div className="flex gap-2 items-center">
           {(() => {
@@ -242,11 +265,12 @@ const SlidersPage: React.FC = () => {
           ) : null;
         })()}
 
-        <div className="flex items-center gap-2">
-          <Button type="submit" label={editingId ? t('sliders.actions.update', 'Update') : t('sliders.actions.add', 'Add')} icon="pi pi-check" />
-          <Button type="button" label={t('sliders.actions.clear', 'Clear')} className="p-button-outlined" onClick={resetForm} />
-        </div>
-      </form>
+          <div className="flex items-center gap-2">
+            <Button type="submit" label={editingId ? t('sliders.actions.update', 'Update') : t('sliders.actions.add', 'Add')} icon="pi pi-check" />
+            <Button type="button" label={t('sliders.actions.cancel', 'Cancel')} className="p-button-outlined" onClick={() => setDialogVisible(false)} />
+          </div>
+        </form>
+      </Dialog>
 
       <div>
         {sliders.length === 0 ? (
