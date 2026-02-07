@@ -182,6 +182,11 @@
     "history": {
       "karima": "A mis en place des systèmes de gestion électronique et amélioré la communication citoyenne.",
       "samir": "A optimisé les processus administratifs et introduit des initiatives de gouvernance ouverte."
-    }
-  }
+    }  },
+  "historyGeo": {
+    "title": "Histoire & Géographie",
+    "historyTitle": "📜 Histoire",
+    "historyText": "Zemmouri, une belle ville côtière de la wilaya de Boumerdès, possède une riche histoire enracinée dans la culture amazighe et andalouse. Historiquement connue pour sa position maritime stratégique, elle a joué un rôle clé dans le commerce et la défense à diverses périodes.",
+    "geographyTitle": "🌍 Géographie",
+    "geographyText": "Située sur la côte méditerranéenne, Zemmouri bénéficie d'un climat doux, de plages pittoresques et de terres fertiles. Elle est bordée par la mer au nord et par des collines verdoyantes au sud, ce qui en fait l'une des villes les plus charmantes du nord de l'Algérie."  }
 }

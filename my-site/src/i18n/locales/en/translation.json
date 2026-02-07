@@ -198,6 +198,11 @@
     "history": {
       "samir": "Digitized administrative processes and improved citizen access to services.",
       "nadia": "Enhanced interdepartmental coordination and supported community engagement programs."
-    }
-  }
+    }  },
+  "historyGeo": {
+    "title": "History & Geography",
+    "historyTitle": "📜 History",
+    "historyText": "Zemmouri, a beautiful coastal town in Boumerdès Province, has a rich history rooted in Amazigh and Andalusian culture. Historically known for its strategic maritime position, it played a key role in trade and defense during various periods.",
+    "geographyTitle": "🌍 Geography",
+    "geographyText": "Located on the Mediterranean coast, Zemmouri enjoys a mild climate, scenic beaches, and fertile lands. It's bordered by the sea to the north and lush hills to the south, making it one of the most charming towns in northern Algeria."  }
 }

@@ -56,10 +56,10 @@ const App: React.FC = () => {
 
   useEffect(() => {
     api
-      .get('/ads')
+      .get('/ads', { params: { lang: i18n.language } })
       .then((res) => setAds(res.data))
       .catch((err) => console.error('Failed to fetch ads:', err));
-  }, []);
+  }, [i18n.language]);
 
   return (
     <PrimeReactProvider>
