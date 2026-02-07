@@ -17,7 +17,7 @@
   "share_via_qr": "Share via QR Code",
   "scan_code": "Scan this code to open the shared document.",
   "latestAds": "Latest Advertisements",
-  "share": "Share",
+  "share": "Share",ssh-add -q ~/.ssh/id_
   "preview": "Preview",
   "pdfDocument": "PDF Document",
   "noImage": "No Image",
