@@ -46,9 +46,12 @@ export const useModules = () => {
 
     // Verify token exists before attempting to fetch
     const token = localStorage.getItem('token');
-    if (!token || token === 'undefined' || (typeof token === 'string' && token.trim() === '')) {
+    const hasValidToken = token && token !== 'undefined' && (typeof token === 'string' && token.trim() !== '');
+    
+    if (!hasValidToken) {
       setModules([]);
       setLoading(false);
+      // Don't navigate here - let RequireAuth handle it
       return;
     }
 
@@ -57,6 +60,14 @@ export const useModules = () => {
         setLoading(true);
         const lang = i18n.language || 'en';
         const cacheKey = `modules-${lang}`;
+        
+        // Double-check token still exists before making request
+        const currentToken = localStorage.getItem('token');
+        if (!currentToken || currentToken === 'undefined' || (typeof currentToken === 'string' && currentToken.trim() === '')) {
+          setModules([]);
+          setLoading(false);
+          return;
+        }
         
         // Check cache first
         const cached = modulesCache.get(cacheKey);
@@ -81,6 +92,7 @@ export const useModules = () => {
         
         // Handle 401 - redirect to login
         if (err.response?.status === 401) {
+          localStorage.removeItem('token');
           navigate('/login');
           return;
         }
@@ -101,7 +113,7 @@ export const useModules = () => {
     };
 
     fetchModules();
-  }, [i18n.language, location.pathname, navigate]);
+  }, [i18n.language, navigate]);
 
   return { modules, loading, error };
 };
@@ -122,7 +134,16 @@ export const useModuleById = (moduleId: string | number) => {
     const currentPath = window.location.pathname;
     
     // Skip fetching module on public routes
-    if (publicRoutes.includes(currentPath)) {
+    if (publicRoutes.some(route => currentPath.startsWith(route))) {
+      setLoading(false);
+      return;
+    }
+
+    // Verify token exists before attempting to fetch
+    const token = localStorage.getItem('token');
+    const hasValidToken = token && token !== 'undefined' && (typeof token === 'string' && token.trim() !== '');
+    
+    if (!hasValidToken) {
       setLoading(false);
       return;
     }
@@ -131,6 +152,13 @@ export const useModuleById = (moduleId: string | number) => {
       try {
         setLoading(true);
         const cacheKey = `module-${moduleId}`;
+        
+        // Double-check token still exists before making request
+        const currentToken = localStorage.getItem('token');
+        if (!currentToken || currentToken === 'undefined' || (typeof currentToken === 'string' && currentToken.trim() === '')) {
+          setLoading(false);
+          return;
+        }
         
         // Check cache
         const cached = moduleByIdCache.get(cacheKey);
@@ -153,6 +181,7 @@ export const useModuleById = (moduleId: string | number) => {
 
         // Handle 401 - redirect to login
         if (err.response?.status === 401) {
+          localStorage.removeItem('token');
           navigate('/login');
           return;
         }
@@ -173,7 +202,7 @@ export const useModuleById = (moduleId: string | number) => {
     };
 
     fetchModule();
-  }, [moduleId]);
+  }, [moduleId, navigate]);
 
   return { module, loading, error };
 };
@@ -195,7 +224,16 @@ export const useNavItems = (moduleId: number) => {
     const currentPath = window.location.pathname;
     
     // Skip fetching nav items on public routes
-    if (publicRoutes.includes(currentPath)) {
+    if (publicRoutes.some(route => currentPath.startsWith(route))) {
+      setLoading(false);
+      return;
+    }
+
+    // Verify token exists before attempting to fetch
+    const token = localStorage.getItem('token');
+    const hasValidToken = token && token !== 'undefined' && (typeof token === 'string' && token.trim() !== '');
+    
+    if (!hasValidToken) {
       setLoading(false);
       return;
     }
@@ -205,6 +243,13 @@ export const useNavItems = (moduleId: number) => {
         setLoading(true);
         const lang = i18n.language || 'en';
         const cacheKey = `nav-items-${moduleId}-${lang}`;
+        
+        // Double-check token still exists before making request
+        const currentToken = localStorage.getItem('token');
+        if (!currentToken || currentToken === 'undefined' || (typeof currentToken === 'string' && currentToken.trim() === '')) {
+          setLoading(false);
+          return;
+        }
         
         // Check cache
         const cached = navItemsCache.get(cacheKey);
@@ -227,6 +272,7 @@ export const useNavItems = (moduleId: number) => {
 
         // Handle 401 - redirect to login
         if (err.response?.status === 401) {
+          localStorage.removeItem('token');
           navigate('/login');
           return;
         }
@@ -247,7 +293,7 @@ export const useNavItems = (moduleId: number) => {
     };
 
     fetchNavItems();
-  }, [moduleId, i18n.language]);
+  }, [moduleId, i18n.language, navigate]);
 
   return { navItems, loading, error };
 };

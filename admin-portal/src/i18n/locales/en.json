@@ -521,7 +521,19 @@
     "actions": "Actions",
     "validation": "Validation",
     "active": "Active",
-    "inactive": "Inactive"
+    "inactive": "Inactive",
+    "id": "ID",
+    "name": "Name",
+    "email": "Email",
+    "phone": "Phone",
+    "nin": "National ID",
+    "address": "Address",
+    "created": "Created",
+    "refNumber": "Reference Number",
+    "status": "Status",
+    "viewDetails": "View Details",
+    "send": "Send",
+    "all": "All"
   },
   "groups": {
     "title": "Groups",
@@ -796,10 +808,10 @@
     "description": "Access monitoring and management tools",
     "noTools": "No tools available"
   },
-  "common": {
-    "noData": "No data available"
-  },
   "claims": {
+    "citizenClaims": "Citizen Claims",
+    "companyClaims": "Company Claims",
+    "organizationClaims": "Organization Claims",
     "referenceNumber": "Reference Number",
     "status": "Status",
     "pending": "Pending",
@@ -813,11 +825,26 @@
     "answerClaim": "Answer Claim",
     "claimDetails": "Claim Details",
     "confirmDelete": "Are you sure you want to delete this claim?",
+    "deleteConfirm": "Are you sure you want to delete this claim?",
     "deletedSuccessfully": "Claim deleted successfully",
+    "deleteSuccess": "Claim deleted successfully",
+    "deleteError": "Failed to delete claim",
     "answered_successfully": "Claim answered successfully",
+    "answerSuccess": "Claim answered successfully",
+    "answerError": "Failed to answer claim",
     "response": "Response",
     "submit": "Submit",
-    "loading": "Loading claims..."
+    "loading": "Loading claims...",
+    "fetchError": "Failed to fetch claims",
+    "pleaseProvideAnswer": "Please provide an answer",
+    "filterByStatus": "Filter by Status",
+    "personalInformation": "Personal Information",
+    "claimContent": "Claim Content",
+    "ourResponse": "Our Response",
+    "answeredOn": "Answered on",
+    "attachedFiles": "Attached Files",
+    "yourResponse": "Your Response",
+    "enterResponse": "Enter your response here"
   },
   "errors": {
     "forbidden": "Access Denied",

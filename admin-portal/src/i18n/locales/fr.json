@@ -511,7 +511,19 @@
     "actions": "Actions",
     "validation": "Validation",
     "active": "Actif",
-    "inactive": "Inactif"
+    "inactive": "Inactif",
+    "id": "ID",
+    "name": "Nom",
+    "email": "Email",
+    "phone": "Téléphone",
+    "nin": "N° d'identité national",
+    "address": "Adresse",
+    "created": "Créé",
+    "refNumber": "Numéro de référence",
+    "status": "Statut",
+    "viewDetails": "Afficher les détails",
+    "send": "Envoyer",
+    "all": "Tous"
   },
   "groups": {
     "title": "Groupes",
@@ -726,6 +738,9 @@
     "noTools": "Aucun outil disponible"
   },
   "claims": {
+    "citizenClaims": "Réclamations des Citoyens",
+    "companyClaims": "Réclamations des Entreprises",
+    "organizationClaims": "Réclamations des Organisations",
     "referenceNumber": "Numéro de référence",
     "status": "Statut",
     "pending": "En attente",
@@ -739,11 +754,26 @@
     "answerClaim": "Répondre à la réclamation",
     "claimDetails": "Détails de la réclamation",
     "confirmDelete": "Êtes-vous sûr de vouloir supprimer cette réclamation?",
+    "deleteConfirm": "Êtes-vous sûr de vouloir supprimer cette réclamation?",
     "deletedSuccessfully": "Réclamation supprimée avec succès",
+    "deleteSuccess": "Réclamation supprimée avec succès",
+    "deleteError": "Échec de la suppression de la réclamation",
     "answered_successfully": "Réclamation répondue avec succès",
+    "answerSuccess": "Réclamation répondue avec succès",
+    "answerError": "Échec de la réponse à la réclamation",
     "response": "Réponse",
     "submit": "Soumettre",
-    "loading": "Chargement des réclamations..."
+    "loading": "Chargement des réclamations...",
+    "fetchError": "Échec du chargement des réclamations",
+    "pleaseProvideAnswer": "Veuillez fournir une réponse",
+    "filterByStatus": "Filtrer par statut",
+    "personalInformation": "Informations personnelles",
+    "claimContent": "Contenu de la réclamation",
+    "ourResponse": "Notre réponse",
+    "answeredOn": "Répondu le",
+    "attachedFiles": "Fichiers joints",
+    "yourResponse": "Votre réponse",
+    "enterResponse": "Entrez votre réponse ici"
   },
   "errors": {
     "forbidden": "Accès Refusé",

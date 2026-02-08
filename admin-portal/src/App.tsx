@@ -72,7 +72,7 @@ function App() {
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/forgot-password" element={<ForgotPasswordPage />} />
           <Route path="/reset-password" element={<ResetPasswordPage />} />
-          <Route element={<RequireAuth redirectDelay={2000} />}>
+          <Route element={<RequireAuth />}>
             <Route element={<ModuleProvider>
               <Forbidden403Modal />
               <Layout />

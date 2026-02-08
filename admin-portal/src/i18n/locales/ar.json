@@ -1,15 +1,17 @@
 {
   "loginPage": {
-    "title": "تسجيل دخول المدير",
-    "email": "البريد الإلكتروني",
+    "title": "دخول لوحة التحكم الإدارية",
+    "email": "عنوان البريد الإلكتروني",
     "password": "كلمة المرور",
-    "placeholderEmail": "أدخل بريدك الإلكتروني",
-    "placeholderPassword": "أدخل كلمة المرور",
-    "login": "تسجيل الدخول",
-    "loggingIn": "جاري تسجيل الدخول...",
-    "forgotPassword": "نسيت كلمة المرور؟",
-    "register": "تسجيل",
-    "invalidCredentials": "البريد الإلكتروني أو كلمة المرور غير صحيحة"
+    "placeholderEmail": "أدخل عنوان بريدك الإلكتروني",
+    "placeholderPassword": "أدخل كلمة مرورك",
+    "login": "الدخول",
+    "loggingIn": "جاري المعالجة...",
+    "forgotPassword": "هل نسيت كلمة المرور؟",
+    "register": "إنشاء حساب جديد",
+    "invalidCredentials": "بيانات الدخول غير صحيحة",
+    "successMessage": "تم دخولك بنجاح",
+    "errorMessage": "حدث خطأ أثناء محاولة الدخول"
   },
   "forgotPassword": {
     "title": "نسيت كلمة المرور",
@@ -509,7 +511,19 @@
     "actions": "الإجراءات",
     "validation": "التحقق",
     "active": "نشط",
-    "inactive": "غير نشط"
+    "inactive": "غير نشط",
+    "id": "المعرف",
+    "name": "الاسم",
+    "email": "البريد الإلكتروني",
+    "phone": "الهاتف",
+    "nin": "رقم الهوية الوطني",
+    "address": "العنوان",
+    "created": "تم الإنشاء",
+    "refNumber": "الرقم المرجعي",
+    "status": "الحالة",
+    "viewDetails": "عرض التفاصيل",
+    "send": "إرسال",
+    "all": "الكل"
   },
   "groups": {
     "title": "المجموعات",
@@ -716,6 +730,9 @@
     "noTools": "لا توجد أدوات متاحة"
   },
   "claims": {
+    "citizenClaims": "مطالبات المواطنين",
+    "companyClaims": "مطالبات الشركات",
+    "organizationClaims": "مطالبات المنظمات",
     "referenceNumber": "رقم مرجعي",
     "status": "الحالة",
     "pending": "قيد الانتظار",
@@ -729,11 +746,26 @@
     "answerClaim": "الرد على المطالبة",
     "claimDetails": "تفاصيل المطالبة",
     "confirmDelete": "هل أنت متأكد من رغبتك في حذف هذه المطالبة؟",
+    "deleteConfirm": "هل أنت متأكد من رغبتك في حذف هذه المطالبة؟",
     "deletedSuccessfully": "تم حذف المطالبة بنجاح",
+    "deleteSuccess": "تم حذف المطالبة بنجاح",
+    "deleteError": "فشل حذف المطالبة",
     "answered_successfully": "تم الرد على المطالبة بنجاح",
+    "answerSuccess": "تم الرد على المطالبة بنجاح",
+    "answerError": "فشل الرد على المطالبة",
     "response": "الرد",
     "submit": "إرسال",
-    "loading": "جاري تحميل المطالبات..."
+    "loading": "جاري تحميل المطالبات...",
+    "fetchError": "فشل جلب المطالبات",
+    "pleaseProvideAnswer": "يرجى تقديم إجابة",
+    "filterByStatus": "تصفية حسب الحالة",
+    "personalInformation": "المعلومات الشخصية",
+    "claimContent": "محتوى المطالبة",
+    "ourResponse": "ردنا",
+    "answeredOn": "تمت الإجابة في",
+    "attachedFiles": "الملفات المرفقة",
+    "yourResponse": "ردك",
+    "enterResponse": "أدخل ردك هنا"
   },
   "errors": {
     "forbidden": "الوصول مرفوض",

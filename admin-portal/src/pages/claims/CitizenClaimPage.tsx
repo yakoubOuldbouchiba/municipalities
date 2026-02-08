@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { Button } from 'primereact/button';
@@ -28,6 +29,7 @@ interface CitizenClaim {
 }
 
 const CitizenClaimPage: React.FC = () => {
+  const { t } = useTranslation();
   const [claims, setClaims] = useState<CitizenClaim[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedStatus, setSelectedStatus] = useState('');
@@ -46,9 +48,8 @@ const CitizenClaimPage: React.FC = () => {
       setClaims(response.data.data);
     } catch (error) {
       toastRef.current?.show({
-        severity: 'error',
-        summary: 'Error',
-        detail: 'Failed to fetch claims',
+        severity:t('common.error'),
+        detail: t('claims.fetchError')
       });
     } finally {
       setLoading(false);
@@ -78,8 +79,8 @@ const CitizenClaimPage: React.FC = () => {
     if (!selectedClaim || !answer.trim()) {
       toastRef.current?.show({
         severity: 'warn',
-        summary: 'Warning',
-        detail: 'Please provide an answer',
+        summary: t('common.warning'),
+        detail: t('claims.pleaseProvideAnswer'),
       });
       return;
     }
@@ -92,8 +93,8 @@ const CitizenClaimPage: React.FC = () => {
 
       toastRef.current?.show({
         severity: 'success',
-        summary: 'Success',
-        detail: 'Claim answered successfully',
+        summary: t('common.success'),
+        detail: t('claims.answerSuccess'),
       });
 
       setShowAnswerDialog(false);
@@ -101,8 +102,8 @@ const CitizenClaimPage: React.FC = () => {
     } catch (error) {
       toastRef.current?.show({
         severity: 'error',
-        summary: 'Error',
-        detail: 'Failed to answer claim',
+        summary: t('common.error'),
+        detail: t('claims.answerError'),
       });
     } finally {
       setAnswerLoading(false);
@@ -111,23 +112,23 @@ const CitizenClaimPage: React.FC = () => {
 
   const handleDelete = (claim: CitizenClaim) => {
     confirmDialog({
-      message: 'Are you sure you want to delete this claim?',
-      header: 'Confirm',
+      message: t('claims.deleteConfirm'),
+      header: t('common.confirm'),
       icon: 'pi pi-exclamation-triangle',
       accept: async () => {
         try {
           await axiosClient.delete(`/admin/claims/citizen/${claim.id}`);
           toastRef.current?.show({
             severity: 'success',
-            summary: 'Success',
-            detail: 'Claim deleted successfully',
+            summary: t('common.success'),
+            detail: t('claims.deleteSuccess'),
           });
           fetchClaims(selectedStatus || undefined);
         } catch (error) {
           toastRef.current?.show({
             severity: 'error',
-            summary: 'Error',
-            detail: 'Failed to delete claim',
+            summary: t('common.error'),
+            detail: t('claims.deleteError'),
           });
         }
       },
@@ -150,21 +151,21 @@ const CitizenClaimPage: React.FC = () => {
           icon="pi pi-eye"
           className="p-button-rounded p-button-info p-button-sm"
           onClick={() => handleViewDetails(rowData)}
-          tooltip="View Details"
+          tooltip={t('common.viewDetails')}
         />
         {rowData.status === 'pending' && (
           <Button
             icon="pi pi-reply"
             className="p-button-rounded p-button-success p-button-sm"
             onClick={() => handleAnswerClick(rowData)}
-            tooltip="Answer"
+            tooltip={t('claims.answer')}
           />
         )}
         <Button
           icon="pi pi-trash"
           className="p-button-rounded p-button-danger p-button-sm"
           onClick={() => handleDelete(rowData)}
-          tooltip="Delete"
+          tooltip={t('common.delete')}
         />
       </div>
     );
@@ -176,18 +177,18 @@ const CitizenClaimPage: React.FC = () => {
       <ConfirmDialog />
 
       <div style={{ marginBottom: '1rem' }}>
-        <h1>Citizen Claims</h1>
+        <h1>{t('claims.citizenClaims')}</h1>
         <div style={{ marginBottom: '1rem', display: 'flex', gap: '1rem', alignItems: 'center' }}>
           <Dropdown
             value={selectedStatus}
             options={[
-              { label: 'All', value: '' },
-              { label: 'Pending', value: 'pending' },
-              { label: 'Answered', value: 'answered' },
-              { label: 'Archived', value: 'archived' },
+              { label: t('common.all'), value: '' },
+              { label: t('claims.pending'), value: 'pending' },
+              { label: t('claims.answered'), value: 'answered' },
+              { label: t('claims.archived'), value: 'archived' },
             ]}
             onChange={(e) => handleStatusChange(e.value)}
-            placeholder="Filter by status"
+            placeholder={t('claims.filterByStatus')}
           />
         </div>
       </div>
@@ -199,44 +200,44 @@ const CitizenClaimPage: React.FC = () => {
         rows={10}
         rowsPerPageOptions={[5, 10, 20]}
       >
-        <Column field="id" header="ID" style={{ width: '80px' }} />
-        <Column field="reference_number" header="Ref #" style={{ width: '140px' }} />
+        <Column field="id" header={t('common.id')} style={{ width: '80px' }} />
+        <Column field="reference_number" header={t('common.refNumber')} style={{ width: '140px' }} />
         <Column
           field="firstname"
-          header="Name"
+          header={t('common.name')}
           body={(row) => `${row.firstname} ${row.lastname}`}
         />
-        <Column field="email" header="Email" />
-        <Column field="phone" header="Phone" />
-        <Column field="nin" header="NIN" style={{ width: '120px' }} />
-        <Column field="status" header="Status" body={statusTemplate} />
-        <Column field="created_at" header="Created" style={{ width: '150px' }} />
-        <Column body={actionTemplate} header="Actions" style={{ width: '150px' }} />
+        <Column field="email" header={t('common.email')} />
+        <Column field="phone" header={t('common.phone')} />
+        <Column field="nin" header={t('common.nin')} style={{ width: '120px' }} />
+        <Column field="status" header={t('common.status')} body={statusTemplate} />
+        <Column field="created_at" header={t('common.created')} style={{ width: '150px' }} />
+        <Column body={actionTemplate} header={t('common.actions')} style={{ width: '150px' }} />
       </DataTable>
 
       {/* Detail Dialog */}
       <Dialog
         visible={showDetailDialog}
         onHide={() => setShowDetailDialog(false)}
-        header={`Claim Details - ${selectedClaim?.firstname} ${selectedClaim?.lastname}`}
+        header={`${t('claims.claimDetails')} - ${selectedClaim?.firstname} ${selectedClaim?.lastname}`}
         modal
         style={{ width: '90vw', maxWidth: '800px' }}
       >
         {selectedClaim && (
           <div>
             <div style={{ marginBottom: '1rem' }}>
-              <h3>Personal Information</h3>
-              <p><strong>Name:</strong> {selectedClaim.firstname} {selectedClaim.lastname}</p>
-              <p><strong>Email:</strong> {selectedClaim.email}</p>
-              <p><strong>Phone:</strong> {selectedClaim.phone}</p>
-              <p><strong>NIN:</strong> {selectedClaim.nin}</p>
-              <p><strong>Address:</strong> {selectedClaim.address}</p>
+              <h3>{t('claims.personalInformation')}</h3>
+              <p><strong>{t('common.name')}:</strong> {selectedClaim.firstname} {selectedClaim.lastname}</p>
+              <p><strong>{t('common.email')}:</strong> {selectedClaim.email}</p>
+              <p><strong>{t('common.phone')}:</strong> {selectedClaim.phone}</p>
+              <p><strong>{t('common.nin')}:</strong> {selectedClaim.nin}</p>
+              <p><strong>{t('common.address')}:</strong> {selectedClaim.address}</p>
             </div>
 
             <hr />
 
             <div style={{ marginBottom: '1rem' }}>
-              <h3>Claim Content</h3>
+              <h3>{t('claims.claimContent')}</h3>
               <p>{selectedClaim.content}</p>
             </div>
 
@@ -244,10 +245,10 @@ const CitizenClaimPage: React.FC = () => {
               <>
                 <hr />
                 <div style={{ marginBottom: '1rem' }}>
-                  <h3>Our Response</h3>
+                  <h3>{t('claims.ourResponse')}</h3>
                   <p>{selectedClaim.answer}</p>
                   <p style={{ color: '#666', fontSize: '0.9rem' }}>
-                    Answered on: {new Date(selectedClaim.answered_at || '').toLocaleString()}
+                    {t('claims.answeredOn')}: {new Date(selectedClaim.answered_at || '').toLocaleString()}
                   </p>
                 </div>
               </>
@@ -257,7 +258,7 @@ const CitizenClaimPage: React.FC = () => {
               <>
                 <hr />
                 <div>
-                  <h3>Attached Files</h3>
+                  <h3>{t('claims.attachedFiles')}</h3>
                   <ul>
                     {selectedClaim.files.map((file, idx) => (
                       <li key={idx}>
@@ -278,13 +279,13 @@ const CitizenClaimPage: React.FC = () => {
       <Dialog
         visible={showAnswerDialog}
         onHide={() => setShowAnswerDialog(false)}
-        header="Answer Claim"
+        header={t('claims.answerClaim')}
         modal
         style={{ width: '90vw', maxWidth: '600px' }}
       >
         <div>
           <label htmlFor="answer" style={{ display: 'block', marginBottom: '0.5rem' }}>
-            Your Response *
+            {t('claims.yourResponse')} *
           </label>
           <InputTextarea
             id="answer"
@@ -292,17 +293,17 @@ const CitizenClaimPage: React.FC = () => {
             onChange={(e) => setAnswer(e.target.value)}
             rows={6}
             style={{ width: '100%' }}
-            placeholder="Enter your response to this claim"
+            placeholder={t('claims.enterResponse')}
           />
           <div style={{ marginTop: '1rem', display: 'flex', gap: '1rem' }}>
             <Button
-              label="Send"
+              label={t('common.send')}
               onClick={handleSubmitAnswer}
               loading={answerLoading}
               icon="pi pi-send"
             />
             <Button
-              label="Cancel"
+              label={t('common.cancel')}
               onClick={() => setShowAnswerDialog(false)}
               className="p-button-secondary"
             />
