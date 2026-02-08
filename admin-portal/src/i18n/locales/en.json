@@ -818,6 +818,20 @@
     "response": "Response",
     "submit": "Submit",
     "loading": "Loading claims..."
+  },
+  "errors": {
+    "forbidden": "Access Denied",
+    "forbidden_403": "You do not have permission to access this resource",
+    "forbidden_message": "Your role does not have the required permissions for this action",
+    "requiredRoles": "Required Roles",
+    "yourRoles": "Your Roles",
+    "contactAdmin": "Please contact your administrator to request access",
+    "backToHome": "Back to Home",
+    "notAuthorized": "Not Authorized",
+    "permissionDenied": "Permission Denied",
+    "insufficientPermissions": "Insufficient Permissions",
+    "roleRequired": "The following role is required",
+    "rolesRequired": "One of the following roles is required"
   }
 }
 

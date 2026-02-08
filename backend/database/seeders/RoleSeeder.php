@@ -14,6 +14,344 @@ class RoleSeeder extends Seeder
     {
 
         $roles = [
+            // API Operation Roles
+            [
+                'code' => 'API:read-all',
+                'label' => [
+                    'en' => 'Read All Resources',
+                    'ar' => 'قراءة جميع الموارد',
+                    'fr' => 'Lire toutes les ressources',
+                    'es' => 'Leer todos los recursos',
+                ]
+            ],
+            [
+                'code' => 'API:write-all',
+                'label' => [
+                    'en' => 'Write All Resources',
+                    'ar' => 'كتابة جميع الموارد',
+                    'fr' => 'Écrire toutes les ressources',
+                    'es' => 'Escribir todos los recursos',
+                ]
+            ],
+            [
+                'code' => 'API:delete-all',
+                'label' => [
+                    'en' => 'Delete All Resources',
+                    'ar' => 'حذف جميع الموارد',
+                    'fr' => 'Supprimer toutes les ressources',
+                    'es' => 'Eliminar todos los recursos',
+                ]
+            ],
+            // Resource-specific READ roles
+            [
+                'code' => 'API:read-ads',
+                'label' => [
+                    'en' => 'Read Advertisements',
+                    'ar' => 'قراءة الإعلانات',
+                    'fr' => 'Lire les publicités',
+                    'es' => 'Leer anuncios',
+                ]
+            ],
+            [
+                'code' => 'API:read-news',
+                'label' => [
+                    'en' => 'Read News',
+                    'ar' => 'قراءة الأخبار',
+                    'fr' => 'Lire les actualités',
+                    'es' => 'Leer noticias',
+                ]
+            ],
+            [
+                'code' => 'API:read-events',
+                'label' => [
+                    'en' => 'Read Events',
+                    'ar' => 'قراءة الأحداث',
+                    'fr' => 'Lire les événements',
+                    'es' => 'Leer eventos',
+                ]
+            ],
+            [
+                'code' => 'API:read-papers',
+                'label' => [
+                    'en' => 'Read Papers',
+                    'ar' => 'قراءة الأوراق',
+                    'fr' => 'Lire les documents',
+                    'es' => 'Leer documentos',
+                ]
+            ],
+            [
+                'code' => 'API:read-persons',
+                'label' => [
+                    'en' => 'Read Persons',
+                    'ar' => 'قراءة الأشخاص',
+                    'fr' => 'Lire les personnes',
+                    'es' => 'Leer personas',
+                ]
+            ],
+            [
+                'code' => 'API:read-potentials',
+                'label' => [
+                    'en' => 'Read Potentials',
+                    'ar' => 'قراءة الإمكانيات',
+                    'fr' => 'Lire le potentiel',
+                    'es' => 'Leer potenciales',
+                ]
+            ],
+            [
+                'code' => 'API:read-quick-links',
+                'label' => [
+                    'en' => 'Read Quick Links',
+                    'ar' => 'قراءة الروابط السريعة',
+                    'fr' => 'Lire les liens rapides',
+                    'es' => 'Leer enlaces rápidos',
+                ]
+            ],
+            [
+                'code' => 'API:read-important-numbers',
+                'label' => [
+                    'en' => 'Read Important Numbers',
+                    'ar' => 'قراءة الأرقام المهمة',
+                    'fr' => 'Lire les numéros importants',
+                    'es' => 'Leer números importantes',
+                ]
+            ],
+            [
+                'code' => 'API:read-home-images',
+                'label' => [
+                    'en' => 'Read Home Images',
+                    'ar' => 'قراءة صور الصفحة الرئيسية',
+                    'fr' => 'Lire les images d\'accueil',
+                    'es' => 'Leer imágenes de inicio',
+                ]
+            ],
+            // Resource-specific WRITE roles (Create, Update)
+            [
+                'code' => 'API:write-ads',
+                'label' => [
+                    'en' => 'Write Advertisements',
+                    'ar' => 'كتابة الإعلانات',
+                    'fr' => 'Écrire les publicités',
+                    'es' => 'Escribir anuncios',
+                ]
+            ],
+            [
+                'code' => 'API:write-news',
+                'label' => [
+                    'en' => 'Write News',
+                    'ar' => 'كتابة الأخبار',
+                    'fr' => 'Écrire les actualités',
+                    'es' => 'Escribir noticias',
+                ]
+            ],
+            [
+                'code' => 'API:write-events',
+                'label' => [
+                    'en' => 'Write Events',
+                    'ar' => 'كتابة الأحداث',
+                    'fr' => 'Écrire les événements',
+                    'es' => 'Escribir eventos',
+                ]
+            ],
+            [
+                'code' => 'API:write-papers',
+                'label' => [
+                    'en' => 'Write Papers',
+                    'ar' => 'كتابة الأوراق',
+                    'fr' => 'Écrire les documents',
+                    'es' => 'Escribir documentos',
+                ]
+            ],
+            [
+                'code' => 'API:write-persons',
+                'label' => [
+                    'en' => 'Write Persons',
+                    'ar' => 'كتابة الأشخاص',
+                    'fr' => 'Écrire les personnes',
+                    'es' => 'Escribir personas',
+                ]
+            ],
+            [
+                'code' => 'API:write-potentials',
+                'label' => [
+                    'en' => 'Write Potentials',
+                    'ar' => 'كتابة الإمكانيات',
+                    'fr' => 'Écrire le potentiel',
+                    'es' => 'Escribir potenciales',
+                ]
+            ],
+            [
+                'code' => 'API:write-quick-links',
+                'label' => [
+                    'en' => 'Write Quick Links',
+                    'ar' => 'كتابة الروابط السريعة',
+                    'fr' => 'Écrire les liens rapides',
+                    'es' => 'Escribir enlaces rápidos',
+                ]
+            ],
+            [
+                'code' => 'API:write-important-numbers',
+                'label' => [
+                    'en' => 'Write Important Numbers',
+                    'ar' => 'كتابة الأرقام المهمة',
+                    'fr' => 'Écrire les numéros importants',
+                    'es' => 'Escribir números importantes',
+                ]
+            ],
+            [
+                'code' => 'API:write-home-images',
+                'label' => [
+                    'en' => 'Write Home Images',
+                    'ar' => 'كتابة صور الصفحة الرئيسية',
+                    'fr' => 'Écrire les images d\'accueil',
+                    'es' => 'Escribir imágenes de inicio',
+                ]
+            ],
+            // Resource-specific DELETE roles
+            [
+                'code' => 'API:delete-ads',
+                'label' => [
+                    'en' => 'Delete Advertisements',
+                    'ar' => 'حذف الإعلانات',
+                    'fr' => 'Supprimer les publicités',
+                    'es' => 'Eliminar anuncios',
+                ]
+            ],
+            [
+                'code' => 'API:delete-news',
+                'label' => [
+                    'en' => 'Delete News',
+                    'ar' => 'حذف الأخبار',
+                    'fr' => 'Supprimer les actualités',
+                    'es' => 'Eliminar noticias',
+                ]
+            ],
+            [
+                'code' => 'API:delete-events',
+                'label' => [
+                    'en' => 'Delete Events',
+                    'ar' => 'حذف الأحداث',
+                    'fr' => 'Supprimer les événements',
+                    'es' => 'Eliminar eventos',
+                ]
+            ],
+            [
+                'code' => 'API:delete-papers',
+                'label' => [
+                    'en' => 'Delete Papers',
+                    'ar' => 'حذف الأوراق',
+                    'fr' => 'Supprimer les documents',
+                    'es' => 'Eliminar documentos',
+                ]
+            ],
+            [
+                'code' => 'API:delete-persons',
+                'label' => [
+                    'en' => 'Delete Persons',
+                    'ar' => 'حذف الأشخاص',
+                    'fr' => 'Supprimer les personnes',
+                    'es' => 'Eliminar personas',
+                ]
+            ],
+            [
+                'code' => 'API:delete-potentials',
+                'label' => [
+                    'en' => 'Delete Potentials',
+                    'ar' => 'حذف الإمكانيات',
+                    'fr' => 'Supprimer le potentiel',
+                    'es' => 'Eliminar potenciales',
+                ]
+            ],
+            [
+                'code' => 'API:delete-quick-links',
+                'label' => [
+                    'en' => 'Delete Quick Links',
+                    'ar' => 'حذف الروابط السريعة',
+                    'fr' => 'Supprimer les liens rapides',
+                    'es' => 'Eliminar enlaces rápidos',
+                ]
+            ],
+            [
+                'code' => 'API:delete-important-numbers',
+                'label' => [
+                    'en' => 'Delete Important Numbers',
+                    'ar' => 'حذف الأرقام المهمة',
+                    'fr' => 'Supprimer les numéros importants',
+                    'es' => 'Eliminar números importantes',
+                ]
+            ],
+            [
+                'code' => 'API:delete-home-images',
+                'label' => [
+                    'en' => 'Delete Home Images',
+                    'ar' => 'حذف صور الصفحة الرئيسية',
+                    'fr' => 'Supprimer les images d\'accueil',
+                    'es' => 'Eliminar imágenes de inicio',
+                ]
+            ],
+            // System Management Roles
+            [
+                'code' => 'API:manage-users',
+                'label' => [
+                    'en' => 'Manage Users',
+                    'ar' => 'إدارة المستخدمين',
+                    'fr' => 'Gérer les utilisateurs',
+                    'es' => 'Administrar usuarios',
+                ]
+            ],
+            [
+                'code' => 'API:manage-roles',
+                'label' => [
+                    'en' => 'Manage Roles',
+                    'ar' => 'إدارة الأدوار',
+                    'fr' => 'Gérer les rôles',
+                    'es' => 'Administrar roles',
+                ]
+            ],
+            [
+                'code' => 'API:manage-groups',
+                'label' => [
+                    'en' => 'Manage Groups',
+                    'ar' => 'إدارة المجموعات',
+                    'fr' => 'Gérer les groupes',
+                    'es' => 'Administrar grupos',
+                ]
+            ],
+            [
+                'code' => 'API:manage-structures',
+                'label' => [
+                    'en' => 'Manage Structures',
+                    'ar' => 'إدارة الهياكل',
+                    'fr' => 'Gérer les structures',
+                    'es' => 'Administrar estructuras',
+                ]
+            ],
+            [
+                'code' => 'API:manage-modules',
+                'label' => [
+                    'en' => 'Manage Modules',
+                    'ar' => 'إدارة الوحدات',
+                    'fr' => 'Gérer les modules',
+                    'es' => 'Administrar módulos',
+                ]
+            ],
+            [
+                'code' => 'API:manage-claims',
+                'label' => [
+                    'en' => 'Manage Claims',
+                    'ar' => 'إدارة المطالبات',
+                    'fr' => 'Gérer les réclamations',
+                    'es' => 'Administrar reclamaciones',
+                ]
+            ],
+            [
+                'code' => 'API:superadmin',
+                'label' => [
+                    'en' => 'Super Admin Access',
+                    'ar' => 'وصول المسؤول الأعلى',
+                    'fr' => 'Accès super administrateur',
+                    'es' => 'Acceso de superadministrador',
+                ]
+            ],
             [
                 'code' => 'MODULE:admin',
                 'label' => [

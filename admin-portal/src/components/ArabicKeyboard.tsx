@@ -17,10 +17,10 @@ const ArabicKeyboard: React.FC<ArabicKeyboardProps> = ({ onInput, onBackspace })
   return (
     <div className="arabic-keyboard">
       {rows.map((row, rowIdx) => (
-        <div key={rowIdx} className="keyboard-row">
+        <div key={`row-${rowIdx}`} className="keyboard-row">
           {row.map((char, charIdx) => (
             <button
-              key={charIdx}
+              key={`char-${rowIdx}-${charIdx}`}
               type="button"
               className="keyboard-key"
               onClick={() => onInput(char)}

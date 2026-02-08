@@ -12,8 +12,8 @@ import axiosClient from '../../api/axiosClient';
 
 interface CompanyClaim {
   id: number;
-  company: string;
   register_number: string;
+  company: string;
   email: string;
   phone: string;
   address: string;
@@ -61,7 +61,7 @@ const CompanyClaimPage: React.FC = () => {
     setSelectedStatus(status);
   };
 
-  const handleViewDetails = (claim: CompanyClaim) => {
+  const handleViewDetails = (claim:  CompanyClaim) => {
     setSelectedClaim(claim);
     setShowDetailDialog(true);
   };
@@ -197,7 +197,9 @@ const CompanyClaimPage: React.FC = () => {
         rows={10}
         rowsPerPageOptions={[5, 10, 20]}
       >
-        <Column field="id" header="ID" style={{ width: '80px' }} />        <Column field="reference_number" header="Ref #" style={{ width: '140px' }} />        <Column field="company" header="Company" />
+        <Column field="id" header="ID" style={{ width: '80px' }} />
+        <Column field="reference_number" header="Ref #" style={{ width: '140px' }} />
+        <Column field="company" header="Company" />
         <Column field="register_number" header="Register #" style={{ width: '140px' }} />
         <Column field="email" header="Email" />
         <Column field="phone" header="Phone" style={{ width: '120px' }} />

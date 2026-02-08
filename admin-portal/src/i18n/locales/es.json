@@ -710,5 +710,19 @@
     "response": "Respuesta",
     "submit": "Enviar",
     "loading": "Cargando reclamaciones..."
+  },
+  "errors": {
+    "forbidden": "Acceso Denegado",
+    "forbidden_403": "No tienes permiso para acceder a este recurso",
+    "forbidden_message": "Tu rol no tiene los permisos requeridos para esta acción",
+    "requiredRoles": "Roles Requeridos",
+    "yourRoles": "Tus Roles",
+    "contactAdmin": "Por favor contacta a tu administrador para solicitar acceso",
+    "backToHome": "Volver a Inicio",
+    "notAuthorized": "No Autorizado",
+    "permissionDenied": "Permiso Denegado",
+    "insufficientPermissions": "Permisos Insuficientes",
+    "roleRequired": "Se requiere el siguiente rol",
+    "rolesRequired": "Se requiere uno de los siguientes roles"
   }
 }

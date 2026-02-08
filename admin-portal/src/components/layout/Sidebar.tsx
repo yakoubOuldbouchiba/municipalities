@@ -32,11 +32,11 @@ const Sidebar: React.FC = () => {
       {/* Module Switcher */}
       <div className="module-switcher">
         <div className="module-switcher-label">{t('modules.selectModule')}</div>
-        {modules.map((module) => {
-          const moduleData = allModules.find(m => m.code === module) || MODULE_CONFIGS[module];
+        {modules.map((module , index) => {
+          const moduleData = allModules.find(m => m.code === module) || MODULE_CONFIGS[module as ModuleType];
           return (
             <button
-              key={module}
+              key={`${module}-${index}`}
               onClick={() => handleModuleChange(module)}
               className={`module-button ${currentModule === module ? 'active' : ''}`}
               style={{

@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import LoginPage from './pages/auth/LoginPage';
 import Layout from './components/layout/Layout';
 import RequireAuth from './components/RequireAuth';
+import Forbidden403Modal from './components/Forbidden403Modal';
 import { ModuleProvider } from './context/ModuleContext';
 import { PrimeReactProvider } from './context/PrimeReactProvider';
 import './i18n/config';
@@ -66,32 +67,31 @@ function App() {
   return (
     <PrimeReactProvider>
       <BrowserRouter basename={basename}>
-        <ModuleProvider>
-          <Routes>
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/register" element={<RegisterPage />} />
-            <Route path="/forgot-password" element={<ForgotPasswordPage />} />
-            <Route path="/reset-password" element={<ResetPasswordPage />} />
-            <Route element={<Layout />}>
+        <Routes>
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/register" element={<RegisterPage />} />
+          <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+          <Route path="/reset-password" element={<ResetPasswordPage />} />
+          <Route element={<RequireAuth redirectDelay={2000} />}>
+            <Route element={<ModuleProvider>
+              <Forbidden403Modal />
+              <Layout />
+            </ModuleProvider>}>
               <Route
                 path="/"
                 element={
                   <Suspense fallback={<LoadingFallback />}>
-                    <RequireAuth redirectDelay={2000}>
-                      <Dashboard />
-                    </RequireAuth>
+                    <Dashboard />
                   </Suspense>
                 }
-              />
+                />
               
               {/* Admin Module Routes */}
               <Route
                 path="/admin/users"
                 element={
                   <Suspense fallback={<LoadingFallback />}>
-                    <RequireAuth>
-                      <UsersPage />
-                    </RequireAuth>
+                    <UsersPage />
                   </Suspense>
                 }
               />
@@ -99,9 +99,7 @@ function App() {
                 path="/admin/groups"
                 element={
                   <Suspense fallback={<LoadingFallback />}>
-                    <RequireAuth>
-                      <GroupsPage />
-                    </RequireAuth>
+                    <GroupsPage />
                   </Suspense>
                 }
               />
@@ -109,9 +107,7 @@ function App() {
                 path="/admin/roles"
                 element={
                   <Suspense fallback={<LoadingFallback />}>
-                    <RequireAuth>
-                      <RolesPage />
-                    </RequireAuth>
+                    <RolesPage />
                   </Suspense>
                 }
               />
@@ -119,9 +115,7 @@ function App() {
                 path="/admin/applications"
                 element={
                   <Suspense fallback={<LoadingFallback />}>
-                    <RequireAuth>
-                      <ApplicationsPage />
-                    </RequireAuth>
+                    <ApplicationsPage />
                   </Suspense>
                 }
               />
@@ -129,9 +123,7 @@ function App() {
                 path="/admin/structures"
                 element={
                   <Suspense fallback={<LoadingFallback />}>
-                    <RequireAuth>
-                      <StructuresPage />
-                    </RequireAuth>
+                    <StructuresPage />
                   </Suspense>
                 }
               />
@@ -139,9 +131,7 @@ function App() {
                 path="/admin/modules"
                 element={
                   <Suspense fallback={<LoadingFallback />}>
-                    <RequireAuth>
-                      <AdminModulesPage />
-                    </RequireAuth>
+                    <AdminModulesPage />
                   </Suspense>
                 }
               />
@@ -151,9 +141,7 @@ function App() {
                 path="/admin/tools"
                 element={
                   <Suspense fallback={<LoadingFallback />}>
-                    <RequireAuth>
-                      <SuperAdminDashboard />
-                    </RequireAuth>
+                    <SuperAdminDashboard />
                   </Suspense>
                 }
               />
@@ -163,9 +151,7 @@ function App() {
                 path="/claims/citizen"
                 element={
                   <Suspense fallback={<LoadingFallback />}>
-                    <RequireAuth>
-                      <CitizenClaimPage />
-                    </RequireAuth>
+                    <CitizenClaimPage />
                   </Suspense>
                 }
               />
@@ -173,9 +159,7 @@ function App() {
                 path="/claims/company"
                 element={
                   <Suspense fallback={<LoadingFallback />}>
-                    <RequireAuth>
-                      <CompanyClaimPage />
-                    </RequireAuth>
+                    <CompanyClaimPage />
                   </Suspense>
                 }
               />
@@ -183,9 +167,7 @@ function App() {
                 path="/claims/organization"
                 element={
                   <Suspense fallback={<LoadingFallback />}>
-                    <RequireAuth>
-                      <OrganizationClaimPage />
-                    </RequireAuth>
+                    <OrganizationClaimPage />
                   </Suspense>
                 }
               />
@@ -195,9 +177,7 @@ function App() {
                 path="/ads"
                 element={
                   <Suspense fallback={<LoadingFallback />}>
-                    <RequireAuth>
-                      <AdsPage />
-                    </RequireAuth>
+                    <AdsPage />
                   </Suspense>
                 }
               />
@@ -205,9 +185,7 @@ function App() {
                 path="/news"
                 element={
                   <Suspense fallback={<LoadingFallback />}>
-                    <RequireAuth>
-                      <NewsPage />
-                    </RequireAuth>
+                    <NewsPage />
                   </Suspense>
                 }
               />
@@ -215,9 +193,7 @@ function App() {
                 path="/sliders"
                 element={
                   <Suspense fallback={<LoadingFallback />}>
-                    <RequireAuth>
-                      <SlidersPage />
-                    </RequireAuth>
+                    <SlidersPage />
                   </Suspense>
                 }
               />
@@ -225,9 +201,7 @@ function App() {
                 path="/quick-links"
                 element={
                   <Suspense fallback={<LoadingFallback />}>
-                    <RequireAuth>
-                      <QuickLinksPage />
-                    </RequireAuth>
+                    <QuickLinksPage />
                   </Suspense>
                 }
               />
@@ -235,9 +209,7 @@ function App() {
                 path="/events"
                 element={
                   <Suspense fallback={<LoadingFallback />}>
-                    <RequireAuth>
-                      <EventsPage />
-                    </RequireAuth>
+                    <EventsPage />
                   </Suspense>
                 }
               />
@@ -245,9 +217,7 @@ function App() {
                 path="/papers"
                 element={
                   <Suspense fallback={<LoadingFallback />}>
-                    <RequireAuth>
-                      <PapersPage />
-                    </RequireAuth>
+                    <PapersPage />
                   </Suspense>
                 }
               />
@@ -255,9 +225,7 @@ function App() {
                 path="/important-numbers"
                 element={
                   <Suspense fallback={<LoadingFallback />}>
-                    <RequireAuth>
-                      <ImportantNumbersPage />
-                    </RequireAuth>
+                    <ImportantNumbersPage />
                   </Suspense>
                 }
               />
@@ -265,9 +233,7 @@ function App() {
                 path="/potentials"
                 element={
                   <Suspense fallback={<LoadingFallback />}>
-                    <RequireAuth>
-                      <PotentialsPage />
-                    </RequireAuth>
+                    <PotentialsPage />
                   </Suspense>
                 }
               />
@@ -275,15 +241,13 @@ function App() {
                 path="/persons"
                 element={
                   <Suspense fallback={<LoadingFallback />}>
-                    <RequireAuth>
-                      <PersonsPage />
-                    </RequireAuth>
+                    <PersonsPage />
                   </Suspense>
                 }
               />
+              </Route>
             </Route>
           </Routes>
-        </ModuleProvider>
       </BrowserRouter>
     </PrimeReactProvider>
   );

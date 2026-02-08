@@ -1,4 +1,5 @@
 import axios from 'axios';
+import i18n from '../i18n/config';
 
 // Read API base URL from React Create App env var REACT_APP_API_URL with a safe fallback.
 // React Create App exposes env vars on process.env and requires the REACT_APP_ prefix for client-side usage.
@@ -29,6 +30,26 @@ axiosClient.interceptors.request.use((config) => {
 
   return config;
 });
+
+// Add response error interceptor for 403 Forbidden errors
+axiosClient.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response?.status === 403) {
+      // Dispatch custom event with error details
+      const event = new CustomEvent('api403Error', {
+        detail: {
+          message: error.response?.data?.message || i18n.t('errors.forbidden_403'),
+          requiredRoles: error.response?.data?.required_roles || [],
+          status: 403,
+          data: error.response?.data,
+        },
+      });
+      window.dispatchEvent(event);
+    }
+    return Promise.reject(error);
+  }
+);
 
 export default axiosClient;
 

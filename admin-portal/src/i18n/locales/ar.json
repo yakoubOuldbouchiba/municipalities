@@ -734,5 +734,19 @@
     "response": "الرد",
     "submit": "إرسال",
     "loading": "جاري تحميل المطالبات..."
+  },
+  "errors": {
+    "forbidden": "الوصول مرفوض",
+    "forbidden_403": "ليس لديك صلاحيات للوصول إلى هذا المورد",
+    "forbidden_message": "دورك الحالي لا يملك الصلاحيات المطلوبة لهذا الإجراء",
+    "requiredRoles": "الأدوار المطلوبة",
+    "yourRoles": "أدوارك",
+    "contactAdmin": "يرجى التواصل مع المسؤول لطلب الوصول",
+    "backToHome": "العودة إلى الرئيسية",
+    "notAuthorized": "غير مخول",
+    "permissionDenied": "تم رفض الإذن",
+    "insufficientPermissions": "صلاحيات غير كافية",
+    "roleRequired": "الدور التالي مطلوب",
+    "rolesRequired": "أحد الأدوار التالية مطلوب"
   }
 }

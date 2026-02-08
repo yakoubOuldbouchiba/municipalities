@@ -744,5 +744,19 @@
     "response": "Réponse",
     "submit": "Soumettre",
     "loading": "Chargement des réclamations..."
+  },
+  "errors": {
+    "forbidden": "Accès Refusé",
+    "forbidden_403": "Vous n'avez pas la permission d'accéder à cette ressource",
+    "forbidden_message": "Votre rôle n'a pas les permissions requises pour cette action",
+    "requiredRoles": "Rôles Requis",
+    "yourRoles": "Vos Rôles",
+    "contactAdmin": "Veuillez contacter votre administrateur pour demander l'accès",
+    "backToHome": "Retour à l'Accueil",
+    "notAuthorized": "Non Autorisé",
+    "permissionDenied": "Permission Refusée",
+    "insufficientPermissions": "Permissions Insuffisantes",
+    "roleRequired": "Le rôle suivant est requis",
+    "rolesRequired": "L'un des rôles suivants est requis"
   }
 }

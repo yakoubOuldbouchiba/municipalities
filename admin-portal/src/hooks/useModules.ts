@@ -44,6 +44,14 @@ export const useModules = () => {
       return;
     }
 
+    // Verify token exists before attempting to fetch
+    const token = localStorage.getItem('token');
+    if (!token || token === 'undefined' || (typeof token === 'string' && token.trim() === '')) {
+      setModules([]);
+      setLoading(false);
+      return;
+    }
+
     const fetchModules = async () => {
       try {
         setLoading(true);
@@ -93,7 +101,7 @@ export const useModules = () => {
     };
 
     fetchModules();
-  }, [i18n.language, navigate, location.pathname]);
+  }, [i18n.language, location.pathname, navigate]);
 
   return { modules, loading, error };
 };
@@ -165,7 +173,7 @@ export const useModuleById = (moduleId: string | number) => {
     };
 
     fetchModule();
-  }, [moduleId, navigate]);
+  }, [moduleId]);
 
   return { module, loading, error };
 };
@@ -239,7 +247,7 @@ export const useNavItems = (moduleId: number) => {
     };
 
     fetchNavItems();
-  }, [moduleId, i18n.language, navigate]);
+  }, [moduleId, i18n.language]);
 
   return { navItems, loading, error };
 };

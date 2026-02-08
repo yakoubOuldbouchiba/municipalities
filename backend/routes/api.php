@@ -103,103 +103,102 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/users', [UserController::class, 'index']);
     Route::get('/users/{user}', [UserController::class, 'show']);
 
-    // Ads CRUD
-    Route::post('/ads', [AdController::class, 'store']);
-    Route::post('/ads/upload', [AdController::class, 'upload']);
-    Route::put('/ads/{ad}', [AdController::class, 'update']);
-    Route::delete('/ads/{ad}', [AdController::class, 'destroy']);
+    // Ads CRUD - with role protection
+    Route::post('/ads', [AdController::class, 'store'])->middleware('api.role:API:write-ads,API:write-all');
+    Route::post('/ads/upload', [AdController::class, 'upload'])->middleware('api.role:API:write-ads,API:write-all');
+    Route::put('/ads/{ad}', [AdController::class, 'update'])->middleware('api.role:API:write-ads,API:write-all');
+    Route::delete('/ads/{ad}', [AdController::class, 'destroy'])->middleware('api.role:API:delete-ads,API:delete-all');
 
-    // Home Images CRUD
-    Route::post('/home-images', [HomeImageController::class, 'store']);
-    Route::put('/home-images/{image}', [HomeImageController::class, 'update']);
-    Route::delete('/home-images/{image}', [HomeImageController::class, 'destroy']);
-    Route::post('/home-images/upload', [HomeImageController::class, 'uploadImage']);
-
-
-    // News CRUD
-    Route::post('/news', [NewsController::class, 'store']);
-    Route::post('/news/upload', [NewsController::class, 'upload']);
-    Route::put('/news/{news}', [NewsController::class, 'update']);
-    Route::delete('/news/{news}', [NewsController::class, 'destroy']);
+    // Home Images CRUD - with role protection
+    Route::post('/home-images', [HomeImageController::class, 'store'])->middleware('api.role:API:write-home-images,API:write-all');
+    Route::put('/home-images/{image}', [HomeImageController::class, 'update'])->middleware('api.role:API:write-home-images,API:write-all');
+    Route::delete('/home-images/{image}', [HomeImageController::class, 'destroy'])->middleware('api.role:API:delete-home-images,API:delete-all');
+    Route::post('/home-images/upload', [HomeImageController::class, 'uploadImage'])->middleware('api.role:API:write-home-images,API:write-all');
 
 
-    // Quick links
-    Route::post('/quick-links', [QuickLinkController::class, 'store']);
-    Route::put('/quick-links/{id}', [QuickLinkController::class, 'update']);
-    Route::delete('/quick-links/{id}', [QuickLinkController::class, 'destroy']);
+    // News CRUD - with role protection
+    Route::post('/news', [NewsController::class, 'store'])->middleware('api.role:API:write-news,API:write-all');
+    Route::post('/news/upload', [NewsController::class, 'upload'])->middleware('api.role:API:write-news,API:write-all');
+    Route::put('/news/{news}', [NewsController::class, 'update'])->middleware('api.role:API:write-news,API:write-all');
+    Route::delete('/news/{news}', [NewsController::class, 'destroy'])->middleware('api.role:API:delete-news,API:delete-all');
 
-    // Important numbers
-    Route::post('/important-numbers', [ImportantNumberController::class, 'store']);
-    Route::put('/important-numbers/{id}', [ImportantNumberController::class, 'update']);
-    Route::delete('/important-numbers/{id}', [ImportantNumberController::class, 'destroy']);
 
-    // Potentials CRUD
-    Route::post('/potentials', [PotentialController::class, 'store']);
-    Route::put('/potentials/{potential}', [PotentialController::class, 'update']);
-    Route::delete('/potentials/{potential}', [PotentialController::class, 'destroy']);
+    // Quick links - with role protection
+    Route::post('/quick-links', [QuickLinkController::class, 'store'])->middleware('api.role:API:write-quick-links,API:write-all');
+    Route::put('/quick-links/{id}', [QuickLinkController::class, 'update'])->middleware('api.role:API:write-quick-links,API:write-all');
+    Route::delete('/quick-links/{id}', [QuickLinkController::class, 'destroy'])->middleware('api.role:API:delete-quick-links,API:delete-all');
 
-    // Events 
-    Route::post('/events', [EventController::class, 'store']);
-    Route::put('/events/{event}', [EventController::class, 'update']);
-    Route::delete('/events/{event}', [EventController::class, 'destroy']);
+    // Important numbers - with role protection
+    Route::post('/important-numbers', [ImportantNumberController::class, 'store'])->middleware('api.role:API:write-important-numbers,API:write-all');
+    Route::put('/important-numbers/{id}', [ImportantNumberController::class, 'update'])->middleware('api.role:API:write-important-numbers,API:write-all');
+    Route::delete('/important-numbers/{id}', [ImportantNumberController::class, 'destroy'])->middleware('api.role:API:delete-important-numbers,API:delete-all');
 
-    // Persons
-    Route::post('/persons', [PersonController::class, 'store']);
-    Route::post('/persons/upload', [PersonController::class, 'upload']);
-    Route::put('/persons/{person}', [PersonController::class, 'update']);
-    Route::delete('/persons/{person}', [PersonController::class, 'destroy']);
+    // Potentials CRUD - with role protection
+    Route::post('/potentials', [PotentialController::class, 'store'])->middleware('api.role:API:write-potentials,API:write-all');
+    Route::put('/potentials/{potential}', [PotentialController::class, 'update'])->middleware('api.role:API:write-potentials,API:write-all');
+    Route::delete('/potentials/{potential}', [PotentialController::class, 'destroy'])->middleware('api.role:API:delete-potentials,API:delete-all');
 
-    // Papers CRUD
-    Route::post('/papers', [PaperController::class, 'store']);
-    Route::put('/papers/{paper}', [PaperController::class, 'update']);
-    Route::delete('/papers/{paper}', [PaperController::class, 'destroy']);
-    Route::put('/papers/{paper}/toggle-hidden', [PaperController::class, 'toggleHidden']);
+    // Events - with role protection
+    Route::post('/events', [EventController::class, 'store'])->middleware('api.role:API:write-events,API:write-all');
+    Route::put('/events/{event}', [EventController::class, 'update'])->middleware('api.role:API:write-events,API:write-all');
+    Route::delete('/events/{event}', [EventController::class, 'destroy'])->middleware('api.role:API:delete-events,API:delete-all');
 
-    // Hidden toggle endpoints for all entities
-    Route::put('/events/{event}/toggle-hidden', [EventController::class, 'toggleHidden']);
-    Route::put('/home-images/{image}/toggle-hidden', [HomeImageController::class, 'toggleHidden']);
-    Route::put('/persons/{person}/toggle-hidden', [PersonController::class, 'toggleHidden']);
-    Route::put('/news/{news}/toggle-hidden', [NewsController::class, 'toggleHidden']);
-    Route::put('/potentials/{potential}/toggle-hidden', [PotentialController::class, 'toggleHidden']);
-    Route::put('/quick-links/{id}/toggle-hidden', [QuickLinkController::class, 'toggleHidden']);
-    Route::put('/important-numbers/{id}/toggle-hidden', [ImportantNumberController::class, 'toggleHidden']);
-    Route::put('/ads/{ad}/toggle-hidden', [AdController::class, 'toggleHidden']);
+    // Persons - with role protection
+    Route::post('/persons', [PersonController::class, 'store'])->middleware('api.role:API:write-persons,API:write-all');
+    Route::post('/persons/upload', [PersonController::class, 'upload'])->middleware('api.role:API:write-persons,API:write-all');
+    Route::put('/persons/{person}', [PersonController::class, 'update'])->middleware('api.role:API:write-persons,API:write-all');
+    Route::delete('/persons/{person}', [PersonController::class, 'destroy'])->middleware('api.role:API:delete-persons,API:delete-all');
 
-    // Modules CRUD - Write operations only
-    // Private modules endpoints (needed for all pages including registration)
+    // Papers CRUD - with role protection
+    Route::post('/papers', [PaperController::class, 'store'])->middleware('api.role:API:write-papers,API:write-all');
+    Route::put('/papers/{paper}', [PaperController::class, 'update'])->middleware('api.role:API:write-papers,API:write-all');
+    Route::delete('/papers/{paper}', [PaperController::class, 'destroy'])->middleware('api.role:API:delete-papers,API:delete-all');
+    Route::put('/papers/{paper}/toggle-hidden', [PaperController::class, 'toggleHidden'])->middleware('api.role:API:write-papers,API:write-all');
+
+    // Hidden toggle endpoints for all entities - with role protection
+    Route::put('/events/{event}/toggle-hidden', [EventController::class, 'toggleHidden'])->middleware('api.role:API:write-events,API:write-all');
+    Route::put('/home-images/{image}/toggle-hidden', [HomeImageController::class, 'toggleHidden'])->middleware('api.role:API:write-home-images,API:write-all');
+    Route::put('/persons/{person}/toggle-hidden', [PersonController::class, 'toggleHidden'])->middleware('api.role:API:write-persons,API:write-all');
+    Route::put('/news/{news}/toggle-hidden', [NewsController::class, 'toggleHidden'])->middleware('api.role:API:write-news,API:write-all');
+    Route::put('/potentials/{potential}/toggle-hidden', [PotentialController::class, 'toggleHidden'])->middleware('api.role:API:write-potentials,API:write-all');
+    Route::put('/quick-links/{id}/toggle-hidden', [QuickLinkController::class, 'toggleHidden'])->middleware('api.role:API:write-quick-links,API:write-all');
+    Route::put('/important-numbers/{id}/toggle-hidden', [ImportantNumberController::class, 'toggleHidden'])->middleware('api.role:API:write-important-numbers,API:write-all');
+    Route::put('/ads/{ad}/toggle-hidden', [AdController::class, 'toggleHidden'])->middleware('api.role:API:write-ads,API:write-all');
+
+    // Modules CRUD - with role protection
     Route::get('/modules', [ModuleController::class, 'index']);
     Route::get('/modules/{module}', [ModuleController::class, 'show']);
-    Route::post('/modules', [ModuleController::class, 'store']);
-    Route::put('/modules/{module}', [ModuleController::class, 'update']);
-    Route::delete('/modules/{module}', [ModuleController::class, 'destroy']);
+    Route::post('/modules', [ModuleController::class, 'store'])->middleware('api.role:API:manage-modules,API:superadmin');
+    Route::put('/modules/{module}', [ModuleController::class, 'update'])->middleware('api.role:API:manage-modules,API:superadmin');
+    Route::delete('/modules/{module}', [ModuleController::class, 'destroy'])->middleware('api.role:API:manage-modules,API:superadmin');
 
-    // Nav items CRUD
-    Route::post('/nav-items', [NavItemController::class, 'store']);
-    Route::put('/nav-items/{navItem}', [NavItemController::class, 'update']);
-    Route::delete('/nav-items/{navItem}', [NavItemController::class, 'destroy']);
+    // Nav items CRUD - with role protection
+    Route::post('/nav-items', [NavItemController::class, 'store'])->middleware('api.role:API:manage-modules,API:superadmin');
+    Route::put('/nav-items/{navItem}', [NavItemController::class, 'update'])->middleware('api.role:API:manage-modules,API:superadmin');
+    Route::delete('/nav-items/{navItem}', [NavItemController::class, 'destroy'])->middleware('api.role:API:manage-modules,API:superadmin');
 
-    // Roles CRUD
-    Route::post('/roles', [RoleController::class, 'store']);
-    Route::put('/roles/{role}', [RoleController::class, 'update']);
-    Route::delete('/roles/{role}', [RoleController::class, 'destroy']);
+    // Roles CRUD - with role protection
+    Route::post('/roles', [RoleController::class, 'store'])->middleware('api.role:API:manage-roles,API:superadmin');
+    Route::put('/roles/{role}', [RoleController::class, 'update'])->middleware('api.role:API:manage-roles,API:superadmin');
+    Route::delete('/roles/{role}', [RoleController::class, 'destroy'])->middleware('api.role:API:manage-roles,API:superadmin');
 
-    // Groups CRUD
-    Route::post('/groups', [GroupController::class, 'store']);
-    Route::put('/groups/{group}', [GroupController::class, 'update']);
-    Route::delete('/groups/{group}', [GroupController::class, 'destroy']);
+    // Groups CRUD - with role protection
+    Route::post('/groups', [GroupController::class, 'store'])->middleware('api.role:API:manage-groups,API:superadmin');
+    Route::put('/groups/{group}', [GroupController::class, 'update'])->middleware('api.role:API:manage-groups,API:superadmin');
+    Route::delete('/groups/{group}', [GroupController::class, 'destroy'])->middleware('api.role:API:manage-groups,API:superadmin');
 
-    // Structures CRUD
-    Route::post('/structures', [StructureController::class, 'store']);
-    Route::put('/structures/{structure}', [StructureController::class, 'update']);
-    Route::delete('/structures/{structure}', [StructureController::class, 'destroy']);
+    // Structures CRUD - with role protection
+    Route::post('/structures', [StructureController::class, 'store'])->middleware('api.role:API:manage-structures,API:superadmin');
+    Route::put('/structures/{structure}', [StructureController::class, 'update'])->middleware('api.role:API:manage-structures,API:superadmin');
+    Route::delete('/structures/{structure}', [StructureController::class, 'destroy'])->middleware('api.role:API:manage-structures,API:superadmin');
 
-    // Users CRUD
-    Route::post('/users', [UserController::class, 'store']);
-    Route::put('/users/{user}', [UserController::class, 'update']);
-    Route::delete('/users/{user}', [UserController::class, 'destroy']);
+    // Users CRUD - with role protection
+    Route::post('/users', [UserController::class, 'store'])->middleware('api.role:API:manage-users,API:superadmin');
+    Route::put('/users/{user}', [UserController::class, 'update'])->middleware('api.role:API:manage-users,API:superadmin');
+    Route::delete('/users/{user}', [UserController::class, 'destroy'])->middleware('api.role:API:manage-users,API:superadmin');
 
-    // ADMIN CLAIMS ENDPOINTS
-    Route::prefix('admin/claims')->group(function () {
+    // ADMIN CLAIMS ENDPOINTS - with role protection
+    Route::prefix('admin/claims')->middleware('api.role:API:manage-claims,API:superadmin')->group(function () {
         Route::get('/citizen', [ClaimsAdminController::class, 'citizenIndex']);
         Route::get('/citizen/{id}', [ClaimsAdminController::class, 'citizenShow']);
         Route::put('/citizen/{id}/answer', [ClaimsAdminController::class, 'answerCitizenClaim']);
@@ -221,7 +220,7 @@ Route::middleware('auth:sanctum')->group(function () {
     });
 
 
-    Route::prefix('superadmin')->group(function () {
+    Route::prefix('superadmin')->middleware('api.role:API:superadmin')->group(function () {
         // Database endpoints
         Route::get('/databases', [SuperAdminController::class, 'getDatabases']);
         Route::get('/databases/{database}/tables', [SuperAdminController::class, 'getTables']);
