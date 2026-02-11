@@ -27,7 +27,7 @@ class CitizenClaimController extends Controller
                 'lastname' => 'required|string|max:255',
                 'email' => 'required|email',
                 'phone' => 'required|string|max:20',
-                'nin' => 'required|string|max:20',
+                'nin' => 'required|numeric|digits:18',
                 'address' => 'required|string',
                 'content' => 'required|string',
                 'files' => 'nullable|array|max:3',
