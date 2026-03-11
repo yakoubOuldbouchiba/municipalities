@@ -9,6 +9,7 @@ import Advertisements from './components/advertisements/index.tsx';
 import News from './components/news/index.tsx';
 import ScrollTopButton from './components/scroll-top-button/ScrollTopButton.tsx';
 import Navbar from './components/navbar/index.tsx';
+import Loader from './components/loader/Loader.tsx';
 import api from './lib/api'
 import './i18n/config';
 
@@ -37,12 +38,7 @@ interface Ad {
   file_type: 'image' | 'pdf'
 }
 
-// Loading fallback component
-const LoadingFallback = () => (
-  <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '400px' }}>
-    <p>Loading...</p>
-  </div>
-);
+
 
 const App: React.FC = () => {
   const { i18n } = useTranslation();
@@ -66,7 +62,7 @@ const App: React.FC = () => {
       <div>
         <Navbar />
         <main className="container" style={{ paddingTop: '1rem', paddingBottom: '3rem' }}>
-          <Suspense fallback={<LoadingFallback />}>
+          <Suspense fallback={<Loader />}>
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/potentials" element={<Potentials />} />
